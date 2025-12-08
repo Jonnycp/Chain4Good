@@ -40,16 +40,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <meta name="robots" content="index, follow" />
 
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
-        <link rel="icon" href="/favicon.png" type="image/png"/>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
           href="logos/logo-180x180.png"
         />
-        <link rel="icon" sizes="192x192" href="logos/logo-192.png" />
-        <link rel="icon" sizes="512x512" href="logos/logo-512.png" />
-        <meta name="msapplication-TileImage" content="logos/logo-150.png" />
+        <link rel="icon" sizes="192x192" href="logos/logo-192x192.png" />
+        <link rel="icon" sizes="512x512" href="logos/logo-512x512.png" />
+        <meta name="msapplication-TileImage" content="logos/logo-152x152.png" />
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta
