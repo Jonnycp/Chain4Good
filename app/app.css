@@ -1,15 +1,14 @@
 @import "tailwindcss";
+@import "@heroui/styles"; 
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+:root {
+  --accent: #67AA28;
 }
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+@theme {
+  --color-primary: #67AA28;
+  --color-secondary: #1D3D5A;
+  --color-dark: #000;
+  --color-light: #FFF;
+  --font-sans: "Montserrat", sans-serif;
 }

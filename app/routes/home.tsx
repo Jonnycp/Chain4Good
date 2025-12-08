@@ -1,13 +1,12 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
-
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
+import { Button } from '@heroui/react';
+import { Input } from '@heroui/react';
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <div className='dark bg-dark'>
+      <h1 className="font-sans bg-secondary">Hello world!</h1>
+      <Button>Click Me</Button>
+      <Input aria-label="Name" className="w-64" placeholder="Enter your name" />
+    </div>
+  );
 }
