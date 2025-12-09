@@ -1,8 +1,10 @@
 import React from 'react';
-// 1. Importiamo il componente Iconify
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom'; 
 
 interface CardHomeProps {
+  id: string | number;        
+  authorId: string | number;
   coverImage: string;
   authorLogo: string;
   title: string;
@@ -10,10 +12,12 @@ interface CardHomeProps {
   daysLeft: number;
   currentAmount: number;
   targetAmount: number;
-  location?: string; // Ho reso il luogo opzionale, default "Bari" se manca
+  location?: string; 
 }
 
 const CardHome = ({
+  id,
+  authorId,
   coverImage,
   authorLogo,
   title,
@@ -21,16 +25,37 @@ const CardHome = ({
   daysLeft,
   currentAmount,
   targetAmount,
-  location = "Bari" // Valore di default
+  location = "Bari"
 }: CardHomeProps) => {
+
+  const navigate = useNavigate();
+
+  // Click sulla Card intera -> Vai a ProgettoSingolo
+  const handleCardClick = () => {
+    navigate(`/progetto/${id}`);
+  };
+
+  // Click sull'Autore -> Vai a EnteVisibile
+  const handleAuthorClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); 
+    navigate(`/ente/${authorId}`); 
+  };
+
+  // Click sul Luogo -> Apre Google Maps
+  const handleLocationClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    window.open(`https://www.google.com/maps/search/?api=1&query=${location}`, '_blank');
+  };
 
   const progressPercentage = Math.min((currentAmount / targetAmount) * 100, 100);
   const percentageDisplay = Math.round(progressPercentage);
   const formattedAmount = new Intl.NumberFormat('it-IT').format(currentAmount);
 
   return (
-    <div className="relative w-full max-w-sm bg-white rounded-[32px] shadow-lg border border-gray-100 transition-transform hover:-translate-y-1 duration-300 cursor-pointer group">
-      
+    <div 
+      onClick={handleCardClick}
+      className="relative w-full max-w-sm bg-white rounded-[32px] shadow-lg border border-gray-100 transition-transform hover:-translate-y-1 duration-300 cursor-pointer group"
+    >
       {/* --- HEADER --- */}
       <div className="relative h-48 w-full">
         <img 
@@ -39,15 +64,22 @@ const CardHome = ({
           className="w-full h-full object-cover rounded-t-[32px]"
         />
 
-        {/* BADGE LUOGO (Con Iconify) */}
-        <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-1 shadow-sm z-10">
-          {/* Icona Pin Mappa */}
-          <Icon icon="solar:map-point-bold" className="text-gray-800 w-4 h-4" />
-          <span className="text-sm font-bold text-gray-800">{location}</span>
-        </div>
+        {/* BADGE LUOGO INTERATTIVO */}
+        <button 
+          onClick={handleLocationClick}
+          className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-1 shadow-sm z-10 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+          title="Vedi su Mappa"
+        >
+          <Icon icon="solar:map-point-bold" className="text-gray-800 w-4 h-4 hover:text-blue-600" />
+          <span className="text-sm font-bold text-gray-800 hover:text-blue-600">{location}</span>
+        </button>
 
-        {/* LOGO AUTORE SOVRAPPOSTO */}
-        <div className="absolute -bottom-8 left-6">
+        {/* LOGO AUTORE INTERATTIVO */}
+        <div 
+          onClick={handleAuthorClick}
+          className="absolute -bottom-8 left-6 z-20 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+          title={`Vai al profilo di ${authorName}`}
+        >
           <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-green-400 to-blue-600 p-[3px]">
              <div className="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
                 <img 
@@ -87,14 +119,11 @@ const CardHome = ({
         {/* --- FOOTER --- */}
         <div className="flex justify-between items-center mt-4">
           
-          {/* Giorni mancanti (Con Iconify) */}
           <div className="flex items-center gap-2 text-gray-600">
-            {/* Icona Orologio */}
             <Icon icon="solar:clock-circle-bold" className="w-5 h-5 opacity-80" />
             <span className="text-sm font-medium">{daysLeft} giorni mancanti</span>
           </div>
 
-          {/* Avatar Supporter (Mock) */}
           <div className="flex -space-x-3">
              <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src={authorLogo} alt="" />
              <img className="w-8 h-8 rounded-full border-2 border-white object-cover opacity-80" src={authorLogo} alt="" />
