@@ -118,12 +118,12 @@ const CardHome = ({
 
         {/* --- FOOTER --- */}
         <div className="flex justify-between items-center mt-4">
-          
+          {/* --- GIORNI MANCANTI --- */}
           <div className="flex items-center gap-2 text-gray-600">
             <Icon icon="solar:clock-circle-bold" className="w-5 h-5 opacity-80" />
             <span className="text-sm font-medium">{daysLeft} giorni mancanti</span>
           </div>
-
+          {/* --- AVATAR SOSTENITORI --- */}
           <div className="flex -space-x-3">
              <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src={authorLogo} alt="" />
              <img className="w-8 h-8 rounded-full border-2 border-white object-cover opacity-80" src={authorLogo} alt="" />
