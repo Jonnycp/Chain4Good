@@ -1,6 +1,6 @@
 import foglia from '../assets/foglia.png';
 import logo from '../assets/logo.png';
-import metamaskLogo from '../assets/metamask-logo.png';
+import ConnectWalletButton from '../components/ConnectWalletButton'; 
 
 export default function Login() {
   return (
@@ -21,6 +21,8 @@ export default function Login() {
         Fai la differenza con la <br />
         BlockChain
       </p>
+
+      <ConnectWalletButton />
 
       <div className="relative w-full max-w-md flex flex-col items-center text-center">
         <img 
