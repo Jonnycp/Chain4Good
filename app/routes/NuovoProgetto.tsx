@@ -1,23 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router'; 
+import { Icon } from '@iconify/react';
 import CategoryButton from '../components/CategoryButton';
 
 import logoImg from '../assets/logo.png';
-import cuoreImg from '../assets/cuore.png';
-import libroImg from '../assets/libro.png';
-import sirenaImg from '../assets/sirena.png';
-import alberoImg from '../assets/albero.png';
-import sportImg from '../assets/sport.png';
-import spazzaturaImg from '../assets/spazzatura.png';
-import frecciaImg from '../assets/freccia.png';
 
-// Configurazione Categorie
+// Configurazione Categorie con stringhe Iconify
 const CATEGORIES = [
-  { id: 'medical', label: 'Spese mediche', icon: cuoreImg },
-  { id: 'education', label: 'Istruzione', icon: libroImg },
-  { id: 'emergency', label: 'Emergenze', icon: sirenaImg },
-  { id: 'environment', label: 'Ambiente', icon: alberoImg },
-  { id: 'sport', label: 'Sport', icon: sportImg },
+  { id: 'medical', label: 'Spese mediche', icon: 'icon-park-outline:like' },
+  { id: 'education', label: 'Istruzione', icon: 'qlementine-icons:book-16' },
+  { id: 'emergency', label: 'Emergenze', icon: 'mdi:ambulance' },
+  { id: 'environment', label: 'Ambiente', icon: 'icon-park-outline:tree' },
+  { id: 'sport', label: 'Sport', icon: 'fluent:sport-20-regular' },
 ];
 
 export default function NuovoProgetto() {
@@ -41,7 +35,6 @@ export default function NuovoProgetto() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Rimuove l'errore mentre l'utente digita
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -62,9 +55,8 @@ export default function NuovoProgetto() {
   // --- VALIDAZIONE STEP 1 ---
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
-
-    // 1. Nome: Prima lettera maiuscola e almeno 3 caratteri
     const nameRegex = /^[A-Z].{2,}$/;
+    
     if (!formData.projectName) {
       newErrors.projectName = "Il nome è obbligatorio.";
     } else if (!/^[A-Z]/.test(formData.projectName)) {
@@ -73,31 +65,25 @@ export default function NuovoProgetto() {
       newErrors.projectName = "Deve contenere almeno 3 caratteri.";
     }
 
-    // 2. Categoria: Deve essere selezionata
     if (!formData.category) {
       newErrors.category = "Seleziona una categoria.";
     }
 
-    // 3. Budget: Deve essere maggiore di 0 e minore di 1 milione
     const budgetVal = Number(formData.budget);
-    
     if (!formData.budget) {
       newErrors.budget = "Inserisci un budget.";
-    } else if (budgetVal <= 100) { // <--- MODIFICA QUI: da === 0 a <= 0
+    } else if (budgetVal <= 100) { 
       newErrors.budget = "Il budget deve essere un numero positivo maggiore di 100.";
     } else if (budgetVal >= 1000000) {
       newErrors.budget = "Il budget deve essere minore di 1.000.000.";
     }
 
-    // 4. Scadenza: Almeno 1 settimana superiore all'attuale
     if (!formData.deadline) {
       newErrors.deadline = "Inserisci una data di scadenza.";
     } else {
       const selectedDate = new Date(formData.deadline);
       const minDate = new Date();
-      minDate.setDate(minDate.getDate() + 7); // Oggi + 7 giorni
-      
-      // Resettiamo le ore per confronto solo data
+      minDate.setDate(minDate.getDate() + 7);
       selectedDate.setHours(0,0,0,0);
       minDate.setHours(0,0,0,0);
 
@@ -113,21 +99,9 @@ export default function NuovoProgetto() {
   // --- VALIDAZIONE STEP 2 ---
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
-
-    // 5. Descrizione: Presente
-    if (!formData.description.trim()) {
-      newErrors.description = "La descrizione è obbligatoria.";
-    }
-
-    // 6. Come useremo i fondi: Presente
-    if (!formData.fundsUsage.trim()) {
-      newErrors.fundsUsage = "Specifica come verranno usati i fondi.";
-    }
-
-    // 7. Immagine: Presente
-    if (!formData.coverImage) {
-      newErrors.coverImage = "È necessario caricare un'immagine di copertina.";
-    }
+    if (!formData.description.trim()) newErrors.description = "La descrizione è obbligatoria.";
+    if (!formData.fundsUsage.trim()) newErrors.fundsUsage = "Specifica come verranno usati i fondi.";
+    if (!formData.coverImage) newErrors.coverImage = "È necessario caricare un'immagine di copertina.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -136,7 +110,7 @@ export default function NuovoProgetto() {
   const handleNextStep = () => {
     if (validateStep1()) {
       setStep(2);
-      window.scrollTo(0, 0); // Scroll in alto per UX migliore
+      window.scrollTo(0, 0);
     }
   };
 
@@ -147,7 +121,7 @@ export default function NuovoProgetto() {
         createdAt: new Date().toISOString(),
       };
       console.log("=== DATI PROGETTO ===", finalObject);
-      alert("Progetto creato con successo! Controlla la console.");
+      alert("Progetto creato con successo!");
     }
   };
 
@@ -155,7 +129,6 @@ export default function NuovoProgetto() {
     navigate('/'); 
   };
 
-  // Helper per classi input
   const getInputClass = (fieldName: string) => `
     w-full p-3 rounded-lg border outline-none focus:ring-2 transition-colors
     ${errors[fieldName] 
@@ -220,7 +193,7 @@ export default function NuovoProgetto() {
                   <CategoryButton 
                     key={cat.id}
                     label={cat.label}
-                    icon={cat.icon}
+                    icon={cat.icon} /* Ora passa una stringa es. 'mdi:school' */
                     isSelected={formData.category === cat.id}
                     onClick={() => handleCategorySelect(cat.id)}
                   />
@@ -268,7 +241,8 @@ export default function NuovoProgetto() {
                 onClick={handleCancel}
                 className="w-full flex items-center justify-center gap-2 text-red-500 font-semibold hover:bg-red-50 py-2 rounded-lg transition"
               >
-                <img src={spazzaturaImg} alt="Annulla" className="w-4 h-4" />
+                {/* ICONA CESTINO SOSTITUITA */}
+                <Icon icon="mdi:trash-can-outline" className="w-5 h-5" />
                 <span className="underline decoration-red-300">Annulla</span>
               </button>
             </div>
@@ -340,12 +314,7 @@ export default function NuovoProgetto() {
                 onClick={() => setStep(1)}
                 className="px-5 py-3 rounded-xl text-white font-bold shadow-md hover:opacity-90 transition flex items-center justify-center bg-secondary"
               >
-                 <img 
-                    src={frecciaImg} 
-                    alt="Indietro" 
-                    className="w-5 h-auto" 
-                    style={{ filter: 'brightness(0) invert(1)' }} 
-                 />
+                 <Icon icon="mdi:arrow-left" className="w-5 h-5" />
               </button>
 
               <button
