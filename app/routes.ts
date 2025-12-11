@@ -11,5 +11,7 @@ export default [
   route("nuovo-progetto", "routes/NuovoProgetto.tsx"),
   route("ente-visibile", "routes/EnteVisibile.tsx"),
   route("progetto-singolo-attivo", "routes/ProgettoSingoloAttivo.tsx"),
+  // Utente
+  route("profilo-utente", "routes/profiloUtente.tsx"),
 
 ] satisfies RouteConfig;
