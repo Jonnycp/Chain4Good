@@ -1,0 +1,350 @@
+import { useState } from 'react';
+import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
+
+// Componenti
+import CardSpesa from '~/components/CardSpesa';
+import ModalNuovaSpesa from '~/components/ModalNuovaSpesa';
+import ModalDettagliSpesa from '~/components/ModalDettagliSpesa';
+import ModalSuccessoSpesa from '~/components/ModalSuccessoSpesa';
+
+// Asset
+import logoLibersare from '~/assets/libersare.png';
+import coverImage from '~/assets/cover_event.png'; 
+import avatarPlaceholder from '~/assets/libersare.png'; 
+
+// Definisco i tipi di stato possibili per le spese
+type StatoSpesa = 'attesa' | 'approvata' | 'rifiutata';
+
+export default function ProgettoSingoloAttivo() {
+  const navigate = useNavigate();
+  
+  // Stato per il filtro attivo (default: 'attesa')
+  const [activeTab, setActiveTab] = useState<StatoSpesa>('attesa');
+
+  // Stati Modali
+  const [isNewSpesaOpen, setIsNewSpesaOpen] = useState(false);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [selectedSpesa, setSelectedSpesa] = useState<any>(null);
+
+  // --- MOCK DATA INIZIALE ---
+  // Nota: Spostato dentro l'inizializzazione dello stato per poterlo modificare
+  const [listaSpese, setListaSpese] = useState([
+    { id: 1, titolo: "Acquisto furgoncino fantastico (usato)", importo: 1570, valuta: "USDC", giorni: 3, stato: "attesa" as StatoSpesa },
+    { id: 4, titolo: "Rifornimento cibo cuccioli (urgente)", importo: 450, valuta: "USDC", giorni: 5, stato: "attesa" as StatoSpesa },
+    { id: 2, titolo: "Pagare social media manager", importo: 70, valuta: "USDC", giorni: 13, stato: "approvata" as StatoSpesa },
+    { id: 5, titolo: "Vaccini annuali lotto A", importo: 200, valuta: "USDC", giorni: 20, stato: "approvata" as StatoSpesa },
+    { id: 6, titolo: "Riparazione recinto zona nord", importo: 120, valuta: "USDC", giorni: 22, stato: "approvata" as StatoSpesa },
+    { id: 3, titolo: "Pranzo di capodanno per aver vinto il progetto", importo: 100, valuta: "USDC", votes: 120, stato: "rifiutata" as StatoSpesa },
+    { id: 7, titolo: "Noleggio Limousine per evento", importo: 800, valuta: "USDC", votes: 56, stato: "rifiutata" as StatoSpesa }
+  ]);
+
+  // --- LOGICA AGGIUNTA SPESA ---
+  const handleNewSpesaSuccess = (nuovaSpesa: any) => {
+    // 1. Aggiungi la nuova spesa in cima alla lista
+    setListaSpese(prev => [nuovaSpesa, ...prev]);
+    
+    // 2. Chiudi il form e apri il successo
+    setIsNewSpesaOpen(false);
+    setIsSuccessOpen(true);
+    
+    // 3. Sposta il tab su 'attesa' per vedere la nuova spesa
+    setActiveTab('attesa');
+  };
+
+  const projectInfo = {
+    id: 1,
+    enteId: 101, 
+    title: "Rescue Animals’ Second Change Santuario",
+    location: "Bari",
+    speso: 10.00,
+    raccolto: 250.00,
+    speseCount: listaSpese.length, // Ora è dinamico
+    donatoriCount: 124,
+    descrizione: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    usoFondi: ["Cibo e cure veterinarie", "Manutenzione strutture", "Mezzi di trasporto", "Spese logistiche"]
+  };
+
+  const donatori = [
+    { id: 1, name: "Bayy", amount: "25.34", currency: "ETH", time: "12 min fa", msg: "Hope help", avatar: avatarPlaceholder },
+    { id: 2, name: "Rose", amount: "5.52", currency: "ETH", time: "1 ora fa", msg: "Blockchain", avatar: avatarPlaceholder },
+    { id: 3, name: "John", amount: "3.75", currency: "ETH", time: "3 ore fa", msg: "Cryptocurrency", avatar: avatarPlaceholder },
+    { id: 4, name: "Alice", amount: "2.10", currency: "ETH", time: "5 ore fa", msg: "Web3", avatar: avatarPlaceholder },
+  ];
+
+  // Filtra le spese usando lo STATO (listaSpese)
+  const filteredSpese = listaSpese.filter(spesa => spesa.stato === activeTab);
+  const progressPercent = Math.min((projectInfo.speso / projectInfo.raccolto) * 100, 100);
+  const openSocial = (url: string) => window.open(url, '_blank');
+
+  return (
+    <div className="min-h-screen bg-white font-sans pb-10 relative">
+
+      {/* --- MODALI --- */}
+      
+      {/* 1. Modale Nuova Spesa */}
+      {isNewSpesaOpen && (
+        <ModalNuovaSpesa 
+            onClose={() => setIsNewSpesaOpen(false)} 
+            onSuccess={handleNewSpesaSuccess} // Passiamo la funzione aggiornata
+        />
+      )}
+
+      {/* 2. Modale Successo */}
+      {isSuccessOpen && (
+        <ModalSuccessoSpesa 
+            onClose={() => setIsSuccessOpen(false)} 
+        />
+      )}
+
+      {/* 3. Modale Dettagli */}
+      {selectedSpesa && (
+        <ModalDettagliSpesa 
+            spesa={selectedSpesa}
+            onClose={() => setSelectedSpesa(null)}
+        />
+      )}
+
+      {/* --- HEADER --- */}
+      <div className="relative w-full h-[340px]">
+        <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent h-32 pointer-events-none" />
+        
+        <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20 pt-10">
+            <button onClick={() => navigate(-1)} className="text-white hover:opacity-80 transition drop-shadow-md">
+                <Icon icon="mdi:arrow-left" width="28" />
+            </button>
+            <button className="text-white hover:opacity-80 transition drop-shadow-md">
+                <Icon icon="mdi:share-variant-outline" width="26" />
+            </button>
+        </div>
+
+        <button 
+            onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${projectInfo.location}`, '_blank')}
+            className="absolute bottom-12 right-6 bg-white px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg z-20 hover:bg-gray-100 transition"
+        >
+            <Icon icon="solar:map-point-bold" className="text-[#0F172A] w-4 h-4" />
+            <span className="text-sm font-bold text-[#0F172A]">{projectInfo.location}</span>
+        </button>
+      </div>
+
+      {/* --- MAIN CONTENT --- */}
+      <main className="relative z-10 -mt-8 bg-white rounded-t-[40px] px-6 pt-10 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+        
+        <h1 className="text-[26px] font-extrabold text-[#0F172A] leading-tight mb-6">
+            {projectInfo.title}
+        </h1>
+
+        {/* CARD FINANZIARIA */}
+        <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm mb-8">
+            <div className="flex justify-between items-end mb-2">
+                <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Speso</span>
+                    <div className="text-xl font-bold text-[#0F172A]">
+                        {projectInfo.speso.toFixed(2)} <span className="text-[10px] font-bold text-slate-400">ETH</span>
+                    </div>
+                </div>
+                <div className="text-right">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Raccolto</span>
+                    <div className="text-xl font-bold text-[#0F172A]">
+                        {projectInfo.raccolto.toFixed(2)} <span className="text-[10px] font-bold text-slate-400">ETH</span>
+                    </div>
+                </div>
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+                <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                    <div className="bg-[#56A836] h-full rounded-full" style={{ width: `${progressPercent}%` }}></div>
+                </div>
+                <span className="text-xs font-bold text-slate-400">{Math.round(progressPercent)}%</span>
+            </div>
+            <div className="flex justify-between items-center text-slate-500 text-xs font-medium">
+                <div className="flex items-center gap-2">
+                    <Icon icon="mdi:cart-outline" className="text-lg" />
+                    {projectInfo.speseCount} spese effettuate
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="flex -space-x-2">
+                        <div className="w-5 h-5 rounded-full bg-red-400 border-2 border-white"></div>
+                        <div className="w-5 h-5 rounded-full bg-blue-400 border-2 border-white"></div>
+                        <div className="w-5 h-5 rounded-full bg-yellow-400 border-2 border-white"></div>
+                    </div>
+                    {projectInfo.donatoriCount} donatori
+                </div>
+            </div>
+        </div>
+
+        {/* INFO ENTE */}
+        <div 
+            className="flex items-center gap-3 mb-8 cursor-pointer group"
+            onClick={() => navigate(`/ente/${projectInfo.enteId}`)}
+        >
+            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-green-500 to-blue-900 p-[2px] group-hover:scale-105 transition-transform">
+                <img src={logoLibersare} alt="Ente" className="w-full h-full object-cover rounded-full border-2 border-white" />
+            </div>
+            <div>
+                <h3 className="text-base font-bold text-[#0F172A] group-hover:text-[#56A836] transition-colors">Libersare</h3>
+                <p className="text-xs text-slate-500 font-medium">Organizzazione di Volontariato</p>
+            </div>
+        </div>
+
+        {/* SEZIONE SPESE */}
+        <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-extrabold text-[#0F172A]">Spese</h2>
+                <button 
+                    onClick={() => setIsNewSpesaOpen(true)}
+                    className="bg-[#56A836] hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors"
+                >
+                    <Icon icon="mdi:plus" className="text-base" /> Nuova spesa
+                </button>
+            </div>
+
+            {/* Barra Ricerca */}
+            <div className="relative mb-5">
+                 <Icon icon="solar:magnifer-linear" className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl" />
+                 <input 
+                    type="text" 
+                    placeholder="Cosa vuoi cercare?" 
+                    className="w-full bg-[#F8FAFC] rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#56A836]/20 transition-all"
+                 />
+            </div>
+
+            {/* TABS */}
+             <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
+                <button 
+                    onClick={() => setActiveTab('attesa')} 
+                    className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all 
+                    ${activeTab === 'attesa' ? 'bg-[#56A836] text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}
+                > 
+                    <Icon icon="mdi:help-circle-outline" className="text-base" /> In attesa
+                </button>
+                
+                <button 
+                    onClick={() => setActiveTab('approvata')} 
+                    className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all 
+                    ${activeTab === 'approvata' ? 'bg-[#0F172A] text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}
+                > 
+                    <Icon icon="mdi:check" className="text-base" /> Approvate
+                </button>
+                
+                <button 
+                    onClick={() => setActiveTab('rifiutata')} 
+                    className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all 
+                    ${activeTab === 'rifiutata' ? 'bg-[#0F172A] text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}
+                > 
+                    <Icon icon="mdi:close" className="text-base" /> Rifiutate
+                </button>
+            </div>
+
+            {/* LISTA SPESE */}
+            <div className="flex flex-col gap-4 min-h-[100px]">
+                {filteredSpese.length > 0 ? (
+                    filteredSpese.map((spesa) => (
+                        <CardSpesa 
+                            key={spesa.id}
+                            {...spesa}
+                            onClick={() => setSelectedSpesa(spesa)}
+                        />
+                    ))
+                ) : (
+                    <div className="text-center py-8 border-2 border-dashed border-slate-200 rounded-2xl">
+                        <Icon icon="mdi:basket-off-outline" className="text-4xl text-slate-300 mx-auto mb-2" />
+                        <p className="text-slate-400 text-sm font-medium">Nessuna spesa in questa categoria</p>
+                    </div>
+                )}
+            </div>
+        </div>
+
+        {/* INFORMAZIONI */}
+        <div className="mb-10">
+            <h2 className="text-base font-extrabold text-[#0F172A] mb-3">Informazioni</h2>
+            <p className="text-sm text-slate-500 leading-relaxed text-justify mb-6 font-medium">
+                {projectInfo.descrizione}
+            </p>
+            
+            <h3 className="text-base font-extrabold text-[#0F172A] mb-3">Come useremo i fondi?</h3>
+            <ul className="space-y-2">
+                {projectInfo.usoFondi.map((item, index) => (
+                    <li key={index} className="flex items-center gap-2 text-sm text-slate-500 font-medium">
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                        {item}
+                    </li>
+                ))}
+            </ul>
+        </div>
+
+        {/* DONAZIONI */}
+        <div className="mb-12">
+             <div 
+                className="flex justify-between items-center mb-6 cursor-pointer hover:opacity-70 transition"
+                onClick={() => navigate('/storico-donazioni')}
+             >
+                <h2 className="text-base font-extrabold text-[#0F172A]">Donazioni ricevute</h2>
+                <Icon icon="mdi:arrow-right" className="text-[#0F172A] text-2xl" />
+             </div>
+
+             <div className="flex flex-col gap-1">
+                {donatori.map((donatore) => (
+                    <div key={donatore.id} className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0">
+                        <div className="flex items-start gap-3">
+                            <img src={donatore.avatar} alt={donatore.name} className="w-10 h-10 rounded-full object-cover border border-slate-100" />
+                            <div className="flex flex-col">
+                                <p className="text-sm font-bold text-[#0F172A]">
+                                    {donatore.name} <span className="font-normal text-slate-500">donated</span> {donatore.amount} <span className="text-xs font-bold text-slate-400">{donatore.currency}</span>
+                                </p>
+                                <p className="text-xs text-slate-400 italic mt-1">"{donatore.msg}"</p>
+                            </div>
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">
+                            {donatore.time}
+                        </span>
+                    </div>
+                ))}
+             </div>
+        </div>
+
+        {/* SHARE */}
+        <div className="mb-8">
+            <h3 className="text-sm font-bold text-[#0F172A] mb-4">Fai sapere a tutti del progetto: Condividilo!</h3>
+            
+            <div className="flex gap-5 text-[#0F172A] mb-8">
+                <button onClick={() => openSocial('mailto:?subject=Guarda questo progetto!')}>
+                    <Icon icon="mdi:email-outline" className="text-2xl hover:text-[#56A836] transition" />
+                </button>
+                <button onClick={() => openSocial('https://whatsapp.com')}>
+                    <Icon icon="mdi:whatsapp" className="text-2xl hover:text-[#56A836] transition" />
+                </button>
+                <button onClick={() => openSocial('https://instagram.com')}>
+                    <Icon icon="mdi:instagram" className="text-2xl hover:text-[#56A836] transition" />
+                </button>
+                <button onClick={() => openSocial('https://facebook.com')}>
+                    <Icon icon="mdi:facebook" className="text-2xl hover:text-[#56A836] transition" />
+                </button>
+                <button onClick={() => openSocial('https://linkedin.com')}>
+                    <Icon icon="mdi:linkedin" className="text-2xl hover:text-[#56A836] transition" />
+                </button>
+                <button onClick={() => navigator.clipboard.writeText(window.location.href)}>
+                    <Icon icon="mdi:link-variant" className="text-2xl hover:text-[#56A836] transition" />
+                </button>
+            </div>
+
+            <div className="text-[10px] text-slate-400 space-y-1.5 font-medium">
+                <p>Pubblicato il 14/11/2025</p>
+                <div className="flex flex-col gap-0.5">
+                    <span>Qualcosa non va con questo progetto?</span>
+                    <button className="text-left underline decoration-slate-300 hover:text-[#56A836] hover:decoration-[#56A836] transition">
+                        Segnalalo a Chain4Good
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        {/* FOOTER */}
+        <div className="text-center text-[10px] text-slate-300 pt-6">
+            ©2026 - Chain4Good
+        </div>
+
+      </main>
+    </div>
+  );
+}
