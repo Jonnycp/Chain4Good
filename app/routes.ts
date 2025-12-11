@@ -13,5 +13,6 @@ export default [
   route("progetto-singolo-attivo", "routes/ProgettoSingoloAttivo.tsx"),
   // Utente
   route("profilo-utente", "routes/profiloUtente.tsx"),
+  route("donazioni-utente", "routes/DonazioniUtente.tsx"), 
 
 ] satisfies RouteConfig;
