@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import CardHome from '../components/CardHome';
 import Navbar from '../components/Navbar'; 
 import logo from '../assets/logo_home.png';
+import logoLibersare from '~/assets/libersare.png';
 
 export default function Home() {
   
@@ -11,13 +12,13 @@ export default function Home() {
     {
       id: 1,
       authorId: 101,
-      title: "Rescue Animals’ Second Change Santuario",
       coverImage: "https://images.unsplash.com/photo-1548504769-900b70ed122e?auto=format&fit=crop&w=800&q=80",
-      authorLogo: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=facearea&facepad=2&w=200&h=200&q=80",
-      authorName: "Libersare Onlus",
+      authorLogo: logoLibersare,
+      title: "Rescue Animals’ Second Change Santuario",
+      authorName: "Libersare ODV",
       daysLeft: 14,
-      currentAmount: 4240310, 
-      targetAmount: 5000000,
+      currentAmount: 4240310,
+      targetAmount: 5300000,
       location: "Bari"
     },
     {
