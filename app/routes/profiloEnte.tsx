@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 import logoChain4Good from '~/assets/logo.png'; 
 import avatarPlaceholder from '~/assets/libersare.png';
+import Navbar from '~/components/Navbar';
 
 export default function ProfiloEnte() {
   const navigate = useNavigate();
@@ -24,13 +25,13 @@ export default function ProfiloEnte() {
   };
 
   const handleLogout = () => {
-    //  aggiugnere logica per disconnettere il wallet o cancellare il token di sessione
+    //  aggiungere logica per disconnettere il wallet o cancellare il token di sessione
     console.log("Disconnessione in corso...");
     navigate('/login');
   };
 
   return (
-    <div className="min-h-screen bg-white text-secondary font-sans pb-10">
+    <div className="min-h-screen bg-white text-secondary font-sans pb-24 relative">
       
       {/* HEADER */}
       <header className="p-4 flex justify-between items-center max-w-md mx-auto">
@@ -131,7 +132,7 @@ export default function ProfiloEnte() {
 
         </div>
 
-        {/* FOOTER  */}
+        {/* FOOTER AZIONI */}
         <div className="mt-10 flex gap-4">
           {/* Tasto Indietro */}
           <button 
@@ -150,8 +151,9 @@ export default function ProfiloEnte() {
             Esci
           </button>
         </div>
-
+        
       </main>
+      <Navbar active="profilo" />
     </div>
   );
 }
