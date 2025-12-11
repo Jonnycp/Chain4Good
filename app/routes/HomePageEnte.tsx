@@ -34,11 +34,11 @@ export default function HomeEnte() {
       id: 2,
       status: 'attivo' as const, 
       authorId: 101,
-      coverImage: "https://images.unsplash.com/photo-1548504769-900b70ed122e?auto=format&fit=crop&w=800&q=80", 
+      coverImage: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80", 
       authorLogo: logoLibersare,
-      title: "Rescue Animals’ Second Change Santuario",
+      title: "Foresta Urbana: Un polmone verde",
       authorName: "Libersare ODV",
-      location: "Bari",
+      location: "Milano",
       currentAmount: 157,
       currency: "USDC",
       spentPercentage: 10,
@@ -47,12 +47,17 @@ export default function HomeEnte() {
     }
   ];
 
+  // Funzione per gestire il click sul progetto
+  const handleProjectClick = (id: number) => {
+    // Naviga alla pagina dinamica con l'ID del progetto
+    navigate(`/progetto-singolo-attivo/${id}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-10 relative">
       
       {/* HEADER */}
       <div className="flex justify-between items-center px-6 pt-8 pb-4">
-        {/* Logo Chain4Good */}
         <div className="flex items-center gap-2">
             <img src={logoChain4Good} alt="Chain4Good Logo" className="h-8" />
             <div className="flex items-center font-bold text-xl text-secondary">
@@ -60,7 +65,6 @@ export default function HomeEnte() {
             </div>
         </div>
         
-        {/* Avatar Ente - Naviga al profilo */}
         <div 
             onClick={() => navigate('/profilo-ente')}
             className="w-10 h-10 rounded-full bg-gradient-to-tr from-green-500 to-blue-900 p-[2px] cursor-pointer hover:scale-105 transition-transform"
@@ -89,10 +93,9 @@ export default function HomeEnte() {
       {/* LISTA PROGETTI */}
       <div className="px-6 flex flex-col gap-6">
         {progetti.map((progetto) => (
-            <CardHome 
-                key={progetto.id} 
-                {...progetto} 
-            />
+            <div key={progetto.id} onClick={() => handleProjectClick(progetto.id)}>
+                <CardHome {...progetto} />
+            </div>
         ))}
       </div>
 
@@ -102,7 +105,6 @@ export default function HomeEnte() {
       </div>
 
       {/* FAB: NUOVO PROGETTO */}
-      {/* Posizionato più in basso (bottom-6) ora che non c'è la navbar */}
       <div className="fixed bottom-6 right-4 z-30">
         <Button 
             className="bg-primary text-white font-bold shadow-lg shadow-green-500/30 rounded-full px-6 py-6 flex items-center gap-2"

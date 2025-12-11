@@ -39,25 +39,29 @@ export default function ModalNuovaSpesa({ onClose, onSuccess }: ModalNuovaSpesaP
   const validate = () => {
     const newErrors: Record<string, string> = {};
     
+    // Validazione Nome: Maiuscola iniziale + min 3 caratteri
     if (!formData.nome) {
       newErrors.nome = "Il nome è obbligatorio.";
     } else if (formData.nome.length < 3) {
-      newErrors.nome = "Il nome deve avere almeno 3 caratteri.";
+      newErrors.nome = "Minimo 3 caratteri.";
     } else if (!/^[A-Z]/.test(formData.nome)) {
-      newErrors.nome = "Il nome deve iniziare con una lettera maiuscola.";
+      newErrors.nome = "Deve iniziare con una maiuscola.";
     }
 
+    // Validazione Importo: > 0
     const importoNum = parseFloat(formData.importo);
     if (!formData.importo || isNaN(importoNum) || importoNum <= 0) {
-      newErrors.importo = "Inserisci un importo valido maggiore di 0.";
+      newErrors.importo = "Inserisci un importo valido > 0.";
     }
 
+    // Validazione Descrizione
     if (!formData.descrizione.trim()) {
       newErrors.descrizione = "La descrizione è obbligatoria.";
     }
 
+    // Validazione File
     if (!formData.file) {
-      newErrors.file = "È obbligatorio allegare un preventivo PDF.";
+      newErrors.file = "Allegare un preventivo PDF è obbligatorio.";
     }
 
     setErrors(newErrors);
@@ -66,24 +70,21 @@ export default function ModalNuovaSpesa({ onClose, onSuccess }: ModalNuovaSpesaP
 
   const handleSubmit = () => {
     if (validate()) {
-      // CREAZIONE OGGETTO REALE CON I DATI INSERITI
+      // Creo l'oggetto spesa
       const nuovaSpesa = {
         id: Date.now(),
         titolo: formData.nome,
         importo: parseFloat(formData.importo),
-        valuta: "USDC", 
-        giorni: 30, 
+        valuta: "USDC",
+        giorni: 30, // Default scadenza
         stato: "attesa",
-        // Passiamo la descrizione inserita nel form
         descrizione: formData.descrizione,
-        // Passiamo il nome del file (o uno di default se serve)
         fileName: formData.file ? formData.file.name : "Preventivo.pdf",
-        // Inizializziamo i voti a 0
+        dataPubblicazione: new Date().toLocaleDateString('it-IT'),
         votiPositivi: 0,
-        votiNegativi: 0,
-        dataPubblicazione: new Date().toLocaleDateString('it-IT') // Data odierna
+        votiNegativi: 0
       };
-
+      
       onSuccess(nuovaSpesa);
     }
   };
@@ -105,8 +106,7 @@ export default function ModalNuovaSpesa({ onClose, onSuccess }: ModalNuovaSpesaP
                     name="nome"
                     value={formData.nome}
                     onChange={handleChange}
-                    className={`w-full h-12 rounded-xl border px-4 focus:ring-1 focus:ring-[#0F172A] outline-none transition-colors
-                        ${errors.nome ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
+                    className={`w-full h-12 rounded-xl border px-4 focus:ring-1 focus:ring-[#0F172A] outline-none transition-colors ${errors.nome ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                 />
                 {errors.nome && <p className="text-red-500 text-xs mt-1">{errors.nome}</p>}
             </div>
@@ -127,14 +127,13 @@ export default function ModalNuovaSpesa({ onClose, onSuccess }: ModalNuovaSpesaP
                 {errors.importo && <p className="text-red-500 text-xs mt-1">{errors.importo}</p>}
             </div>
 
-            {/* Box Verde Info */}
+            {/* Info Box */}
             <div className="bg-[#A6CF98] rounded-xl p-4 flex items-center justify-between relative overflow-hidden">
                 <div className="z-10 relative">
                     <p className="text-xs font-bold text-[#1E293B]">La tua spesa verrà valutata</p>
                     <p className="text-[10px] text-[#1E293B] leading-tight mt-0.5">Prima di sbloccare i fondi,<br/>dovrà essere approvata dai donatori</p>
                 </div>
                 <Icon icon="mdi:medal" className="text-[#1E293B] opacity-80 text-4xl z-10" />
-                <div className="absolute -right-2 -bottom-4 w-16 h-16 bg-white/20 rounded-full blur-xl"></div>
             </div>
 
             {/* Descrizione */}
@@ -147,8 +146,7 @@ export default function ModalNuovaSpesa({ onClose, onSuccess }: ModalNuovaSpesaP
                     rows={3}
                     value={formData.descrizione}
                     onChange={handleChange}
-                    className={`w-full rounded-xl border p-3 focus:ring-1 focus:ring-[#0F172A] outline-none resize-none transition-colors
-                        ${errors.descrizione ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
+                    className={`w-full rounded-xl border p-3 focus:ring-1 focus:ring-[#0F172A] outline-none resize-none transition-colors ${errors.descrizione ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                 />
                 {errors.descrizione && <p className="text-red-500 text-xs mt-1">{errors.descrizione}</p>}
             </div>
@@ -167,8 +165,7 @@ export default function ModalNuovaSpesa({ onClose, onSuccess }: ModalNuovaSpesaP
                 />
                 <div 
                     onClick={() => fileInputRef.current?.click()}
-                    className={`w-full h-12 rounded-xl border bg-white flex items-center px-4 text-sm cursor-pointer hover:bg-gray-50 transition-colors
-                        ${errors.file ? 'border-red-500 text-red-500' : 'border-slate-300 text-slate-400'}`}
+                    className={`w-full h-12 rounded-xl border bg-white flex items-center px-4 text-sm cursor-pointer hover:bg-gray-50 transition-colors ${errors.file ? 'border-red-500 text-red-500' : 'border-slate-300 text-slate-400'}`}
                 >
                     {formData.file ? (
                         <span className="text-[#0F172A] font-medium truncate">{formData.file.name}</span>
@@ -179,18 +176,15 @@ export default function ModalNuovaSpesa({ onClose, onSuccess }: ModalNuovaSpesaP
                 {errors.file && <p className="text-red-500 text-xs mt-1">{errors.file}</p>}
             </div>
 
-            {/* Footer Buttons */}
+            {/* Azioni */}
             <div className="pt-4 flex flex-col gap-3">
                 <Button 
-                    className="w-full h-14 bg-[#56A836] text-white font-bold text-lg rounded-xl shadow-lg shadow-green-600/20"
+                    className="w-full h-14 bg-[#56A836] text-white font-bold text-lg rounded-xl shadow-lg"
                     onPress={handleSubmit}
                 >
                     Invia richiesta
                 </Button>
-                <button 
-                    onClick={onClose} 
-                    className="text-sm font-bold text-slate-400 hover:text-slate-600 underline decoration-slate-300"
-                >
+                <button onClick={onClose} className="text-sm font-bold text-slate-400 hover:text-slate-600">
                     Annulla
                 </button>
             </div>
