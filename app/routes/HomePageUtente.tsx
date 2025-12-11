@@ -98,7 +98,7 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <Navbar active="home" />
+      <Navbar active="home"/>
     </div>
   );
 }

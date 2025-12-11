@@ -5,7 +5,6 @@ import CategoryButton from '../components/CategoryButton';
 
 import logoImg from '../assets/logo.png';
 
-// Configurazione Categorie con stringhe Iconify
 const CATEGORIES = [
   { id: 'medical', label: 'Spese mediche', icon: 'icon-park-outline:like' },
   { id: 'education', label: 'Istruzione', icon: 'qlementine-icons:book-16' },
@@ -52,10 +51,9 @@ export default function NuovoProgetto() {
     }
   };
 
-  // --- VALIDAZIONE STEP 1 ---
+  // VALIDAZIONE STEP 1
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
-    // const nameRegex = /^[A-Z].{2,}$/; // (Non usato nel codice originale, lo lascio commentato)
     
     if (!formData.projectName) {
       newErrors.projectName = "Il nome è obbligatorio.";
@@ -96,7 +94,7 @@ export default function NuovoProgetto() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // --- VALIDAZIONE STEP 2 ---
+  // VALIDAZIONE STEP 2
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.description.trim()) newErrors.description = "La descrizione è obbligatoria.";
@@ -134,13 +132,12 @@ export default function NuovoProgetto() {
     ${errors[fieldName] 
       ? 'bg-red-50 border-red-500 focus:ring-red-200' 
       : 'bg-white border-gray-300 focus:ring-primary'} 
-  `; // Ho cambiato bg-gray-100 in bg-white per uniformità con lo sfondo generale
+  `;
 
   return (
-    // MODIFICA 1: Rimossa centratura flex e padding esterno.
-    <div className="min-h-screen bg-gray-50 font-sans pb-20">
+    <div className="min-h-screen bg-gray-50 font-sans pb-10">
       
-      {/* MODIFICA 2: Header estratto e reso a tutta larghezza con sfondo bianco */}
+      {/* HEADER */}
       <header className="bg-white sticky top-0 z-10 shadow-sm px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <img src={logoImg} alt="Chain4Good" className="h-8 w-auto object-contain" />
@@ -151,13 +148,13 @@ export default function NuovoProgetto() {
           </div>
       </header>
 
-      {/* MODIFICA 3: Contenuto principale in un container con padding laterale, senza max-w-md o ombre */}
+      {/* CONTENUTO PRINCIPALE */}
       <main className="px-6 mt-6">
         
         <h1 className="text-2xl font-bold text-secondary mb-6">Crea un Nuovo Progetto</h1>
 
         {/* PROGRESS BAR */}
-        <div className="mb-8 relative max-w-xl"> {/* max-w-xl opzionale per non allungare troppo la barra su schermi grandi */}
+        <div className="mb-8 relative max-w-xl">
           <div className="flex justify-between text-sm font-semibold text-secondary mb-1">
             <span>Step {step} di 2</span>
           </div>
@@ -171,9 +168,9 @@ export default function NuovoProgetto() {
           </div>
         </div>
 
-        {/* --- STEP 1 (Contenuto invariato) --- */}
+        {/* STEP 1 */}
         {step === 1 && (
-          <div className="space-y-5 max-w-xl"> {/* max-w-xl per non far allungare troppo i campi su desktop */}
+          <div className="space-y-5 max-w-xl">
             {/* Nome Progetto */}
             <div>
               <label className="block text-sm font-bold text-secondary mb-1">Nome del progetto</label>
@@ -251,7 +248,7 @@ export default function NuovoProgetto() {
           </div>
         )}
 
-        {/* --- STEP 2 (Contenuto invariato) --- */}
+        {/* STEP 2 */}
         {step === 2 && (
           <div className="space-y-5 max-w-xl">
             {/* Descrizione */}

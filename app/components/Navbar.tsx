@@ -23,12 +23,12 @@ const NavItem = ({
   >
     {isActive ? (
       // STATO ATTIVO: ARCO VERDE
-      <div className="absolute bottom-0 w-full h-[90%] bg-primary rounded-t-3xl shadow-inner flex flex-col items-center justify-center pb-1">
+      <div className="absolute bottom-0 w-full h-[90%] bg-primary rounded-t-3xl shadow-inner flex flex-col items-center justify-center pb-1 animate-appearance-in">
          <Icon icon={icon} className="w-8 h-8 text-white mb-1" />
          <span className="text-white text-[10px] font-bold tracking-wide">{label}</span>
       </div>
     ) : (
-      //  STATO INATTIVO 
+      // STATO INATTIVO
       <div className="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors z-20 pb-3">
          <Icon icon={icon} className="w-7 h-7" />
          <span className="text-[10px] font-medium">{label}</span>
@@ -59,7 +59,7 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
 
       <NavItem 
         isActive={active === 'profilo'}
-        onClick={() => navigate('/profiloEnte')}
+        onClick={() => navigate('/profilo-utente')} // 
         icon="bx:user"
         label="Profilo"
       />
