@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import CardHome from '../components/CardHome';
 import Navbar from '../components/Navbar'; 
-import logo from '../assets/logo.png';
+import logo from '../assets/logo_home.png';
 
 export default function Home() {
   
