@@ -55,7 +55,7 @@ export default function NuovoProgetto() {
   // --- VALIDAZIONE STEP 1 ---
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
-    const nameRegex = /^[A-Z].{2,}$/;
+    // const nameRegex = /^[A-Z].{2,}$/; // (Non usato nel codice originale, lo lascio commentato)
     
     if (!formData.projectName) {
       newErrors.projectName = "Il nome è obbligatorio.";
@@ -133,15 +133,15 @@ export default function NuovoProgetto() {
     w-full p-3 rounded-lg border outline-none focus:ring-2 transition-colors
     ${errors[fieldName] 
       ? 'bg-red-50 border-red-500 focus:ring-red-200' 
-      : 'bg-gray-100 border-transparent focus:ring-primary'}
-  `;
+      : 'bg-white border-gray-300 focus:ring-primary'} 
+  `; // Ho cambiato bg-gray-100 in bg-white per uniformità con lo sfondo generale
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-lg overflow-hidden p-6 relative">
-        
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-6">
+    // MODIFICA 1: Rimossa centratura flex e padding esterno.
+    <div className="min-h-screen bg-gray-50 font-sans pb-20">
+      
+      {/* MODIFICA 2: Header estratto e reso a tutta larghezza con sfondo bianco */}
+      <header className="bg-white sticky top-0 z-10 shadow-sm px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <img src={logoImg} alt="Chain4Good" className="h-8 w-auto object-contain" />
             <span className="text-xl font-bold text-secondary">Chain4Good</span>
@@ -149,12 +149,15 @@ export default function NuovoProgetto() {
           <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden border border-gray-300">
              <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold">U</div>
           </div>
-        </div>
+      </header>
 
-        <h1 className="text-2xl font-bold text-secondary mb-4">Crea un Nuovo Progetto</h1>
+      {/* MODIFICA 3: Contenuto principale in un container con padding laterale, senza max-w-md o ombre */}
+      <main className="px-6 mt-6">
+        
+        <h1 className="text-2xl font-bold text-secondary mb-6">Crea un Nuovo Progetto</h1>
 
         {/* PROGRESS BAR */}
-        <div className="mb-8">
+        <div className="mb-8 relative max-w-xl"> {/* max-w-xl opzionale per non allungare troppo la barra su schermi grandi */}
           <div className="flex justify-between text-sm font-semibold text-secondary mb-1">
             <span>Step {step} di 2</span>
           </div>
@@ -168,9 +171,9 @@ export default function NuovoProgetto() {
           </div>
         </div>
 
-        {/* --- STEP 1 --- */}
+        {/* --- STEP 1 (Contenuto invariato) --- */}
         {step === 1 && (
-          <div className="space-y-5">
+          <div className="space-y-5 max-w-xl"> {/* max-w-xl per non far allungare troppo i campi su desktop */}
             {/* Nome Progetto */}
             <div>
               <label className="block text-sm font-bold text-secondary mb-1">Nome del progetto</label>
@@ -193,7 +196,7 @@ export default function NuovoProgetto() {
                   <CategoryButton 
                     key={cat.id}
                     label={cat.label}
-                    icon={cat.icon} /* Ora passa una stringa es. 'mdi:school' */
+                    icon={cat.icon} 
                     isSelected={formData.category === cat.id}
                     onClick={() => handleCategorySelect(cat.id)}
                   />
@@ -241,7 +244,6 @@ export default function NuovoProgetto() {
                 onClick={handleCancel}
                 className="w-full flex items-center justify-center gap-2 text-red-500 font-semibold hover:bg-red-50 py-2 rounded-lg transition"
               >
-                {/* ICONA CESTINO SOSTITUITA */}
                 <Icon icon="mdi:trash-can-outline" className="w-5 h-5" />
                 <span className="underline decoration-red-300">Annulla</span>
               </button>
@@ -249,9 +251,9 @@ export default function NuovoProgetto() {
           </div>
         )}
 
-        {/* --- STEP 2 --- */}
+        {/* --- STEP 2 (Contenuto invariato) --- */}
         {step === 2 && (
-          <div className="space-y-5">
+          <div className="space-y-5 max-w-xl">
             {/* Descrizione */}
             <div>
               <label className="block text-sm font-bold text-secondary mb-1">Descrizione</label>
@@ -282,8 +284,8 @@ export default function NuovoProgetto() {
             <div>
               <label className="block text-sm font-bold text-secondary mb-2">Immagine di copertina</label>
               <div 
-                className={`relative w-full h-28 rounded-lg flex items-center justify-center border-2 border-dashed transition cursor-pointer group
-                  ${errors.coverImage ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-100 hover:bg-gray-50'}
+                className={`relative w-full h-28 rounded-lg flex items-center justify-center border-2 border-dashed transition cursor-pointer group bg-white
+                  ${errors.coverImage ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:bg-gray-50'}
                 `}
               >
                 <input 
@@ -326,7 +328,7 @@ export default function NuovoProgetto() {
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
