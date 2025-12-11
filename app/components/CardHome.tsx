@@ -116,6 +116,7 @@ const CardHome = ({
         </button>
 
         {/* LOGO AUTORE */}
+        {/*
         <div 
           onClick={handleAuthorClick}
           className="absolute -bottom-8 left-6 z-20 cursor-pointer transition-transform hover:scale-105 active:scale-95"
@@ -126,6 +127,29 @@ const CardHome = ({
              </div>
           </div>
         </div>
+        */}
+{/* test per portare il clock su ente visibile */}
+        <div 
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log("Click sul logo rilevato!"); 
+            navigate('/ente-visibile'); 
+          }}
+          className="absolute -bottom-8 left-6 z-20 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+          title={`Vai al profilo di ${authorName}`}
+        >
+          <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-green-400 to-blue-600 p-[3px]">
+             <div className="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
+                <img 
+                  src={authorLogo} 
+                  alt={authorName} 
+                  className="w-full h-full object-cover rounded-full"
+                />
+             </div>
+          </div>
+        </div>
+        {/* Fine test */}
+        
       </div>
 
       {/* BODY */}
