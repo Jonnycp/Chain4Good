@@ -52,7 +52,7 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
 
       <NavItem 
         isActive={active === 'donazioni'}
-        onClick={() => navigate('/donazioni')}
+        onClick={() => navigate('/donazioni-utente')}
         icon="mdi:clipboard-text-history-outline"
         label="Donazioni"
       />

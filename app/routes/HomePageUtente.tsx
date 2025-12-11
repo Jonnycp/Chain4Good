@@ -106,9 +106,8 @@ export default function Home() {
         
         {/* Avatar Utente */}
         <div 
-            onClick={() => navigate('/profilo')}
-            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center border border-primary/20 cursor-pointer overflow-hidden"
-        >
+            onClick={() => navigate('/profilo-utente')}
+            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center border border-primary cursor-pointer overflow-hidden">
            <img src={imgUser} alt="Profile" className="w-full h-full object-cover" />
         </div>
       </div>
