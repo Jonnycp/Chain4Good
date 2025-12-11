@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import CategoryButton from '../components/CategoryButton';
 
 import logoImg from '../assets/logo.png';
-
+//test di commit
 // Configurazione Categorie con stringhe Iconify
 const CATEGORIES = [
   { id: 'medical', label: 'Spese mediche', icon: 'icon-park-outline:like' },
