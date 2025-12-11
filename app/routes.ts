@@ -7,6 +7,7 @@ export default [
   route("login", "routes/login.tsx"),
   // Ente
   route("profiloEnte", "routes/profiloEnte.tsx"),
-  route("nuovo-progetto", "routes/NuovoProgetto.tsx")
+  route("nuovo-progetto", "routes/NuovoProgetto.tsx"),
+  route("ente-visibile", "routes/EnteVisibile.tsx"),
 
 ] satisfies RouteConfig;
