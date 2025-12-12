@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import { Button } from "@heroui/react";
 import { useNavigate } from 'react-router-dom';
+import Header from '~/components/Header';
 
 import CardHome from '~/components/CardHome'; 
 import logoChain4Good from '~/assets/logo.png'; 
@@ -56,24 +57,7 @@ export default function HomeEnte() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-10 relative">
       
-      {/* HEADER */}
-      <div className="flex justify-between items-center px-6 pt-8 pb-4">
-        <div className="flex items-center gap-2">
-            <img src={logoChain4Good} alt="Chain4Good Logo" className="h-8" />
-            <div className="flex items-center font-bold text-xl text-secondary">
-                Chain<span className="text-primary">4</span>Good
-            </div>
-        </div>
-        
-        <div 
-            onClick={() => navigate('/profilo-ente')}
-            className="w-10 h-10 rounded-full bg-gradient-to-tr from-green-500 to-blue-900 p-[2px] cursor-pointer hover:scale-105 transition-transform"
-        >
-           <div className="w-full h-full rounded-full bg-white p-[1px] overflow-hidden">
-                <img src={enteData.logo} alt="Profile" className="w-full h-full object-cover rounded-full" />
-           </div>
-        </div>
-      </div>
+      <Header type="ente" profileImage={enteData.logo} />
 
       {/* BARRA DI RICERCA */}
       <div className="px-6 mb-6">

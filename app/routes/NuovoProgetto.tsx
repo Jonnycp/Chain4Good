@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router'; 
 import { Icon } from '@iconify/react';
 import CategoryButton from '../components/CategoryButton';
+import Header from '~/components/Header';
 
 import logoImg from '../assets/logo.png';
+import imgUser  from '../assets/img_user.png';
 
 const CATEGORIES = [
   { id: 'medical', label: 'Spese mediche', icon: 'icon-park-outline:like' },
@@ -137,6 +139,8 @@ export default function NuovoProgetto() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-10 relative">
+
+      <Header type="utente" profileImage={imgUser} />
       
       {/* CARD DI SUCCESSO IN SOVRIMPRESSIONE */}
       {isSuccess && (
@@ -170,16 +174,8 @@ export default function NuovoProgetto() {
 
       {/* CONTENUTO NORMALE DELLA PAGINA (Nascosto se c'è successo) */}
       <div className={`${isSuccess ? 'blur-sm pointer-events-none' : ''} transition-all`}>
-        {/* HEADER */}
-        <header className="bg-white sticky top-0 z-10 shadow-sm px-6 py-4 flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <img src={logoImg} alt="Chain4Good" className="h-8 w-auto object-contain" />
-              <span className="text-xl font-bold text-secondary">Chain4Good</span>
-            </div>
-            <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden border border-gray-300">
-               <div className="w-full h-full flex items-center justify-center text-gray-500 font-bold">U</div>
-            </div>
-        </header>
+        
+
 
         {/* CONTENUTO PRINCIPALE */}
         <main className="px-6 mt-6">

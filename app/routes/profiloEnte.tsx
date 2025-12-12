@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Header from '~/components/Header';
 
 import logoChain4Good from '~/assets/logo.png'; 
 import avatarPlaceholder from '~/assets/libersare.png';
@@ -25,19 +26,7 @@ export default function ProfiloEnte() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-secondary pb-10">
-      
-      {/* HEADER */}
-      <header className="px-6 py-6 flex justify-between items-center w-full max-w-lg mx-auto">
-        <div className="flex items-center gap-2">
-            <img src={logoChain4Good} alt="Chain4Good Logo" className="h-7" />
-            <div className="flex items-center font-bold text-xl text-secondary">
-                Chain<span className="text-primary">4</span>Good
-            </div>
-        </div>
-        <button className="text-secondary p-2">
-          <Icon icon="mdi:cog" width="28" />
-        </button>
-      </header>
+      <Header type="ente" profileImage={datiEnte.avatar} />
 
       {/* CONTENUTO PRINCIPALE */}
       <main className="w-full max-w-lg mx-auto px-6">

@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '~/components/Navbar'; 
+import Header from '~/components/Header';
 
 import logo from '~/assets/logo.png';
 import imgUser from '~/assets/img_user.png'; 
@@ -25,18 +26,7 @@ export default function UserProfile() {
 
   return (
     <div className="min-h-screen bg-white font-sans pb-28 relative">
-      {/* HEADER */}
-      <div className="flex justify-between items-center px-6 pt-8 pb-4">
-        <div className="flex items-center gap-2">
-          <img src={logo} alt="Logo Chain4Good" className="h-7 w-auto object-contain" />
-           <span className="text-xl font-extrabold text-secondary tracking-tight">
-             Chain<span className="text-primary">4</span>Good
-           </span>
-        </div>
-          <button className="text-black text-2xl p-1">
-             <Icon icon="mdi:cog" />
-          </button>
-      </div>
+      <Header type="utente" profileImage={imgUser} />
 
     {/* CONTENUTO PRINCIPALE */}
       <main className="px-6 mt-4">

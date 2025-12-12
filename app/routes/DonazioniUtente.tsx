@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
+import Header from '~/components/Header';
 
 import Navbar from '~/components/Navbar'; 
 import CardProgettoAttivo from '~/components/CardProgettoAttivo';
@@ -112,22 +113,7 @@ export default function Donazioni() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* HEADER */}
-      <div className="flex justify-between items-center px-6 pt-8 pb-4">
-        <div className="flex items-center gap-2">
-          <img src={logo} alt="Logo Chain4Good" className="h-7 w-auto object-contain" />
-           <span className="text-xl font-extrabold text-secondary tracking-tight">
-             Chain<span className="text-primary">4</span>Good
-           </span>
-        </div>
-        
-        {/* Avatar Utente */}
-        <div 
-            onClick={() => navigate('/profilo-utente')}
-            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center border border-primary cursor-pointer overflow-hidden">
-           <img src={imgUser} alt="Profile" className="w-full h-full object-cover" />
-        </div>
-      </div>
+      <Header type="utente" profileImage={imgUser} />
 
       <main className="px-6 mt-2">
         <h1 className="text-2xl font-extrabold text-secondary mb-6">Le tue donazioni</h1>
