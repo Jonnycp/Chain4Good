@@ -241,6 +241,11 @@ export default function NuovoProgetto() {
                 <label className="block text-sm font-bold text-secondary mb-1">Budget target</label>
                 <input
                   type="number"
+                  onKeyDown={(e) => {
+                    if (e.key === 'e' || e.key === '+' || e.key === '-') {
+                      e.preventDefault();
+                    }
+                  }}
                   name="budget"
                   value={formData.budget}
                   onChange={handleChange}
