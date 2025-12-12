@@ -2,13 +2,11 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Componenti
 import CardSpesa from '~/components/CardSpesa';
 import ModalNuovaSpesa from '~/components/ModalNuovaSpesa';
 import ModalDettagliSpesa from '~/components/ModalDettagliSpesa';
 import ModalSuccessoSpesa from '~/components/ModalSuccessoSpesa';
 
-// Asset
 import logoLibersare from '~/assets/libersare.png';
 import coverImage from '~/assets/cover_event.png'; 
 import avatarPlaceholder from '~/assets/libersare.png'; 
@@ -19,13 +17,11 @@ export default function ProgettoSingoloAttivo() {
   const navigate = useNavigate();
   const { id } = useParams(); 
   
-  // STATI
   const [activeTab, setActiveTab] = useState<StatoSpesa>('attesa');
   const [isNewSpesaOpen, setIsNewSpesaOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [selectedSpesa, setSelectedSpesa] = useState<any>(null);
 
-  // LISTA SPESE (MOCK DATABASE)
   const [listaSpese, setListaSpese] = useState([
     { 
       id: 1, 
@@ -125,46 +121,46 @@ export default function ProgettoSingoloAttivo() {
             </button>
         </div>
         <button className="absolute bottom-12 right-6 bg-white px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg z-20 hover:bg-gray-100 transition">
-            <Icon icon="solar:map-point-bold" className="text-[#0F172A] w-4 h-4" />
-            <span className="text-sm font-bold text-[#0F172A]">{projectInfo.location}</span>
+            <Icon icon="solar:map-point-bold" className="text-secondary w-4 h-4" />
+            <span className="text-sm font-bold text-secondary">{projectInfo.location}</span>
         </button>
       </div>
 
       {/* MAIN CONTENT */}
       <main className="relative z-10 -mt-8 bg-white rounded-t-[40px] px-6 pt-10 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
         
-        <h1 className="text-[26px] font-extrabold text-[#0F172A] leading-tight mb-6">{projectInfo.title}</h1>
+        <h1 className="text-[26px] font-extrabold text-secondary leading-tight mb-6">{projectInfo.title}</h1>
 
         {/* CARD FINANZIARIA */}
         <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm mb-8">
             <div className="flex justify-between items-end mb-2">
-                <div><span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Speso</span><div className="text-xl font-bold text-[#0F172A]">{projectInfo.speso.toFixed(2)} <span className="text-[10px] font-bold text-slate-400">ETH</span></div></div>
-                <div className="text-right"><span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Raccolto</span><div className="text-xl font-bold text-[#0F172A]">{projectInfo.raccolto.toFixed(2)} <span className="text-[10px] font-bold text-slate-400">ETH</span></div></div>
+                <div><span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Speso</span><div className="text-xl font-bold text-secondary">{projectInfo.speso.toFixed(2)} <span className="text-[10px] font-bold text-slate-400">ETH</span></div></div>
+                <div className="text-right"><span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Raccolto</span><div className="text-xl font-bold text-secondary">{projectInfo.raccolto.toFixed(2)} <span className="text-[10px] font-bold text-slate-400">ETH</span></div></div>
             </div>
-            <div className="flex items-center gap-3 mb-4"><div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden"><div className="bg-[#56A836] h-full rounded-full" style={{ width: `${progressPercent}%` }}></div></div><span className="text-xs font-bold text-slate-400">{Math.round(progressPercent)}%</span></div>
+            <div className="flex items-center gap-3 mb-4"><div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden"><div className="bg-primary h-full rounded-full" style={{ width: `${progressPercent}%` }}></div></div><span className="text-xs font-bold text-slate-400">{Math.round(progressPercent)}%</span></div>
             <div className="flex justify-between items-center text-slate-500 text-xs font-medium"><div className="flex items-center gap-2"><Icon icon="mdi:cart-outline" className="text-lg" />{listaSpese.length} spese effettuate</div><div className="flex items-center gap-2"><div className="flex -space-x-2"><div className="w-5 h-5 rounded-full bg-red-400 border-2 border-white"></div><div className="w-5 h-5 rounded-full bg-blue-400 border-2 border-white"></div></div>{projectInfo.donatoriCount} donatori</div></div>
         </div>
 
         {/* INFO ENTE */}
         <div className="flex items-center gap-3 mb-8 cursor-pointer group" onClick={() => navigate(`/profilo-ente`)}>
-            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-green-500 to-blue-900 p-[2px] group-hover:scale-105 transition-transform"><img src={logoLibersare} alt="Ente" className="w-full h-full object-cover rounded-full border-2 border-white" /></div>
-            <div><h3 className="text-base font-bold text-[#0F172A] group-hover:text-[#56A836] transition-colors">Libersare</h3><p className="text-xs text-slate-500 font-medium">Organizzazione di Volontariato</p></div>
+            <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary to-blue-900 p-[2px] group-hover:scale-105 transition-transform"><img src={logoLibersare} alt="Ente" className="w-full h-full object-cover rounded-full border-2 border-white" /></div>
+            <div><h3 className="text-base font-bold text-secondary group-hover:text-primary transition-colors">Libersare</h3><p className="text-xs text-slate-500 font-medium">Organizzazione di Volontariato</p></div>
         </div>
 
         {/* SEZIONE SPESE */}
         <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-extrabold text-[#0F172A]">Spese</h2>
-                <button onClick={() => setIsNewSpesaOpen(true)} className="bg-[#56A836] hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors"><Icon icon="mdi:plus" className="text-base" /> Nuova spesa</button>
+                <h2 className="text-lg font-extrabold text-secondary">Spese</h2>
+                <button onClick={() => setIsNewSpesaOpen(true)} className="bg-primary hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors"><Icon icon="mdi:plus" className="text-base" /> Nuova spesa</button>
             </div>
 
-            <div className="relative mb-5"><Icon icon="solar:magnifer-linear" className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl" /><input type="text" placeholder="Cosa vuoi cercare?" className="w-full bg-[#F8FAFC] rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#56A836]/20 transition-all" /></div>
+            <div className="relative mb-5"><Icon icon="solar:magnifer-linear" className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl" /><input type="text" placeholder="Cosa vuoi cercare?" className="w-full bg-[#F8FAFC] rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" /></div>
 
             {/* TABS */}
              <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
-                <button onClick={() => setActiveTab('attesa')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'attesa' ? 'bg-[#56A836] text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:help-circle-outline" className="text-base" /> In attesa</button>
-                <button onClick={() => setActiveTab('approvata')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'approvata' ? 'bg-[#0F172A] text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:check" className="text-base" /> Approvate</button>
-                <button onClick={() => setActiveTab('rifiutata')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'rifiutata' ? 'bg-[#0F172A] text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:close" className="text-base" /> Rifiutate</button>
+                <button onClick={() => setActiveTab('attesa')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'attesa' ? 'bg-primary text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:help-circle-outline" className="text-base" /> In attesa</button>
+                <button onClick={() => setActiveTab('approvata')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'approvata' ? 'bg-secondary text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:check" className="text-base" /> Approvate</button>
+                <button onClick={() => setActiveTab('rifiutata')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'rifiutata' ? 'bg-secondary text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:close" className="text-base" /> Rifiutate</button>
             </div>
 
             {/* LISTA SPESE */}
@@ -179,9 +175,9 @@ export default function ProgettoSingoloAttivo() {
             </div>
         </div>
 
-        {/* INFO & DONAZIONI (Invariati) */}
-        <div className="mb-10"><h2 className="text-base font-extrabold text-[#0F172A] mb-3">Informazioni</h2><p className="text-sm text-slate-500 leading-relaxed text-justify mb-6 font-medium">{projectInfo.descrizione}</p><h3 className="text-base font-extrabold text-[#0F172A] mb-3">Come useremo i fondi?</h3><ul className="space-y-2">{projectInfo.usoFondi.map((item, index) => (<li key={index} className="flex items-center gap-2 text-sm text-slate-500 font-medium"><div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>{item}</li>))}</ul></div>
-        <div className="mb-12"><div className="flex justify-between items-center mb-6 cursor-pointer hover:opacity-70 transition" onClick={() => navigate('/storico-donazioni')}><h2 className="text-base font-extrabold text-[#0F172A]">Donazioni ricevute</h2><Icon icon="mdi:arrow-right" className="text-[#0F172A] text-2xl" /></div><div className="flex flex-col gap-1">{donatori.map((donatore) => (<div key={donatore.id} className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"><div className="flex items-start gap-3"><img src={donatore.avatar} alt={donatore.name} className="w-10 h-10 rounded-full object-cover border border-slate-100" /><div className="flex flex-col"><p className="text-sm font-bold text-[#0F172A]">{donatore.name} <span className="font-normal text-slate-500">donated</span> {donatore.amount} <span className="text-xs font-bold text-slate-400">{donatore.currency}</span></p><p className="text-xs text-slate-400 italic mt-1">"{donatore.msg}"</p></div></div><span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">{donatore.time}</span></div>))}</div></div>
+        {/* INFO & DONAZIONI */}
+        <div className="mb-10"><h2 className="text-base font-extrabold text-secondary mb-3">Informazioni</h2><p className="text-sm text-slate-500 leading-relaxed text-justify mb-6 font-medium">{projectInfo.descrizione}</p><h3 className="text-base font-extrabold text-secondary mb-3">Come useremo i fondi?</h3><ul className="space-y-2">{projectInfo.usoFondi.map((item, index) => (<li key={index} className="flex items-center gap-2 text-sm text-slate-500 font-medium"><div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>{item}</li>))}</ul></div>
+        <div className="mb-12"><div className="flex justify-between items-center mb-6 cursor-pointer hover:opacity-70 transition" onClick={() => navigate('/storico-donazioni')}><h2 className="text-base font-extrabold text-secondary">Donazioni ricevute</h2><Icon icon="mdi:arrow-right" className="text-secondary text-2xl" /></div><div className="flex flex-col gap-1">{donatori.map((donatore) => (<div key={donatore.id} className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"><div className="flex items-start gap-3"><img src={donatore.avatar} alt={donatore.name} className="w-10 h-10 rounded-full object-cover border border-slate-100" /><div className="flex flex-col"><p className="text-sm font-bold text-secondary">{donatore.name} <span className="font-normal text-slate-500">donated</span> {donatore.amount} <span className="text-xs font-bold text-slate-400">{donatore.currency}</span></p><p className="text-xs text-slate-400 italic mt-1">"{donatore.msg}"</p></div></div><span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">{donatore.time}</span></div>))}</div></div>
         <div className="text-center text-[10px] text-slate-300 pt-6">©2026 - Chain4Good</div>
       </main>
     </div>
