@@ -46,8 +46,13 @@ const CardHome = ({
 
   const navigate = useNavigate();
 
-  const handleCardClick = () => {
+  /*const handleCardClick = () => {
     navigate(`/progetto/${id}`);
+  };*/
+
+  //funzione per testare la navigazione alla pagina del progetto singolo utente
+  const handleCardClick = () => {
+    navigate(`/progetto-singolo-utente`);
   };
 
   const handleAuthorClick = (e: React.MouseEvent) => {

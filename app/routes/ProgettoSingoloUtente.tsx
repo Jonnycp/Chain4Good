@@ -67,7 +67,7 @@ export default function ProgettoSingoloUtente() {
             projectName={projectInfo.title} 
             entityName={entityName}
             onClose={() => setIsGrazieOpen(false)}
-            onHistory={() => navigate('/storico-donazioni')}
+            onHistory={() => navigate('/donazioni-utente')}
         />
       )}
 
