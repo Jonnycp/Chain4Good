@@ -13,7 +13,7 @@ export default function Header({ type, profileImage }: HeaderProps) {
   const profilePath = isEnte ? '/profilo-ente' : '/profilo-utente';
 
   return (
-    <div className="flex justify-between items-center px-6 pt-8 pb-4 bg-white sticky top-0 z-40">
+    <div className="flex justify-between items-center px-6 pt-8 pb-4">
       <div 
         className="flex items-center gap-2 cursor-pointer" 
         onClick={() => navigate('/')}
