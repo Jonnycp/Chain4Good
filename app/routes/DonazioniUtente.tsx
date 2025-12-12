@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 
-// Componenti Condivisi
 import Header from '~/components/Header';
 import Navbar from '~/components/Navbar'; 
 
-// Componenti Specifici (li creo qui sotto)
 import CardProgettoAttivo from '~/components/CardProgettoAttivo';
 import CardProgettoSupportato from '~/components/CardProgettoSupportato';
 
@@ -31,11 +29,12 @@ export default function Donazioni() {
   };
 
   // Navigazione
-  const goToProject = (id: number) => navigate(`/progetto-singolo/${id}`);
+  const goToProject = (id: number) => navigate(`/progetto-singolo`);//navigate(`/progetto-singolo/${id}`);
   
   const goToEnte = (e: React.MouseEvent, enteId: number) => {
     e.stopPropagation();
-    navigate(`/ente/${enteId}`); // O /profilo-ente se usi la pagina pubblica
+    //navigate(`/ente-visibile/${enteId}`);
+    navigate(`/ente-visibile`);
   };
 
   const openMap = (e: React.MouseEvent, location: string) => {
@@ -114,7 +113,7 @@ export default function Donazioni() {
         activePage="donazioni"
       />
 
-      {/* MAIN CONTENT (Centrato per desktop) */}
+      {/* MAIN CONTENT */}
       <main className="px-6 mt-2 max-w-2xl mx-auto w-full">
         <h1 className="text-2xl font-extrabold text-secondary mb-6">Le tue donazioni</h1>
 

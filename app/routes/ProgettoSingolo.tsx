@@ -25,8 +25,7 @@ export default function ProgettoSingolo() {
   const { id } = useParams();
 
   // CONTROLLO RUOLO
-    const isEnte = true; 
-  //const isEnte = false; 
+    const isEnte = false; 
 
   
   const [activeTab, setActiveTab] = useState<StatoSpesa>('attesa');

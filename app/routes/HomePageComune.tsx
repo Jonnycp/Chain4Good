@@ -16,11 +16,10 @@ import imgUser from '~/assets/img_user.png';
 export default function HomePage() {
   const navigate = useNavigate();
 
-  // --- CONTROLLO RUOLO ---
-  const isEnte = false;
-  // -----------------------
+  // CONTROLLO RUOLO
+  const isEnte = false
 
-  // --- DATI & STATO UTENTE ---
+  // DATI & STATO UTENTE
   const [selectedCategory, setSelectedCategory] = useState('medical');
 
   const categories = [
@@ -87,57 +86,111 @@ export default function HomePage() {
     }
   ];
 
+  // Filtri
   const filteredProjectsUser = allProjects.filter(p => p.category === selectedCategory);
+  
   const enteProjects = allProjects.slice(0, 2); 
 
   const handleProjectClick = (id: number) => {
-    navigate(`/progetto-singolo/${id}`);
+    navigate(`/progetto-singolo`);
+    //navigate(`/progetto-singolo/${id}`);
   };
 
   return (
-    <div className={`min-h-screen font-sans relative transition-colors ${isEnte ? 'bg-gray-50 pb-10' : 'bg-[#F8FAFC] pb-28 md:pb-10'}`}>
+    <div className={`min-h-screen font-sans relative transition-colors ${isEnte ? 'bg-gray-50 pb-20' : 'bg-[#F8FAFC] pb-28 md:pb-10'}`}>
       
-      {/* HEADER DINAMICO - Passiamo activePage="home" */}
+      {/* HEADER DINAMICO */}
       <Header 
         type={isEnte ? "ente" : "utente"} 
         profileImage={isEnte ? enteProfile.logo : imgUser} 
         activePage="home"
       />
 
-      {/* CONTENITORE CENTRALE: Limita larghezza su Desktop per centrare il contenuto */}
       <div className="w-full max-w-7xl mx-auto">
 
-        {/* BARRA DI RICERCA (Comune) */}
+        {/* BARRA DI RICERCA (Comune a entrambi) */}
         <div className="px-6 mb-8 md:mb-10 md:flex md:justify-center">
             <div className="relative w-full md:w-1/2 lg:w-1/3">
             <Icon icon="solar:magnifer-linear" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input 
                 type="text" 
-                placeholder="Cosa vuoi cercare?" 
+                placeholder="Cerca progetti..." 
                 className="w-full bg-white text-secondary rounded-2xl py-3.5 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm placeholder-gray-400 font-medium text-sm border border-transparent focus:border-primary"
             />
             </div>
         </div>
 
-        {/* --- CONTENUTO CONDIZIONALE --- */}
+        {/* CONTENUTO CONDIZIONALE */}
         {isEnte ? (
             
-            // ... (Parte Ente invariata o adattabile allo stesso modo con Griglia) ...
-            <>
-               {/* Codice Ente omesso per brevità, usa la stessa logica GRID sotto se vuoi */}
-            </>
+            // VISTA ENTE (RESPONSIVE)
+            <div className="px-6 md:px-12">
+               
+               {/* Titolo + Bottone Desktop */}
+               <div className="flex items-center justify-between mb-6 md:mb-8">
+                  <h1 className="text-xl md:text-2xl font-bold text-secondary">
+                    I tuoi progetti
+                  </h1>
+                  
+                  {/* Bottone visibile solo su Desktop per creare progetto */}
+                  <Button 
+                    className="hidden md:flex bg-primary text-white font-bold rounded-xl px-6 shadow-md hover:bg-green-600 transition"
+                    onPress={() => navigate('/nuovo-progetto')}
+                  >
+                    <Icon icon="mdi:plus" className="w-5 h-5 mr-1" />
+                    Nuovo Progetto
+                  </Button>
+               </div>
+
+               {/* GRIGLIA PROGETTI ENTE */}
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 {enteProjects.length > 0 ? (
+                    enteProjects.map((progetto) => (
+                        <div key={progetto.id} onClick={() => handleProjectClick(progetto.id)} className="cursor-pointer transition-transform hover:-translate-y-1">
+                            <CardHome {...progetto} />
+                        </div>
+                    ))
+                 ) : (
+                    // Empty State Ente
+                    <div className="col-span-full py-12 text-center bg-white rounded-3xl border border-dashed border-gray-300">
+                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                           <Icon icon="solar:folder-with-files-linear" className="text-3xl text-slate-400" />
+                        </div>
+                        <p className="text-slate-500 font-medium">Non hai ancora creato progetti.</p>
+                        <button 
+                            className="mt-4 text-primary font-bold text-sm underline"
+                            onClick={() => navigate('/nuovo-progetto')}
+                        >
+                            Crea il primo ora
+                        </button>
+                    </div>
+                 )}
+               </div>
+
+               {/* Footer Ente */}
+               <div className="mt-12 text-center text-gray-400 text-sm pb-8">
+                 © 2026 - Chain4Good Dashboard
+               </div>
+
+               {/* FAB (Floating Action Button) - Visibile solo su MOBILE/TABLET */}
+               <div className="fixed bottom-6 right-4 z-30 md:hidden">
+                <Button 
+                    className="bg-primary text-white font-bold shadow-lg shadow-green-500/30 rounded-full w-14 h-14 min-w-0 p-0 flex items-center justify-center hover:bg-green-600 transition"
+                    onPress={() => navigate('/nuovo-progetto')}
+                >
+                    <Icon icon="mdi:plus" className="w-8 h-8" />
+                </Button>
+              </div>
+            </div>
 
         ) : (
 
-            // --- VISTA UTENTE RESPONSIVE ---
+            // VISTA UTENTE (RESPONSIVE)
             <>
             {/* Sezione: In scadenza */}
             <div className="mb-10">
                 <h2 className="px-6 text-xl font-bold text-secondary mb-4 md:mb-6 md:px-12">Explore Projects</h2>
                 
-                {/* MOBILE: Scroll Orizzontale (flex + overflow)
-                   DESKTOP: Griglia (grid-cols-3)
-                */}
                 <div className="
                     flex overflow-x-auto px-6 pb-6 gap-5 snap-x snap-mandatory no-scrollbar 
                     md:grid md:grid-cols-2 lg:grid-cols-3 md:px-12 md:overflow-visible
@@ -146,7 +199,7 @@ export default function HomePage() {
                     {allProjects.map((project) => (
                         <div 
                             key={project.id} 
-                            className="min-w-[85vw] sm:min-w-[320px] snap-center md:min-w-0" 
+                            className="min-w-[85vw] sm:min-w-[320px] snap-center md:min-w-0 cursor-pointer" 
                             onClick={() => handleProjectClick(project.id)}
                         >
                             <CardHome {...project} />
@@ -159,7 +212,6 @@ export default function HomePage() {
             <div className="mb-8">
                 <div className="flex items-center justify-between px-6 md:px-12 mb-4">
                     <h2 className="text-xl font-bold text-secondary">Categorie</h2>
-                    {/* Filtri extra visibili solo desktop se vuoi */}
                 </div>
 
                 <div className="
@@ -187,7 +239,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            {/* Risultati Filtrati (Griglia Responsive) */}
+            {/* Risultati Filtrati */}
             <div className="mb-8">
                 {filteredProjectsUser.length > 0 ? (
                     <div className="
@@ -195,7 +247,7 @@ export default function HomePage() {
                         md:grid md:grid-cols-2 lg:grid-cols-3 md:px-12 md:overflow-visible
                     " style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {filteredProjectsUser.map((project) => (
-                            <div key={`cat-${project.id}`} className="min-w-[85vw] sm:min-w-[320px] snap-center md:min-w-0" onClick={() => handleProjectClick(project.id)}>
+                            <div key={`cat-${project.id}`} className="min-w-[85vw] sm:min-w-[320px] snap-center md:min-w-0 cursor-pointer" onClick={() => handleProjectClick(project.id)}>
                                 <CardHome {...project} />
                             </div>
                         ))}
@@ -210,7 +262,7 @@ export default function HomePage() {
                 )}
             </div>
 
-            {/* Navbar Mobile (Nascosta su Desktop) */}
+            {/* Navbar Mobile (Solo per Utente) */}
             <Navbar active="home" />
             </>
         )}

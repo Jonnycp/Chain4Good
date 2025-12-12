@@ -11,7 +11,7 @@ export default function EnteVisibile() {
   const navigate = useNavigate();
 
   // SIMULAZIONE PERMESSI
-  const isEnteLoggato = true; 
+  const isEnteLoggato = false; 
 
   // STATI
   const [isEditing, setIsEditing] = useState(false);
