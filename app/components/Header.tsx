@@ -5,14 +5,19 @@ interface HeaderProps {
   type: 'utente' | 'ente';
   profileImage: string;
   activePage?: 'home' | 'donazioni' | 'profilo';
+  showNav?: boolean; // <--- NUOVA PROP OPZIONALE
 }
 
-export default function Header({ type, profileImage, activePage = 'home' }: HeaderProps) {
+export default function Header({ 
+  type, 
+  profileImage, 
+  activePage = 'home',
+  showNav = true // <--- DEFAULT: TRUE (Mostra sempre il menu se non specificato diversamente)
+}: HeaderProps) {
   const navigate = useNavigate();
   const isEnte = type === 'ente';
   const profilePath = '/pagina-profilo'; 
 
-  // Componente Link Navigazione
   const NavLink = ({ label, page, path }: { label: string, page: string, path: string }) => {
     const isActive = activePage === page;
     return (
@@ -31,6 +36,8 @@ export default function Header({ type, profileImage, activePage = 'home' }: Head
 
   return (
     <div className="w-full h-20 flex items-center justify-between px-6 md:px-12 bg-white md:bg-transparent z-40">
+      
+      {/* LOGO */}
       <div 
         className="flex items-center gap-2 cursor-pointer z-10 shrink-0" 
         onClick={() => navigate('/')}
@@ -44,9 +51,11 @@ export default function Header({ type, profileImage, activePage = 'home' }: Head
              Chain<span className="text-primary">4</span>Good
         </span>
       </div>
-
-      <div className="flex items-center gap-6">      
-        {!isEnte && (
+    
+      <div className="flex items-center gap-6">
+        
+        {/* MENU LINK: MOSTRA SOLO SE showNav è TRUE */}
+        {!isEnte && showNav && (
           <div className="hidden md:flex items-center gap-6">
               <NavLink label="Esplora" page="home" path="/" />
               <NavLink label="Donazioni" page="donazioni" path="/donazioni-utente" />
@@ -54,7 +63,7 @@ export default function Header({ type, profileImage, activePage = 'home' }: Head
           </div>
         )}
 
-        {/* AVATAR ICONA */}
+        {/* AVATAR (Rimane sempre) */}
         <div 
             onClick={() => navigate(profilePath)}
             className={`
