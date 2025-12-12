@@ -13,9 +13,9 @@ import avatarPlaceholder from '~/assets/libersare.png';
 
 type StatoSpesa = 'attesa' | 'approvata' | 'rifiutata';
 
-export default function ProgettoSingoloAttivo() {
+export default function ProgettoSingoloEnte() {
   const navigate = useNavigate();
-  const { id } = useParams(); 
+  const { id } = useParams();
   
   const [activeTab, setActiveTab] = useState<StatoSpesa>('attesa');
   const [isNewSpesaOpen, setIsNewSpesaOpen] = useState(false);

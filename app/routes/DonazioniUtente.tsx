@@ -29,8 +29,8 @@ export default function Donazioni() {
   };
 
   // LOGICA NAVIGAZIONE
-  const goToProject = (id: number) => navigate(`/progetto-singolo-utente-attivo`);
-  // const goToProject = (id: number) => navigate(`/progetto-singolo-utente-attivo/${id}`);
+  const goToProject = (id: number) => navigate(`/progetto-singolo-utente`);
+  // const goToProject = (id: number) => navigate(`/progetto-singolo-utente/${id}`);
   
   const goToEnte = (e: React.MouseEvent, enteId: number) => {
     e.stopPropagation();
