@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import HeaderCover from '~/components/HeaderCover';
 import CardSpesa from '~/components/CardSpesa';
 import ModalNuovaSpesa from '~/components/ModalNuovaSpesa';
 import ModalDettagliSpesa from '~/components/ModalDettagliSpesa';
@@ -108,23 +109,11 @@ export default function ProgettoSingoloEnte() {
         <ModalDettagliSpesa spesa={selectedSpesa} onClose={() => setSelectedSpesa(null)} />
       )}
 
-      {/* HEADER */}
-      <div className="relative w-full h-[340px]">
-        <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent h-32 pointer-events-none" />
-        <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20 pt-10">
-            <button onClick={() => navigate(-1)} className="text-white hover:opacity-80 transition drop-shadow-md">
-                <Icon icon="mdi:arrow-left" width="28" />
-            </button>
-            <button className="text-white hover:opacity-80 transition drop-shadow-md">
-                <Icon icon="mdi:share-variant-outline" width="26" />
-            </button>
-        </div>
-        <button className="absolute bottom-12 right-6 bg-white px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg z-20 hover:bg-gray-100 transition">
-            <Icon icon="solar:map-point-bold" className="text-secondary w-4 h-4" />
-            <span className="text-sm font-bold text-secondary">{projectInfo.location}</span>
-        </button>
-      </div>
+        <HeaderCover
+            type="ente"
+            coverImage={coverImage}
+            location={projectInfo.location}
+        />
 
       {/* MAIN CONTENT */}
       <main className="relative z-10 -mt-8 bg-white rounded-t-[40px] px-6 pt-10 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">

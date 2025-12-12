@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate, useParams } from 'react-router-dom';
+import HeaderCover from '~/components/HeaderCover';
 
 import logoLibersare from '~/assets/libersare.png';
 import coverImage from '~/assets/casa.png'; 
@@ -71,30 +72,11 @@ export default function ProgettoSingoloUtente() {
         />
       )}
 
-      {/* HEADER */}
-      <div className="relative w-full h-[340px]">
-        <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent h-32 pointer-events-none" />
-        <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20 pt-10">
-            <button onClick={() => navigate(-1)} className="text-white hover:opacity-80 transition drop-shadow-md">
-                <Icon icon="mdi:arrow-left" width="28" />
-            </button>
-            <button className="text-white hover:opacity-80 transition drop-shadow-md">
-                <Icon icon="humbleicons:share" width="26" />
-            </button>
-        </div>
-
-        <button 
-            onClick={() => setIsLiked(!isLiked)}
-            className="absolute bottom-6 right-6 bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl z-20 hover:bg-slate-50 transition-all duration-300 transform hover:scale-105 active:scale-95 group"
-        >
-            <Icon 
-                icon={isLiked ? "mdi:heart" : "mdi:heart-outline"} 
-                width="30" 
-                className={`transition-colors duration-300 ${isLiked ? 'text-red-500' : 'text-slate-400 group-hover:text-red-400'}`}
-            />
-        </button>
-      </div>
+        <HeaderCover
+            type="utente"
+            coverImage={coverImage}
+            location={projectInfo.location}
+        />
 
       {/* MAIN CONTENT */}
       <main className="relative z-10 -mt-8 bg-white rounded-t-[40px] px-6 pt-10 pb-32 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
