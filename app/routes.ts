@@ -10,7 +10,7 @@ export default [
   route("profilo-ente", "routes/profiloEnte.tsx"),
   route("nuovo-progetto", "routes/NuovoProgetto.tsx"),
   route("ente-visibile", "routes/EnteVisibile.tsx"),
-  route("progetto-singolo-attivo", "routes/ProgettoSingoloAttivo.tsx"),
+  route("progetto-singolo-ente", "routes/ProgettoSingoloEnte.tsx"),
   // Utente
   route("profilo-utente", "routes/profiloUtente.tsx"),
   route("donazioni-utente", "routes/DonazioniUtente.tsx"), 
