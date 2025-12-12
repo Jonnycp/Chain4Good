@@ -1,3 +1,4 @@
+// app/routes/profiloEnte.tsx
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
