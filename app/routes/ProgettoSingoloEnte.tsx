@@ -8,7 +8,7 @@ import ModalDettagliSpesa from '~/components/ModalDettagliSpesa';
 import ModalSuccessoSpesa from '~/components/ModalSuccessoSpesa';
 
 import logoLibersare from '~/assets/libersare.png';
-import coverImage from '~/assets/cover_event.png'; 
+import coverImage from '~/assets/casa.png'; 
 import avatarPlaceholder from '~/assets/libersare.png'; 
 
 type StatoSpesa = 'attesa' | 'approvata' | 'rifiutata';
@@ -71,7 +71,7 @@ export default function ProgettoSingoloAttivo() {
     raccolto: 250.00,
     speseCount: listaSpese.length, 
     donatoriCount: 124,
-    descrizione: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    descrizione: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
     usoFondi: ["Cibo e cure veterinarie", "Manutenzione strutture"]
   };
 
@@ -175,10 +175,31 @@ export default function ProgettoSingoloAttivo() {
             </div>
         </div>
 
-        {/* INFO & DONAZIONI */}
+      {/* SEZIONE STORICO DONAZIONI */}
         <div className="mb-10"><h2 className="text-base font-extrabold text-secondary mb-3">Informazioni</h2><p className="text-sm text-slate-500 leading-relaxed text-justify mb-6 font-medium">{projectInfo.descrizione}</p><h3 className="text-base font-extrabold text-secondary mb-3">Come useremo i fondi?</h3><ul className="space-y-2">{projectInfo.usoFondi.map((item, index) => (<li key={index} className="flex items-center gap-2 text-sm text-slate-500 font-medium"><div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>{item}</li>))}</ul></div>
         <div className="mb-12"><div className="flex justify-between items-center mb-6 cursor-pointer hover:opacity-70 transition" onClick={() => navigate('/storico-donazioni')}><h2 className="text-base font-extrabold text-secondary">Donazioni ricevute</h2><Icon icon="mdi:arrow-right" className="text-secondary text-2xl" /></div><div className="flex flex-col gap-1">{donatori.map((donatore) => (<div key={donatore.id} className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"><div className="flex items-start gap-3"><img src={donatore.avatar} alt={donatore.name} className="w-10 h-10 rounded-full object-cover border border-slate-100" /><div className="flex flex-col"><p className="text-sm font-bold text-secondary">{donatore.name} <span className="font-normal text-slate-500">donated</span> {donatore.amount} <span className="text-xs font-bold text-slate-400">{donatore.currency}</span></p><p className="text-xs text-slate-400 italic mt-1">"{donatore.msg}"</p></div></div><span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">{donatore.time}</span></div>))}</div></div>
-        <div className="text-center text-[10px] text-slate-300 pt-6">©2026 - Chain4Good</div>
+
+
+      {/* FOOTER & SHARING */}
+        <div className="border-t border-slate-100 pt-6 mb-4">
+            <p className="text-center text-sm font-bold text-secondary mb-4">Aiuta questo progetto a crescere: Condividilo!</p>
+            <div className="flex justify-center items-center gap-4 mb-8">
+                 <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:email-outline" width="24" /></button>
+                 <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:whatsapp" width="24" /></button>
+                 <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:instagram" width="24" /></button>
+                 <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:facebook" width="24" /></button>
+                 <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:linkedin" width="24" /></button>
+                 <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:link-variant" width="24" /></button>
+            </div>
+
+            <div className="text-center text-xs text-slate-400 mb-6">
+                Pubblicato il 14/11/2025<br/>
+                Qualcosa non va con questo progetto?<br/>
+                <button className="underline decoration-slate-400 hover:text-secondary mt-1">Segnalalo a Chain4Good</button>
+            </div>
+
+            <div className="text-center text-[10px] text-slate-300">©2026 - Chain4Good</div>
+        </div>
       </main>
     </div>
   );
