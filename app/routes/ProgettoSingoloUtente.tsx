@@ -6,11 +6,20 @@ import logoLibersare from '~/assets/libersare.png';
 import coverImage from '~/assets/casa.png'; 
 import avatarPlaceholder from '~/assets/libersare.png'; 
 
+import PopoverDona from '~/components/PopoverDona';
+import ModalGrazie from '~/components/ModalGrazie';
+
 export default function ProgettoSingoloUtente() {
   const navigate = useNavigate();
   const { id } = useParams(); 
   
   const [isLiked, setIsLiked] = useState(false);
+  const [isDonaOpen, setIsDonaOpen] = useState(false);
+  const [isGrazieOpen, setIsGrazieOpen] = useState(false);
+  const [donatedAmount, setDonatedAmount] = useState(0);
+
+  // simulo backend 
+  const entityName = "Libersare ODV";
 
   const projectInfo = {
     title: "Rescue Animals’ Second Change Santuario",
@@ -19,7 +28,7 @@ export default function ProgettoSingoloUtente() {
     target: 250.00,
     giorniMancanti: 14,
     donatoriCount: 124,
-    descrizione: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    descrizione: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     usoFondi: ["Lorem", "Ipsum", "Simply", "Dummy", "Text"]
   };
 
@@ -30,12 +39,37 @@ export default function ProgettoSingoloUtente() {
     { id: 4, name: "Alice", amount: "2.10", currency: "ETH", time: "5 ore fa", msg: "Web3", avatar: avatarPlaceholder },
   ];
 
-  const progressPercent = Math.min((projectInfo.raccolto / projectInfo.target) * 100, 100); //percentuale 
-
+  const progressPercent = Math.min((projectInfo.raccolto / projectInfo.target) * 100, 100);
   const donorAvatars = [avatarPlaceholder, avatarPlaceholder, avatarPlaceholder, avatarPlaceholder];
+
+  const handleConfirmDonation = (amount: number, msg: string) => {
+    setDonatedAmount(amount);
+    setIsDonaOpen(false);
+    setTimeout(() => {
+        setIsGrazieOpen(true);
+    }, 300);
+  };
 
   return (
     <div className="min-h-screen bg-white font-sans relative">
+
+      {/* RENDER MODALI */}
+      {isDonaOpen && (
+        <PopoverDona 
+            onClose={() => setIsDonaOpen(false)} 
+            onConfirm={handleConfirmDonation} 
+        />
+      )}
+      
+      {isGrazieOpen && (
+        <ModalGrazie 
+            amount={donatedAmount}
+            projectName={projectInfo.title} 
+            entityName={entityName}
+            onClose={() => setIsGrazieOpen(false)}
+            onHistory={() => navigate('/storico-donazioni')}
+        />
+      )}
 
       {/* HEADER */}
       <div className="relative w-full h-[340px]">
@@ -50,7 +84,6 @@ export default function ProgettoSingoloUtente() {
             </button>
         </div>
 
-        {/* Pulsante Cuore */}
         <button 
             onClick={() => setIsLiked(!isLiked)}
             className="absolute bottom-6 right-6 bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl z-20 hover:bg-slate-50 transition-all duration-300 transform hover:scale-105 active:scale-95 group"
@@ -87,7 +120,6 @@ export default function ProgettoSingoloUtente() {
                 </div>
             </div>
             
-            {/* Progress Bar */}
             <div className="flex items-center gap-3 mb-5">
                 <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                     <div className="bg-primary h-full rounded-full transition-all duration-500" style={{ width: `${progressPercent}%` }}></div>
@@ -95,7 +127,6 @@ export default function ProgettoSingoloUtente() {
                 <span className="text-xs font-bold text-slate-400">{Math.round(progressPercent)}%</span>
             </div>
 
-            {/* Info Footer Card */}
             <div className="flex justify-between items-center pt-2 border-t border-slate-100">
                 <div className="flex items-center gap-2 text-slate-600">
                     <Icon icon="mdi:clock-outline" className="text-lg" />
@@ -120,14 +151,14 @@ export default function ProgettoSingoloUtente() {
                     <img src={logoLibersare} alt="Ente" className="w-full h-full object-cover rounded-full border-2 border-white" />
                 </div>
                 <div>
-                    <h3 className="text-base font-bold text-secondary">Libersare</h3>
+                    <h3 className="text-base font-bold text-secondary">{entityName}</h3>
                     <p className="text-xs text-slate-500 font-medium">Organizzazione di Volontariato</p>
                 </div>
             </div>
             <Icon icon="mdi:chevron-right" className="text-slate-400 text-2xl" />
         </div>
 
-        {/* SEZIONE INFORMAZIONI */}
+        {/* INFO */}
         <div className="mb-8">
             <h2 className="text-lg font-extrabold text-secondary mb-3">Informazioni</h2>
             <p className="text-sm text-slate-500 leading-relaxed text-justify font-medium">
@@ -135,7 +166,7 @@ export default function ProgettoSingoloUtente() {
             </p>
         </div>
 
-        {/* SEZIONE USO FONDI */}
+        {/* USO FONDI */}
         <div className="mb-8">
             <h3 className="text-base font-extrabold text-secondary mb-3">Come useremo i fondi?</h3>
             <ul className="space-y-2 pl-1">
@@ -148,7 +179,7 @@ export default function ProgettoSingoloUtente() {
             </ul>
         </div>
 
-        {/* ULTIME DONAZIONI */}
+        {/* DONAZIONI */}
         <div className="mb-12">
             <h2 className="text-lg font-extrabold text-secondary mb-4">Ultime donazioni</h2>
             <div className="flex flex-col gap-4">
@@ -169,7 +200,7 @@ export default function ProgettoSingoloUtente() {
             </div>
         </div>
 
-        {/* FOOTER & SHARING */}
+        {/* FOOTER */}
         <div className="border-t border-slate-100 pt-6 mb-4">
             <p className="text-center text-sm font-bold text-secondary mb-4">Aiuta questo progetto a crescere: Condividilo!</p>
             <div className="flex justify-center items-center gap-4 mb-8">
@@ -180,22 +211,23 @@ export default function ProgettoSingoloUtente() {
                  <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:linkedin" width="24" /></button>
                  <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:link-variant" width="24" /></button>
             </div>
-
             <div className="text-center text-xs text-slate-400 mb-6">
                 Pubblicato il 14/11/2025<br/>
                 Qualcosa non va con questo progetto?<br/>
                 <button className="underline decoration-slate-400 hover:text-secondary mt-1">Segnalalo a Chain4Good</button>
             </div>
-
             <div className="text-center text-[10px] text-slate-300">©2026 - Chain4Good</div>
         </div>
 
       </main>
 
-      {/* DONA ORA */}
+      {/* DONA ORA BUTTON */}
       <div className="fixed bottom-6 left-0 w-full px-6 z-50 pointer-events-none">
         <div className="max-w-md mx-auto pointer-events-auto">
-            <button className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all active:scale-[0.98]">
+            <button 
+                onClick={() => setIsDonaOpen(true)}
+                className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all active:scale-[0.98]"
+            >
                 Dona ora
             </button>
         </div>
