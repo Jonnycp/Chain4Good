@@ -95,7 +95,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-28 font-sans">
-      
       <Header type="utente" profileImage={imgUser} />
 
       {/* BARRA DI RICERCA */}

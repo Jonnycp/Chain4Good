@@ -28,6 +28,14 @@ export default function HeaderCover({
     }
   };
 
+  const openMap = () => {
+    if (location) {
+      const encodedLocation = encodeURIComponent(location);
+      const url = `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
+      window.open(url, '_blank');
+    }
+  };
+
   return (
     <div className="relative w-full h-[340px]">
       
@@ -84,7 +92,10 @@ export default function HeaderCover({
           </div>
       </div>
       {location && (
-        <button className="absolute bottom-12 right-6 bg-white px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg z-20 hover:bg-gray-100 transition">
+        <button 
+            onClick={openMap}
+            className="absolute bottom-12 right-6 bg-white px-4 py-2 rounded-full flex items-center gap-1.5 shadow-lg z-20 hover:bg-gray-100 transition active:scale-95 cursor-pointer"
+        >
             <Icon icon="solar:map-point-bold" className="text-secondary w-4 h-4" />
             <span className="text-sm font-bold text-secondary">{location}</span>
         </button>
