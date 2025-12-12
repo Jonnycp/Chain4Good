@@ -1,0 +1,266 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{titleps}
+\newpagestyle{classica}{%
+	\sethead{}{}{\sectiontitle\quad|\quad\thepage}
+}
+\usepackage{blindtext}
+\usepackage{parskip}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage[dvipsnames, table]{xcolor}
+\usepackage{graphicx}
+\usepackage[sorting=none,backend=biber]{biblatex}
+\usepackage{glossaries}
+\usepackage{subfig}
+\usepackage{listofitems}
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{tabularray}
+\usepackage{makecell}
+\usepackage{enumitem}
+\usepackage{pdflscape}
+\usepackage[
+	separate-uncertainty=true,
+	table-align-uncertainty=true,
+]{siunitx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[title]{appendix}
+\usepackage[euler-digits]{eulervm}
+%\usepackage{lmodern}
+\usepackage{palatino} % Use the Palatino font by default
+
+
+
+%----------------------------------------------------------------------------------------
+%	ACRONYMS and BIBLIO
+%----------------------------------------------------------------------------------------
+\input{acronyms}
+\makeglossaries
+\addbibresource{biblio.bib} % The filename of the bibliography
+
+
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+\title{Chain4Good} % Thesis title, print it elsewhere with \ttitle
+\def\teacher{Prof.ssa Marina \textsc{Mongiello}} % Supervisor's name
+\author{
+	Angelica \textsc{De Feudis} \\
+	Johnatan \textsc{Caputo} \\
+	Luca \textsc{Gentile}
+	} 
+\def\subject{Chain4Good}% Subject area
+%\def\project{Implementazione di un sistema di crowdfunding decentralizzato}
+\def\project{Progettazione e sviluppo di una piattaforma di crowdfunding con tecnologia blockchain}
+\def\keywords{
+} % Keywords
+\def\university{Politecnico di Bari} % University's name
+\def\department{Dipartimento di Ingegneria Elettrica e dell'informazione} % Department's name
+\def\faculty{Corso di laurea triennale in ingegneria informatica e dell'automazione} % Faculty's name
+
+\makeatletter
+\hypersetup{%
+	colorlinks=true,
+	linktocpage=true,
+	pdfstartpage=1,
+	pdfstartview=FitV,
+	breaklinks=true,
+	pdfpagemode=UseNone,
+	pageanchor=true,
+	pdfpagemode=UseOutlines,
+	plainpages=false,
+	bookmarksnumbered,
+	bookmarksopen=true,
+	bookmarksopenlevel=1,
+	pdfhighlight=/O,
+	urlcolor=webbrown,
+    linkcolor=RoyalBlue,
+	citecolor=webgreen,%
+	pdfcreator={pdfLaTeX},%
+	pdfproducer={LaTeX}%,
+	pdftoolbar=true,        % show Acrobat’s toolbar?
+	pdfmenubar=true,        % show Acrobat’s menu?
+	pdffitwindow=true,     % window fit to page when opened
+	pdfpagelayout={SinglePage},
+	pdftitle={\@title},    % title
+	pdfauthor={\@author},     % author
+	pdfproducer={\@author},
+	pdfkeywords={\keywords},
+	pdfsubject={\subject}   % subject
+}
+\makeatother
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS SETTINGS
+%----------------------------------------------------------------------------------------
+\graphicspath{{./figures/}}  % dir in which \includegraphics will look for files
+
+
+\definecolor{webbrown}{RGB}{162, 23, 23}
+\definecolor{RoyalBlue}{RGB}{23, 111, 192}
+\definecolor{webgreen}{RGB}{0, 128, 0}
+\definecolor{halfgray}{RGB}{140, 140, 140}
+
+
+
+%----------------------------------------------------------------------------------------
+%	MACROS
+%----------------------------------------------------------------------------------------
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\ie}{\textit{i.e.},\space}
+\newcommand{\eg}{\textit{e.g.},\space}
+
+\newcommand{\Metric}[2]{\ensuremath{\text{#1}\allowbreak@{#2}}}  % General command for metrics
+
+% Specific commands for each metric (glossary-aware when needed)
+\newcommand{\MRR}[1]{\ensuremath{\gls{mrr}\allowbreak@{#1}}}
+\newcommand{\NDCG}[1]{\ensuremath{\gls{ndcg}\allowbreak@{#1}}}
+\newcommand{\Hit}[1]{\Metric{Hit}{#1}} % no glossary needed
+\newcommand{\Precision}[1]{\Metric{Precision}{#1}} % no glossary needed
+\newcommand{\Recall}[1]{\Metric{Recall}{#1}} % no glossary needed
+
+\creflabelformat{equation}{#2\textup{#1}#3}  % Equation (X) -> Equation X
+
+
+\begin{document}
+
+	\pagenumbering{roman} % Use "roman" page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+	\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+	%----------------------------------------------------------------------------------------
+	%	TITLE PAGE
+	%----------------------------------------------------------------------------------------
+	\makeatletter
+	\begin{titlepage}
+		\setlength{\parskip}{0pt}
+		\begin{center}
+
+			\includegraphics[width=35mm]{poliba_logo}
+				\vspace{2mm}
+
+			{\scshape\LARGE \university\par}
+				\vspace{8mm} 
+
+			{\scshape \department \par}
+				\vspace{1mm}
+
+			{\scshape \faculty \par}
+				%\vfill
+			\vspace{2mm}
+			
+			% \vspace{2mm}
+			% {\rule{0.9\textwidth}{0.8pt} \par} % riga sopra Chain4Good
+				\vspace{19mm}
+
+			{\Huge \bfseries \subject \par}
+				\vspace{6.5mm} 
+
+			{\itshape\Large \project \par}
+				\vfill 
+
+			\begin{minipage}[t]{0.425\textwidth}
+				\begin{flushleft}
+					\large
+					\emph{Candidati:}\\
+					\@author\\[2mm]
+				\end{flushleft}
+			\end{minipage}
+			\begin{minipage}[t]{0.425\textwidth}
+				\begin{flushright}
+					\large
+					\emph{Docente:} \\
+					\teacher 
+				\end{flushright}
+			\end{minipage}
+
+
+            \vspace{13mm} %qui era \vfill
+            
+            
+			{\rule{0.9\textwidth}{0.8pt} \par} %era 1pt
+			\vspace{5mm} %qui era 2mm
+
+			{\large Academic Year: 2025/2026 \par}
+
+		\end{center}
+	\end{titlepage}
+	\makeatother
+
+
+
+	%\cleardoublepage
+	%----------------------------------------------------------------------------------------
+	%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+	%----------------------------------------------------------------------------------------
+
+	\tableofcontents % Prints the main table of contents
+	\clearpage
+%	\listoffigures % Prints the list of figures
+%	\listoftables % Prints the list of tables
+	\printglossary[
+		title=List of acronyms,
+		toctitle=List of acronyms,
+		type=\acronymtype,
+		nonumberlist,
+	]
+	\clearpage
+
+	\pagenumbering{arabic} % Begin numeric (1,2,3...) page numbering
+
+	\pagestyle{classica}
+
+
+	%----------------------------------------------------------------------------------------
+	%	CHAPTERS
+	%----------------------------------------------------------------------------------------
+	\input{chapters/intro}
+	\clearpage
+	
+	\input{chapters/background}
+	\clearpage
+	\input{chapters/metodologia}
+	\clearpage
+%	\input{chapters/analisi requisiti}
+%	\clearpage
+	\input{chapters/progettazione}
+	\clearpage
+	\input{chapters/prototipo}
+	\clearpage
+	\input{chapters/validazione}
+	\clearpage
+	\input{chapters/conclusion}
+	
+	
+	
+	%----------------------------------------------------------------------------------------
+	%	BIBLIOGRAPHY
+	%----------------------------------------------------------------------------------------
+	\clearpage
+	\printbibliography[heading=bibintoc]
+
+
+	%----------------------------------------------------------------------------------------
+	%	APPENDIX
+	%----------------------------------------------------------------------------------------
+    \clearpage
+    
+    \begin{appendices}
+	   \input{chapters/appendix}
+    \end{appendices}
+
+\end{document}
