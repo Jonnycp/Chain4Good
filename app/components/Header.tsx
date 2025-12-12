@@ -10,10 +10,12 @@ export default function Header({ type, profileImage }: HeaderProps) {
   const navigate = useNavigate();
 
   const isEnte = type === 'ente';
-  const profilePath = isEnte ? '/profilo-ente' : '/profilo-utente';
+  
+  const profilePath = '/pagina-profilo'; 
 
   return (
     <div className="flex justify-between items-center px-6 pt-8 pb-4">
+      {/* LOGO */}
       <div 
         className="flex items-center gap-2 cursor-pointer" 
         onClick={() => navigate('/')}
@@ -28,13 +30,14 @@ export default function Header({ type, profileImage }: HeaderProps) {
         </span>
       </div>
     
+      {/* AVATAR */}
       <div 
           onClick={() => navigate(profilePath)}
           className={`
             w-10 h-10 rounded-full cursor-pointer transition-transform hover:scale-105
             ${isEnte 
-                ? 'bg-gradient-to-tr from-primary to-blue-900 p-[2px]' 
-                : 'bg-primary flex items-center justify-center border border-primary'
+                ? 'bg-gradient-to-tr from-primary to-blue-900 p-[2px]' // Stile Ente
+                : 'bg-primary flex items-center justify-center border border-primary' // Stile Utente
             }
           `}
       >

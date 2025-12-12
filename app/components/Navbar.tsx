@@ -43,6 +43,7 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-6 flex justify-between items-end z-50 rounded-t-[30px] shadow-[0_-5px_20px_rgba(0,0,0,0.05)] h-[80px]">
         
+      {/* HOME */}
       <NavItem 
         isActive={active === 'home'}
         onClick={() => navigate('/')}
@@ -50,6 +51,7 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
         label="Home"
       />
 
+      {/* DONAZIONI  */}
       <NavItem 
         isActive={active === 'donazioni'}
         onClick={() => navigate('/donazioni-utente')}
@@ -57,9 +59,10 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
         label="Donazioni"
       />
 
+      {/* PROFILO */}
       <NavItem 
         isActive={active === 'profilo'}
-        onClick={() => navigate('/profilo-utente')} // 
+        onClick={() => navigate('/pagina-profilo')}
         icon="bx:user"
         label="Profilo"
       />
