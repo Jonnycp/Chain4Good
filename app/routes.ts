@@ -15,5 +15,6 @@ export default [
   route("profilo-utente", "routes/profiloUtente.tsx"),
   route("donazioni-utente", "routes/DonazioniUtente.tsx"), 
   route("progetto-singolo-utente", "routes/ProgettoSingoloUtente.tsx"),
+  route("progetto-singolo-voto-utente", "routes/ProgettoSingoloVotoUtente.tsx"),
 
 ] satisfies RouteConfig;

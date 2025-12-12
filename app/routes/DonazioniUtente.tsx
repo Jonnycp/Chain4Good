@@ -31,6 +31,8 @@ export default function Donazioni() {
   // LOGICA NAVIGAZIONE
   const goToProject = (id: number) => navigate(`/progetto-singolo-utente`);
   // const goToProject = (id: number) => navigate(`/progetto-singolo-utente-attivo/${id}`);
+    const goToProjectUtente = (id: number) => navigate(`/progetto-singolo-voto-utente`);
+  // const goToProject = (id: number) => navigate(`/progetto-singolo-utente-attivo/${id}`);
   
   const goToEnte = (e: React.MouseEvent, enteId: number) => {
     e.stopPropagation();
@@ -166,7 +168,7 @@ export default function Donazioni() {
                         <div key={item.id} className="min-w-[85vw] sm:min-w-[320px] snap-center">
                             <CardProgettoAttivo 
                                 {...item}
-                                onClick={() => goToProject(item.id)}
+                                onClick={() => goToProjectUtente(item.id)}
                             />
                         </div>
                     ))}
