@@ -9,12 +9,14 @@ export default [
   // Ente
   route("profilo-ente", "routes/profiloEnte.tsx"),
   route("nuovo-progetto", "routes/NuovoProgetto.tsx"),
-  route("ente-visibile", "routes/EnteVisibile.tsx"),
-  route("progetto-singolo-ente", "routes/ProgettoSingoloEnte.tsx"),
+
   // Utente
   route("profilo-utente", "routes/profiloUtente.tsx"),
   route("donazioni-utente", "routes/DonazioniUtente.tsx"), 
   route("progetto-singolo-utente", "routes/ProgettoSingoloUtente.tsx"),
-  route("progetto-singolo-voto-utente", "routes/ProgettoSingoloVotoUtente.tsx"),
+
+  // Comune
+  route("ente-visibile", "routes/EnteVisibile.tsx"),
+  route("progetto-singolo", "routes/ProgettoSingolo.tsx"),
 
 ] satisfies RouteConfig;

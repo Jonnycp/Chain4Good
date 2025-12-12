@@ -51,7 +51,7 @@ export default function HomeEnte() {
   // Funzione per gestire il click sul progetto
   const handleProjectClick = (id: number) => {
     // Naviga alla pagina dinamica con l'ID del progetto
-    navigate(`/progetto-singolo-ente/${id}`);
+    navigate(`/progetto-singolo/${id}`);
   };
 
   return (

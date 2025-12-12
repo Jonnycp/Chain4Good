@@ -1,13 +1,18 @@
-//pagina per visualizzare il dettaglio di un progetto per un ente che gestisce le spese
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+// Componenti Condivisi
 import HeaderCover from '~/components/HeaderCover';
 import CardSpesa from '~/components/CardSpesa';
-import ModalNuovaSpesa from '~/components/ModalNuovaSpesa';
 import ModalDettagliSpesa from '~/components/ModalDettagliSpesa';
+
+// Modali specifici per Ente
+import ModalNuovaSpesa from '~/components/ModalNuovaSpesa';
 import ModalSuccessoSpesa from '~/components/ModalSuccessoSpesa';
+
+// Modali specifici per Utente
+import ModalGestioneSpesa from '~/components/ModalGestioneSpesa';
 
 import logoLibersare from '~/assets/libersare.png';
 import coverImage from '~/assets/casa.png'; 
@@ -15,11 +20,18 @@ import avatarPlaceholder from '~/assets/libersare.png';
 
 type StatoSpesa = 'attesa' | 'approvata' | 'rifiutata';
 
-export default function ProgettoSingoloEnte() {
+export default function ProgettoSingolo() {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // CONTROLLO RUOLO
+    const isEnte = true; 
+  //  const isEnte = false; 
+
   
   const [activeTab, setActiveTab] = useState<StatoSpesa>('attesa');
+  
+  // Stati Modali
   const [isNewSpesaOpen, setIsNewSpesaOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [selectedSpesa, setSelectedSpesa] = useState<any>(null);
@@ -33,10 +45,10 @@ export default function ProgettoSingoloEnte() {
       giorni: 3, 
       stato: "attesa" as StatoSpesa,
       descrizione: "Furgone necessario per il trasporto degli animali.",
-      fileName: "preventivo_furgone.pdf",
-      dataPubblicazione: "10/12/2025",
-      votiPositivi: 5,
-      votiNegativi: 0
+      fileName: "Preventivo-1.pdf",
+      dataPubblicazione: "12/12/2025",
+      votiPositivi: 23,
+      votiNegativi: 10
     },
     { 
       id: 2, 
@@ -73,7 +85,7 @@ export default function ProgettoSingoloEnte() {
     raccolto: 250.00,
     speseCount: listaSpese.length, 
     donatoriCount: 124,
-    descrizione: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    descrizione: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     usoFondi: ["Cibo e cure veterinarie", "Manutenzione strutture"]
   };
 
@@ -82,12 +94,73 @@ export default function ProgettoSingoloEnte() {
     { id: 2, name: "Rose", amount: "5.52", currency: "ETH", time: "1 ora fa", msg: "Blockchain", avatar: avatarPlaceholder },
   ];
 
-  // LOGICA AGGIUNTA SPESA
+  //Creazione nuova spesa
   const handleNewSpesaSuccess = (nuovaSpesa: any) => {
-    setListaSpese(prev => [nuovaSpesa, ...prev]); // Aggiunge in cima
+    setListaSpese(prev => [nuovaSpesa, ...prev]); 
     setIsNewSpesaOpen(false);
     setIsSuccessOpen(true);
-    setActiveTab('attesa'); // Sposta il tab per vedere la nuova spesa
+    setActiveTab('attesa'); 
+  };
+
+  // Voto spesa
+ // LOGICA UTENTE: Voto spesa
+  const handleUpdateStatus = (id: number, decision: StatoSpesa) => {
+    setListaSpese(prev => prev.map(item => {
+      if (item.id === id) {
+        const updatedVotiPositivi = decision === 'approvata' 
+          ? (item.votiPositivi || 0) + 1 
+          : item.votiPositivi;
+
+        const updatedVotiNegativi = decision === 'rifiutata' 
+          ? (item.votiNegativi || 0) + 1 
+          : item.votiNegativi;
+
+        return { 
+          ...item, 
+          stato: item.stato, 
+          votiPositivi: updatedVotiPositivi,
+          votiNegativi: updatedVotiNegativi
+        };
+      }
+      return item;
+    }));
+    
+    // Chiudiamo il modale
+    setSelectedSpesa(null);
+  };
+
+  const handleCardClick = (spesa: any) => {
+    setSelectedSpesa(spesa);
+  };
+  // Render dei modali
+  const renderSelectedSpesaModal = () => {
+    if (!selectedSpesa) return null;
+    if (isEnte) {
+        return (
+            <ModalDettagliSpesa 
+                spesa={selectedSpesa}
+                onClose={() => setSelectedSpesa(null)}
+            />
+        );
+    }
+    // Gestione spesa per Utente 
+    if (selectedSpesa.stato === 'attesa') {
+        return (
+            <ModalGestioneSpesa 
+                spesa={selectedSpesa} 
+                onClose={() => setSelectedSpesa(null)}
+                onUpdateStatus={handleUpdateStatus}
+            />
+        );
+    }
+
+    // Altrimenti (Utente e spesa già decisa), vedo solo dettagli
+    return (
+        <ModalDettagliSpesa 
+            spesa={selectedSpesa}
+            onClose={() => setSelectedSpesa(null)}
+        />
+    );
   };
 
   const filteredSpese = listaSpese.filter(spesa => spesa.stato === activeTab);
@@ -97,24 +170,29 @@ export default function ProgettoSingoloEnte() {
     <div className="min-h-screen bg-white font-sans pb-10 relative">
 
       {/* MODALI */}
-      {isNewSpesaOpen && (
+      
+      {/* 1. Modale Dettaglio/Gestione (comune/switch) */}
+      {renderSelectedSpesaModal()}
+
+      {/* 2. Modali Ente (Nuova Spesa e Successo) - Renderizzati solo se Ente */}
+      {isEnte && isNewSpesaOpen && (
         <ModalNuovaSpesa 
             onClose={() => setIsNewSpesaOpen(false)} 
             onSuccess={handleNewSpesaSuccess} 
         />
       )}
-      {isSuccessOpen && (
+      {isEnte && isSuccessOpen && (
         <ModalSuccessoSpesa onClose={() => setIsSuccessOpen(false)} />
       )}
-      {selectedSpesa && (
-        <ModalDettagliSpesa spesa={selectedSpesa} onClose={() => setSelectedSpesa(null)} />
-      )}
 
-        <HeaderCover
-            type="ente"
-            coverImage={coverImage}
-            location={projectInfo.location}
-        />
+
+      {/* HEADER */}
+      <HeaderCover
+          type={isEnte ? "ente" : "utente"}
+          coverImage={coverImage}
+          location={projectInfo.location}
+          // Aggiungi qui handlers onShare/onDelete se necessario
+      />
 
       {/* MAIN CONTENT */}
       <main className="relative z-10 -mt-8 bg-white rounded-t-[40px] px-6 pt-10 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
@@ -141,7 +219,13 @@ export default function ProgettoSingoloEnte() {
         <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-extrabold text-secondary">Spese</h2>
-                <button onClick={() => setIsNewSpesaOpen(true)} className="bg-primary hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors"><Icon icon="mdi:plus" className="text-base" /> Nuova spesa</button>
+                
+                {/* Visualizza bottone SOLO se Ente */}
+                {isEnte && (
+                    <button onClick={() => setIsNewSpesaOpen(true)} className="bg-primary hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors">
+                        <Icon icon="mdi:plus" className="text-base" /> Nuova spesa
+                    </button>
+                )}
             </div>
 
             <div className="relative mb-5"><Icon icon="solar:magnifer-linear" className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl" /><input type="text" placeholder="Cosa vuoi cercare?" className="w-full bg-[#F8FAFC] rounded-2xl py-3.5 pl-12 pr-4 text-sm font-medium text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" /></div>
@@ -150,14 +234,18 @@ export default function ProgettoSingoloEnte() {
              <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
                 <button onClick={() => setActiveTab('attesa')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'attesa' ? 'bg-primary text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:help-circle-outline" className="text-base" /> In attesa</button>
                 <button onClick={() => setActiveTab('approvata')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'approvata' ? 'bg-secondary text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:check" className="text-base" /> Approvate</button>
-                <button onClick={() => setActiveTab('rifiutata')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'rifiutata' ? 'bg-secondary text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:close" className="text-base" /> Rifiutate</button>
+                <button onClick={() => setActiveTab('rifiutata')} className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === 'rifiutata' ? 'bg-[#D32F2F] text-white shadow-md' : 'bg-[#F1F5F9] text-slate-500 hover:bg-slate-200'}`}> <Icon icon="mdi:close" className="text-base" /> Rifiutate</button>
             </div>
 
             {/* LISTA SPESE */}
             <div className="flex flex-col gap-4 min-h-[100px]">
                 {filteredSpese.length > 0 ? (
                     filteredSpese.map((spesa) => (
-                        <CardSpesa key={spesa.id} {...spesa} onClick={() => setSelectedSpesa(spesa)} />
+                        <CardSpesa 
+                            key={spesa.id} 
+                            {...spesa} 
+                            onClick={() => handleCardClick(spesa)} 
+                        />
                     ))
                 ) : (
                     <div className="text-center py-8 border-2 border-dashed border-slate-200 rounded-2xl"><p className="text-slate-400 text-sm font-medium">Nessuna spesa in questa categoria</p></div>
@@ -169,8 +257,7 @@ export default function ProgettoSingoloEnte() {
         <div className="mb-10"><h2 className="text-base font-extrabold text-secondary mb-3">Informazioni</h2><p className="text-sm text-slate-500 leading-relaxed text-justify mb-6 font-medium">{projectInfo.descrizione}</p><h3 className="text-base font-extrabold text-secondary mb-3">Come useremo i fondi?</h3><ul className="space-y-2">{projectInfo.usoFondi.map((item, index) => (<li key={index} className="flex items-center gap-2 text-sm text-slate-500 font-medium"><div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>{item}</li>))}</ul></div>
         <div className="mb-12"><div className="flex justify-between items-center mb-6 cursor-pointer hover:opacity-70 transition" onClick={() => navigate('/storico-donazioni')}><h2 className="text-base font-extrabold text-secondary">Donazioni ricevute</h2><Icon icon="mdi:arrow-right" className="text-secondary text-2xl" /></div><div className="flex flex-col gap-1">{donatori.map((donatore) => (<div key={donatore.id} className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"><div className="flex items-start gap-3"><img src={donatore.avatar} alt={donatore.name} className="w-10 h-10 rounded-full object-cover border border-slate-100" /><div className="flex flex-col"><p className="text-sm font-bold text-secondary">{donatore.name} <span className="font-normal text-slate-500">donated</span> {donatore.amount} <span className="text-xs font-bold text-slate-400">{donatore.currency}</span></p><p className="text-xs text-slate-400 italic mt-1">"{donatore.msg}"</p></div></div><span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">{donatore.time}</span></div>))}</div></div>
 
-
-      {/* FOOTER & SHARING */}
+      {/* FOOTER */}
         <div className="border-t border-slate-100 pt-6 mb-4">
             <p className="text-center text-sm font-bold text-secondary mb-4">Aiuta questo progetto a crescere: Condividilo!</p>
             <div className="flex justify-center items-center gap-4 mb-8">
@@ -181,13 +268,11 @@ export default function ProgettoSingoloEnte() {
                  <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:linkedin" width="24" /></button>
                  <button className="text-secondary hover:text-primary transition"><Icon icon="mdi:link-variant" width="24" /></button>
             </div>
-
             <div className="text-center text-xs text-slate-400 mb-6">
                 Pubblicato il 14/11/2025<br/>
                 Qualcosa non va con questo progetto?<br/>
                 <button className="underline decoration-slate-400 hover:text-secondary mt-1">Segnalalo a Chain4Good</button>
             </div>
-
             <div className="text-center text-[10px] text-slate-300">©2026 - Chain4Good</div>
         </div>
       </main>
