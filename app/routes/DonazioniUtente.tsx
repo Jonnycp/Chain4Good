@@ -108,7 +108,11 @@ export default function Donazioni() {
       `}</style>
 
       {/* HEADER */}
-      <Header type="utente" profileImage={imgUser} />
+      <Header 
+        type="utente" 
+        profileImage={imgUser} 
+        activePage="donazioni"
+      />
 
       {/* MAIN CONTENT (Centrato per desktop) */}
       <main className="px-6 mt-2 max-w-2xl mx-auto w-full">

@@ -37,6 +37,7 @@ export default function Profilo() {
       <Header 
         type={isEnte ? 'ente' : 'utente'} 
         profileImage={profileData.avatar} 
+        activePage="profilo"
       />
 
       <main className="w-full max-w-lg mx-auto px-6 mt-4">

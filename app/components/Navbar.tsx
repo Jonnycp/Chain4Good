@@ -22,13 +22,11 @@ const NavItem = ({
     className="relative w-20 h-full flex items-end justify-center focus:outline-none"
   >
     {isActive ? (
-      // STATO ATTIVO: ARCO VERDE
       <div className="absolute bottom-0 w-full h-[90%] bg-primary rounded-t-3xl shadow-inner flex flex-col items-center justify-center pb-1 animate-appearance-in">
          <Icon icon={icon} className="w-8 h-8 text-white mb-1" />
          <span className="text-white text-[10px] font-bold tracking-wide">{label}</span>
       </div>
     ) : (
-      // STATO INATTIVO
       <div className="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors z-20 pb-3">
          <Icon icon={icon} className="w-7 h-7" />
          <span className="text-[10px] font-medium">{label}</span>
@@ -41,9 +39,9 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-6 flex justify-between items-end z-50 rounded-t-[30px] shadow-[0_-5px_20px_rgba(0,0,0,0.05)] h-[80px]">
+    // NOTA: Aggiunto 'md:hidden' per nascondere la bottom bar su desktop
+    <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 px-6 flex justify-between items-end z-50 rounded-t-[30px] shadow-[0_-5px_20px_rgba(0,0,0,0.05)] h-[80px] md:hidden">
         
-      {/* HOME */}
       <NavItem 
         isActive={active === 'home'}
         onClick={() => navigate('/')}
@@ -51,7 +49,6 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
         label="Home"
       />
 
-      {/* DONAZIONI  */}
       <NavItem 
         isActive={active === 'donazioni'}
         onClick={() => navigate('/donazioni-utente')}
@@ -59,7 +56,6 @@ const Navbar = ({ active = 'home' }: NavbarProps) => {
         label="Donazioni"
       />
 
-      {/* PROFILO */}
       <NavItem 
         isActive={active === 'profilo'}
         onClick={() => navigate('/pagina-profilo')}
