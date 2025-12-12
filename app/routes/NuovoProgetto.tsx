@@ -59,8 +59,6 @@ export default function NuovoProgetto() {
     
     if (!formData.projectName) {
       newErrors.projectName = "Il nome è obbligatorio.";
-    } else if (!/^[A-Z]/.test(formData.projectName)) {
-      newErrors.projectName = "Deve iniziare con una lettera maiuscola.";
     } else if (formData.projectName.length < 3) {
       newErrors.projectName = "Deve contenere almeno 3 caratteri.";
     }
@@ -212,6 +210,7 @@ export default function NuovoProgetto() {
                 <input
                   type="text"
                   name="projectName"
+                  style={{ textTransform: 'capitalize' }}
                   value={formData.projectName}
                   onChange={handleChange}
                   className={getInputClass('projectName')}
