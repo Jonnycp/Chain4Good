@@ -1,3 +1,4 @@
+//pagina per visualizzare il dettaglio di un progetto per un ente che gestisce le spese
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate, useParams } from 'react-router-dom';
