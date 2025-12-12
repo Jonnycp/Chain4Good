@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@heroui/react";
 
+import HeaderCover from '~/components/HeaderCover';
 import CardHome from '~/components/CardHome'; 
 import coverPlaceholder from '~/assets/cover_event.png';
 import logoLibersare from '~/assets/libersare.png'; 
@@ -60,7 +61,10 @@ export default function EnteVisibile() {
 
   return (
     <div className="min-h-screen bg-white font-sans pb-10 relative">
-      
+      <HeaderCover
+          type="utente"
+          coverImage={enteInfo.cover}
+      />      
       {/* Stile inline per nascondere la scrollbar nativa ma mantenere lo scroll funzionale */}
       <style>{`
         .hide-scrollbar::-webkit-scrollbar {
@@ -72,37 +76,7 @@ export default function EnteVisibile() {
         }
       `}</style>
 
-      {/* --- HEADER CON IMMAGINE DI COPERTINA --- */}
-      <div className="relative h-64 w-full">
-        {/* Immagine */}
-        <img 
-          src={enteInfo.cover} 
-          alt="Cover Ente" 
-          className="w-full h-full object-cover"
-        />
-        {/* Overlay scuro leggero */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent h-24 pointer-events-none" />
 
-        {/* Pulsanti Navigazione */}
-        <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-center z-20">
-            <Button 
-                isIconOnly 
-                variant="ghost" 
-                className="text-white hover:bg-white/20 rounded-full"
-                onPress={() => navigate(-1)}
-            >
-                <Icon icon="mdi:arrow-left" width="28" />
-            </Button>
-
-            <Button 
-                isIconOnly 
-                variant="ghost" 
-                className="text-white hover:bg-white/20 rounded-full"
-            >
-                <Icon icon="mdi:share-variant-outline" width="26" />
-            </Button>
-        </div>
-      </div>
 
       {/* --- CONTENUTO PRINCIPALE --- */}
       <main className="max-w-md mx-auto px-6 relative z-10 -mt-16">
