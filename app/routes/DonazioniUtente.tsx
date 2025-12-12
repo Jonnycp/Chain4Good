@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
-import Header from '~/components/Header';
 
+// Componenti Condivisi
+import Header from '~/components/Header';
 import Navbar from '~/components/Navbar'; 
+
+// Componenti Specifici (li creo qui sotto)
 import CardProgettoAttivo from '~/components/CardProgettoAttivo';
 import CardProgettoSupportato from '~/components/CardProgettoSupportato';
 
-import logo from '~/assets/logo.png'; 
 import logoLibersare from '~/assets/libersare.png';
 import imgUser from '~/assets/img_user.png'; 
 
@@ -22,34 +24,29 @@ export default function Donazioni() {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
-  // LOGICA COPY HASH
   const handleCopyHash = (e: React.MouseEvent, hash: string) => {
     e.stopPropagation();
     navigator.clipboard.writeText(hash);
-    alert(`Hash transazione copiato: ${hash.substring(0, 10)}...`);
+    alert(`Hash copiato!`);
   };
 
-  // LOGICA NAVIGAZIONE
-  const goToProject = (id: number) => navigate(`/progetto-singolo`);
-  // const goToProject = (id: number) => navigate(`/progetto-singolo/${id}`);
+  // Navigazione
+  const goToProject = (id: number) => navigate(`/progetto-singolo/${id}`);
   
   const goToEnte = (e: React.MouseEvent, enteId: number) => {
     e.stopPropagation();
-    navigate(`/ente/${enteId}`);
+    navigate(`/ente/${enteId}`); // O /profilo-ente se usi la pagina pubblica
   };
 
   const openMap = (e: React.MouseEvent, location: string) => {
     e.stopPropagation();
-    window.open(`https://www.google.com/maps/search/?api=1&query=${location}`, '_blank');
+    const encoded = encodeURIComponent(location);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encoded}`, '_blank');
   };
 
   // DATI MOCK
-  const stats = {
-    progettiSupportati: 3,
-    denaroDonato: 30
-  };
+  const stats = { progettiSupportati: 3, denaroDonato: 30 };
 
-  // Progetti Attivi
   const progettiAttivi = [
     {
       id: 1,
@@ -71,7 +68,6 @@ export default function Donazioni() {
     }
   ];
 
-  // Progetti Supportati
   const progettiSupportati = [
     {
       id: 1,
@@ -84,8 +80,8 @@ export default function Donazioni() {
       daysLeft: 14,
       supporters: 10,
       donations: [
-        { id: 'tx1', amount: 157, currency: 'USDC', date: '10/10/2025 alle 12.34 CET', hash: '0x75df0e14e35689...' },
-        { id: 'tx2', amount: 12, currency: 'USDC', date: '10/10/2025 alle 12.34 CET', hash: '0x32ac9b12f41231...' },
+        { id: 'tx1', amount: 157, currency: 'USDC', date: '10/10/2025 - 12.34', hash: '0x75df0e14e35689...' },
+        { id: 'tx2', amount: 12, currency: 'USDC', date: '10/10/2025 - 12.34', hash: '0x32ac9b12f41231...' },
       ]
     },
     {
@@ -99,7 +95,7 @@ export default function Donazioni() {
       daysLeft: 30,
       supporters: 5,
       donations: [
-        { id: 'tx3', amount: 50, currency: 'USDC', date: '12/10/2025 alle 09.00 CET', hash: '0x99df0e14e356...' },
+        { id: 'tx3', amount: 50, currency: 'USDC', date: '12/10/2025 - 09.00', hash: '0x99df0e14e356...' },
       ]
     }
   ];
@@ -111,19 +107,21 @@ export default function Donazioni() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
+      {/* HEADER */}
       <Header type="utente" profileImage={imgUser} />
 
-      <main className="px-6 mt-2">
+      {/* MAIN CONTENT (Centrato per desktop) */}
+      <main className="px-6 mt-2 max-w-2xl mx-auto w-full">
         <h1 className="text-2xl font-extrabold text-secondary mb-6">Le tue donazioni</h1>
 
-        {/* CARD STATISTICHE */}
+        {/* STATS */}
         <div className="flex gap-4 mb-8">
-            <div className="flex-1 border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+            <div className="flex-1 border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm bg-slate-50">
                 <span className="text-4xl font-extrabold text-primary">{stats.progettiSupportati}</span>
                 <span className="text-xs font-bold text-secondary text-right leading-tight">Progetti<br/>supportati</span>
             </div>
 
-            <div className="flex-1 border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+            <div className="flex-1 border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm bg-slate-50">
                 <div className="flex items-baseline">
                     <span className="text-4xl font-extrabold text-primary">{stats.denaroDonato}</span>
                     <span className="text-sm font-bold text-primary ml-0.5">ETH</span>
@@ -132,61 +130,49 @@ export default function Donazioni() {
             </div>
         </div>
 
-        {/* SEZIONE: PROGETTI ATTIVI (CAROSELLO) */}
+        {/* PROGETTI ATTIVI */}
         <div className="mb-8">
             <div 
                 className="flex items-center justify-between mb-4 cursor-pointer group"
                 onClick={() => toggleSection('attivi')}
             >
                 <h2 className="text-lg font-bold text-secondary">Progetti attivi</h2>
-                <Icon 
-                    icon="mdi:chevron-down" 
-                    className={`text-2xl text-secondary transition-transform duration-300 ${openSections.attivi ? 'rotate-180' : ''}`} 
-                />
+                <Icon icon="mdi:chevron-down" className={`text-2xl text-secondary transition-transform duration-300 ${openSections.attivi ? 'rotate-180' : ''}`} />
             </div>
 
-            {/* Carosello Progetti Attivi */}
             {openSections.attivi && (
-                <div className="flex overflow-x-auto px-6 pb-6 gap-4 snap-x snap-mandatory -mx-6 no-scrollbar">
+                <div className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory no-scrollbar">
                     {progettiAttivi.map((item) => (
                         <div key={item.id} className="min-w-[85vw] sm:min-w-[320px] snap-center">
-                            <CardProgettoAttivo 
-                                {...item}
-                                onClick={() => goToProject(item.id)}
-                            />
+                            <CardProgettoAttivo {...item} onClick={() => goToProject(item.id)} />
                         </div>
                     ))}
                 </div>
             )}
         </div>
 
-        {/* SEZIONE: PROGETTI SUPPORTATI */}
+        {/* PROGETTI SUPPORTATI */}
         <div className="mb-6">
             <div 
                 className="flex items-center justify-between mb-4 cursor-pointer group"
                 onClick={() => toggleSection('supportati')}
             >
                 <h2 className="text-lg font-bold text-secondary">Progetti supportati</h2>
-                <Icon 
-                    icon="mdi:chevron-down" 
-                    className={`text-2xl text-secondary transition-transform duration-300 ${openSections.supportati ? 'rotate-180' : ''}`} 
-                />
+                <Icon icon="mdi:chevron-down" className={`text-2xl text-secondary transition-transform duration-300 ${openSections.supportati ? 'rotate-180' : ''}`} />
             </div>
 
-            {/* Carosello Progetti Supportati */}
             {openSections.supportati && (
-                <div className="flex overflow-x-auto px-6 pb-6 gap-5 snap-x snap-mandatory -mx-6 no-scrollbar">
+                <div className="flex flex-col gap-6">
                     {progettiSupportati.map((project) => (
-                        <div key={project.id} className="min-w-[90vw] sm:min-w-[350px] snap-center">
-                            <CardProgettoSupportato 
-                                {...project}
-                                userAvatar={imgUser}
-                                onProjectClick={() => goToProject(project.id)}
-                                onEnteClick={(e) => goToEnte(e, project.enteId)}
-                                onMapClick={(e) => openMap(e, project.location)}
-                                onCopyHash={handleCopyHash}
-                            />
-                        </div>
+                        <CardProgettoSupportato 
+                            key={project.id}
+                            {...project}
+                            userAvatar={imgUser}
+                            onProjectClick={() => goToProject(project.id)}
+                            onEnteClick={(e) => goToEnte(e, project.enteId)}
+                            onMapClick={(e) => openMap(e, project.location)}
+                            onCopyHash={handleCopyHash}
+                        />
                     ))}
                 </div>
             )}
