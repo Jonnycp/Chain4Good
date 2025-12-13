@@ -18,7 +18,10 @@
 \usepackage{amsfonts}
 \usepackage[dvipsnames, table]{xcolor}
 \usepackage{graphicx}
-\usepackage[sorting=none,backend=biber]{biblatex}
+\usepackage[style=ieee, sorting=none, backend=biber]{biblatex}
+\DefineBibliographyStrings{english}{
+	references = {Bibliografia},
+}
 \usepackage{glossaries}
 \usepackage{subfig}
 \usepackage{listofitems}
@@ -107,7 +110,6 @@
 %	GRAPHICS SETTINGS
 %----------------------------------------------------------------------------------------
 \graphicspath{{./figures/}}  % dir in which \includegraphics will look for files
-
 
 \definecolor{webbrown}{RGB}{162, 23, 23}
 \definecolor{RoyalBlue}{RGB}{23, 111, 192}
@@ -208,7 +210,7 @@
 	%	LIST OF CONTENTS/FIGURES/TABLES PAGES
 	%----------------------------------------------------------------------------------------
 
-	\tableofcontents % Prints the main table of contents
+	\tableofcontents 
 	\clearpage
 %	\listoffigures % Prints the list of figures
 %	\listoftables % Prints the list of tables
@@ -230,13 +232,10 @@
 	%----------------------------------------------------------------------------------------
 	\input{chapters/intro}
 	\clearpage
-	
 	\input{chapters/background}
 	\clearpage
 	\input{chapters/metodologia}
 	\clearpage
-%	\input{chapters/analisi requisiti}
-%	\clearpage
 	\input{chapters/progettazione}
 	\clearpage
 	\input{chapters/prototipo}
@@ -248,9 +247,10 @@
 	
 	
 	%----------------------------------------------------------------------------------------
-	%	BIBLIOGRAPHY
+	%	PHY
 	%----------------------------------------------------------------------------------------
 	\clearpage
+	
 	\printbibliography[heading=bibintoc]
 
 
@@ -259,8 +259,8 @@
 	%----------------------------------------------------------------------------------------
     \clearpage
     
-    \begin{appendices}
-	   \input{chapters/appendix}
-    \end{appendices}
+    %\begin{appendices}
+	 %  \input{chapters/appendix}
+    %\end{appendices}
 
 \end{document}
