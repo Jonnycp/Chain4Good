@@ -22,7 +22,7 @@
 \DefineBibliographyStrings{english}{
 	references = {Bibliografia},
 }
-\usepackage{glossaries}
+\usepackage[acronym, toc]{glossaries}
 \usepackage{subfig}
 \usepackage{listofitems}
 \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
@@ -212,11 +212,11 @@
 
 	\tableofcontents 
 	\clearpage
-%	\listoffigures % Prints the list of figures
-%	\listoftables % Prints the list of tables
+	%\listoffigures % Prints the list of figures
+	%\listoftables % Prints the list of tables
 	\printglossary[
-		title=List of acronyms,
-		toctitle=List of acronyms,
+		title=Acronimi,
+		toctitle=Acronimi,
 		type=\acronymtype,
 		nonumberlist,
 	]
