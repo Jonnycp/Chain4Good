@@ -1,6 +1,6 @@
 \glossarysection[\glossarytoctitle]{\glossarytitle}\glossarypreamble
 \begin{theglossary}\glossaryheader
-\glsgroupheading{D}\relax \glsresetentrylist %
-\glossentry{dlt}{\glossaryentrynumbers{\relax 
-		\setentrycounter[]{page}\glsnumberformat{2}}}%
+\glsgroupheading{P}\relax \glsresetentrylist %
+\glossentry{pow}{\glossaryentrynumbers{\relax 
+		\setentrycounter[]{page}\glsnumberformat{3}}}%
 \end{theglossary}\glossarypostamble
