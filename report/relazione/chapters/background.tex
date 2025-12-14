@@ -10,12 +10,10 @@
 
 \subsection{Blockchain}
 
-Una blockchain è una base di dati distribuita, condivisa e immutabile, mantenuta da una rete di nodi interconnessi secondo un'architettura \gls{p2p}. Dal punto di vista dei sistemi distribuiti, essa può essere descritta come un sistema che garantisce affidabilità e sicurezza replicando i dati e le operazioni su molteplici nodi indipendenti \cite{rodrigues2010peer}.
-Tale paradigma architetturale è stato introdotto per la prima volta nel 2008, come infrastruttura di supporto per la criptovaluta bitcoin proposta da Satoshi Nakamoto, pseudonimo usato per identificare l'autore (o gli autori) del white paper di Bitcoin \cite{nakamoto2007bitcoin}.
-
-Come suggerito dal termine stesso, la blockchain è una catena ordinata di blocchi, dove ciascun blocco contiene un insieme di transazioni validate dalla rete.
-Ogni blocco è collegato al precedente attraverso un riferimento crittografico, detto \textit{hash}.
-Questa struttura dati rende estremamente difficile la modifica o la cancellazione delle informazioni già registrate: qualsiasi tentativo di alterare un blocco comporterebbe infatti la modifica di tutti i blocchi successivi \cite{monrat2019survey}.
+Una blockchain è una base di dati distribuita, condivisa e immutabile, mantenuta da una rete di nodi interconnessi secondo un'architettura \gls{p2p}. Dal punto di vista dei sistemi distribuiti, essa può essere descritta come un sistema che garantisce affidabilità e sicurezza replicando i dati e le operazioni su molteplici nodi indipendenti \cite{rodrigues2010peer}.\\
+Tale paradigma architetturale è stato introdotto per la prima volta nel 2008 da Satoshi Nakamoto - pseudonimo utilizzato dall'autore (o dal collettivo) dietro il \textit{white paper} di Bitcoin - come infrastruttura di supporto per la nota criptovaluta. \\
+Come suggerito dal termine stesso, la blockchain è una catena sequenziale di blocchi, ciascuno contenente un insieme di transazioni validate dalla rete.
+Ogni blocco è collegato al precedente attraverso un riferimento crittografico, detto \textit{hash}. Questa caratteristica rende il registro intrinsecamente resistente alla manomissione: qualsiasi tentativo di alterare le informazioni contenute in un blocco comporterebbe, infatti, l'invalidazione a cascata di tutti i blocchi successivi \cite{monrat2019survey}.
 
 \subsubsection{Transazioni}
 La transazione rappresenta l’unità fondamentale di informazione all’interno della blockchain. Essa descrive un’operazione richiesta da un utente, come ad esempio il trasferimento di un asset digitale (\textit{token}) o l'esecuzione di uno \textit{Smart Contract} \cite{crosby2016blockchain}.
@@ -43,9 +41,7 @@ Il processo di validazione di un blocco impone dunque l'implementazione di algor
 	Il \textit{miner} che per primo individua una soluzione valida al problema, acquisisce il diritto di creare un nuovo blocco e propagarlo alla rete.
 	Tuttavia, l'aggiunta effettiva del blocco avviene solo se questo viene correttamente validato e accettato dalla maggioranza dei nodi. Se queste operazioni vanno a buon fine, il \textit{miner} riceve una ricompensa, generalmente erogata sotto forma di criptovaluta \cite{tschorsch2016bitcoin}.
 	
-	\item \gls{pos}: in questo protocollo, il processo di validazione è affidato ad un insieme di nodi scelti in funzione della quantità di criptovaluta vincolata come garanzia, in un processo noto come \textit{staking}. I nodi selezionati come \textit{validatori} sono responsabili della creazione dei blocchi e della verifica delle transazioni. 
-	
-	La sicurezza della rete è garantita da un sistema di disincentivi economici: qualora un validatore agisca in modo fraudolento o tenti di compromettere il sistema, incorre nella perdita parziale o totale dei fondi posti in \textit{staking}. 
+	\item \gls{pos}: in questo protocollo, il processo di validazione è affidato ad un insieme di nodi scelti in funzione della quantità di criptovaluta vincolata come garanzia, in un processo noto come \textit{staking}. I nodi selezionati come \textit{validatori} sono responsabili della creazione dei blocchi e della verifica delle transazioni. \\ La sicurezza della rete è garantita da un sistema di disincentivi economici: qualora un validatore agisca in modo fraudolento o tenti di compromettere il sistema, incorre nella perdita parziale o totale dei fondi posti in \textit{staking}. 
 	Una volta raggiunto il consenso, il blocco viene aggiunto immutabilmente alla blockchain, aggiornando lo stato del \textit{ledger} distribuito.
 	
 \end{itemize}
@@ -60,9 +56,10 @@ L'adozione della tecnologia blockchain offre vantaggi significativi rispetto ai 
 	\item \textbf{Decentralizzazione}: l’assenza di un’autorità centrale elimina i \textit{single point of failure} \cite{rodrigues2010peer}: 
 	\item \textbf{Immutabilità}: ogni transazione è irreversibile, per cui una volta registrata nella blockchain, non può più essere cancellata o modificata, in quanto farlo altererebbe l’intera catena dei blocchi \cite{monrat2019survey}; 
 	\item \textbf{Trasparenza}: tutte le transazioni sono verificabili pubblicamente (nelle \textit{blockchain permissionless}) o dai membri autorizzati (nelle \textit{permissioned}) \cite{crosby2016blockchain}; 
-	\item \textbf{Disintermediazione (\textit{Trustless})}: il consenso distribuito consente interazioni affidabili tra parti che non si conoscono, eliminando la necessità di intermediari \cite{nakamoto2007bitcoin};
 	\item \textbf{Sicurezza}: l’uso combinato di crittografia asimmetrica (per l'autenticazione) e protocolli di consenso distribuito (per l'integrità del registro) rende il sistema resistente ad attacchi e frodi;
 	\end{itemize}
+	
+	%	\item \textbf{Disintermediazione (\textit{Trustless})}: il consenso distribuito consente interazioni affidabili tra parti che non si conoscono, eliminando la necessità di intermediari \cite{nakamoto2007bitcoin};
 
 
 \subsection{Ethereum Blockchain}
