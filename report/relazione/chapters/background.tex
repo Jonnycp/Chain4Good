@@ -10,14 +10,14 @@
 
 \subsection{Blockchain}
 
-Una blockchain è una base di dati distribuita, condivisa e immutabile, mantenuta da una rete di nodi interconnessi secondo un'architettura \gls{p2p}. Dal punto di vista dei sistemi distribuiti, essa può essere descritta come un sistema che garantisce affidabilità e sicurezza replicando i dati e le operazioni su molteplici nodi indipendenti \cite{rodrigues2010peer}.\\
+Una blockchain è una base di dati distribuita, condivisa e immutabile, mantenuta da una rete di nodi interconnessi secondo un'architettura \gls{p2p}. Dal punto di vista dei sistemi distribuiti, essa si configura come un sistema che garantisce affidabilità e sicurezza replicando i dati e le operazioni su molteplici nodi indipendenti \cite{rodrigues2010peer}.\\
 Tale paradigma architetturale è stato introdotto per la prima volta nel 2008 da Satoshi Nakamoto - pseudonimo utilizzato dall'autore (o dal collettivo) dietro il \textit{white paper} di Bitcoin - come infrastruttura di supporto per la nota criptovaluta. \\
 Come suggerito dal termine stesso, la blockchain è una catena sequenziale di blocchi, ciascuno contenente un insieme di transazioni validate dalla rete.
 Ogni blocco è collegato al precedente attraverso un riferimento crittografico, detto \textit{hash}. Questa caratteristica rende il registro intrinsecamente resistente alla manomissione: qualsiasi tentativo di alterare le informazioni contenute in un blocco comporterebbe, infatti, l'invalidazione a cascata di tutti i blocchi successivi \cite{monrat2019survey}.
 
 \subsubsection{Transazioni}
-La transazione rappresenta l’unità fondamentale di informazione all’interno della blockchain. Essa descrive un’operazione richiesta da un utente, come ad esempio il trasferimento di un asset digitale (\textit{token}) o l'esecuzione di uno \textit{Smart Contract} \cite{crosby2016blockchain}.
-Ogni transazione è creata da un nodo della rete e viene firmata digitalmente utilizzando una coppia di chiavi crittografiche (crittografia asimmetrica). \\
+La transazione rappresenta l’unità fondamentale di informazione all’interno della blockchain. Essa descrive un’operazione richiesta da un utente, come ad esempio il trasferimento di un asset digitale (\textit{token}) o l'invocazione di uno \textit{Smart Contract} \cite{crosby2016blockchain}.
+Ogni transazione è creata da un nodo e viene firmata digitalmente utilizzando una coppia di chiavi crittografiche (crittografia asimmetrica). \\
 Prima di essere registrata nella blockchain, ogni transazione viene validata dalla rete secondo regole condivise e, una volta confermata, viene inserita in un blocco.
 
 \subsubsection{Blocchi}
@@ -29,6 +29,7 @@ Un blocco è una struttura dati che aggrega un insieme di transazioni validate i
 	\item il \textit{Merkle Root}, ovvero la radice di un \textit{Merkle Tree}, una struttura ad albero binario che consente di riassumere tutte le transazioni del blocco in un unico \textit{hash};
 	\item dati aggiuntivi richiesti dal protocollo di consenso adottato.
 	\end{itemize}
+	
 L’inclusione dell’\textit{hash} del blocco precedente rende la blockchain una struttura immutabile per costruzione: anche una minima modifica a una singola transazione altererebbe la \textit{Merkle Root} e di conseguenza l’\textit{hash} del blocco, invalidando l’intera catena successiva. Questo meccanismo costituisce uno dei principali fattori di sicurezza della blockchain \cite{monrat2019survey}.
 
 \subsubsection{Protocolli di consenso}
@@ -47,8 +48,6 @@ Il processo di validazione di un blocco impone dunque l'implementazione di algor
 \end{itemize}
 
 
-
-
 \subsubsection{Vantaggi della blockchain}
 L'adozione della tecnologia blockchain offre vantaggi significativi rispetto ai sistemi centralizzati tradizionali, derivanti dalla sua architettura distribuita e dall'uso della crittografia:
 
@@ -58,22 +57,45 @@ L'adozione della tecnologia blockchain offre vantaggi significativi rispetto ai 
 	\item \textbf{Trasparenza}: tutte le transazioni sono verificabili pubblicamente (nelle \textit{blockchain permissionless}) o dai membri autorizzati (nelle \textit{permissioned}) \cite{crosby2016blockchain}; 
 	\item \textbf{Sicurezza}: l’uso combinato di crittografia asimmetrica (per l'autenticazione) e protocolli di consenso distribuito (per l'integrità del registro) rende il sistema resistente ad attacchi e frodi;
 	\end{itemize}
-	
-	%	\item \textbf{Disintermediazione (\textit{Trustless})}: il consenso distribuito consente interazioni affidabili tra parti che non si conoscono, eliminando la necessità di intermediari \cite{nakamoto2007bitcoin};
 
 
 \subsection{Ethereum Blockchain}
 
-\subsubsection{Smart Contract}
+Ethereum è una piattaforma decentralizzata, \textit{open-source} basata su bockchain, proposta da Vitalik Buterin nel 2013 e resa operativa con il primo rilascio stabile nel 2015 \cite{buterin2014next}. 
+A differenza delle blockchain nata esclusivamente per il trasferimento di valore, come Bitcoin, Ethereum introduce un modello che consente di implementare logiche computazionali complesse direttamente sulla blockchain. Tale programmabilità è resa possibile attraverso l’utilizzo degli \textit{smart contract}, programmi autonomi e immutabili eseguiti in modo deterministico dalla rete. 
+
+Per supportare l’esecuzione degli \textit{smart contract} e la gestione delle transazioni, Ethereum adotta un modello basato su account, distinguendo tra \textit{\gls{eoa}} e \textit{Contract Accounts}. \\
+Gli \gls{eoa}, comunemente identificati come \textit{wallet}, sono controllati direttamente dagli utenti tramite una coppia di chiavi crittografiche: una chiave privata, utilizzata per firmare digitalmente le transazioni, e una chiave pubblica, che funge da indirizzo dell’account sulla rete. \\
+Per effettuare una transazione è necessario che il mittente conosca l’indirizzo, ovvero la chiave pubblica, del \textit{wallet} del destinatario e che firmi digitalmente la transazione prima di inviarla alla rete Ethereum con la propria chiave privata, dimostrando così che il richiedente dell’operazione è l’effettivo titolare del \textit{wallet}. \\
+I \textit{Contract Accounts}, al contrario, sono account associati a uno \textit{smart contract} e non sono controllati da una chiave privata. Essi non possono avviare transazioni, ma vengono attivati esclusivamente in risposta a chiamate provenienti da un \gls{eoa} o da un altro smart contract. 
+
+La validazione delle transazioni è affidata all’\gls{evm}, una macchina virtuale decentralizzata e Turing-completa eseguita in modo deterministico da tutti i nodi della rete.
+%La \gls{evm} ha il compito di eseguire il codice degli \textit{smart contract} in risposta alle transazioni inviate alla rete, garantendo che le stesse istruzioni producano identici risultati su ogni nodo.
+
+
+
+
+%  Ethereum dispone di una criptovaluta nativa, l’Ether, che oltre a poter essere scambiato fra account, è generato dalla piattaforma stessa come ricompensa ai \textit{miner} per il lavoro computazionale svolto. \\
+
+
+% Ciascuna transazione generata sulla rete Ethereum, sia essa un semplice trasferimento di Ether, o l’invocazione di una funzione di uno smart contract, comporta un costo che è proporzionale alla complessità computazionale, alla banda utilizzata e/o alla quantità di \textit{storage} necessario. Questo meccanismo interno adottato da Ethereum prende il nome di “gas”. 
+
+
+
+%\subsubsection{Smart Contract}
+
+%Gli Smart Contract sono programmi memorizzati ed eseguiti sulla blockchain Ethereum, associati a specifici account di tipo \textit{contract}. Essi vengono attivati automaticamente quando ricevono una transazione o un messaggio e possono leggere e modificare il proprio stato interno, trasferire Ether e interagire con altri.
+%Gli Smart Contract possono essere scritti utilizzando diversi linguaggi di programmazione, il più utilizzato dei quali è al momento Solidity. Il codice sorgente scritto in Solidity, o in un qualsiasi altro linguaggio ad alto livello fra quelli supportati, deve essere poi compilato per produrre un \textit{bytecode} pronto per essere eseguito dalla \gls{evm}.
+
+
 
 \subsubsection{DApps}
+
+Le \gls{dapps} sono applicazioni decentralizzate che operano su una rete \gls{p2p}. 
+
 
 \subsubsection{DAO}
 
 
-
-
-%subsection{crowdfunding}
-%Nata come infrastruttura di supporto per la criptovaluta Bitcoin, la blockchain si è progressivamente evoluta in una tecnologia \textit{general-purpose}, trovando applicazione in un'ampia gamma di contesti. \cite{panarello2018blockchain}.
 
 
