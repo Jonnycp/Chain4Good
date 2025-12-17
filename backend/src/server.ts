@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
 import indexRouter from "./routes/index.ts";
+import { connectDB } from './database.ts';
 
 dotenv.config();
 const app = express();
@@ -45,11 +46,13 @@ app.use((req, res) => {
 });
 
 // Avvia il server
-app.listen(port, () => {
+app.listen(port, async () => {
   if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length === 0) {
-    console.warn(
-      "⚠️ SESSION_SECRET non è impostato nelle variabili d'ambiente!"
+    console.error(
+      "⚠️ ERRORE: SESSION_SECRET non è impostato nelle variabili d'ambiente!"
     );
+    process.exit(1);
   }
+  await connectDB();
   console.log(`🟢 Backend server avviato su http://localhost:${port}`);
 });
