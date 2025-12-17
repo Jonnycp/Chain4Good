@@ -6,7 +6,7 @@ const router = Router();
 // Login flow:
 // Nonce => Firma => Verifica => Sessione
 
-router.get('/nonce', AuthController.getNonce);
+router.post('/nonce', AuthController.getNonce);
 
 router.post('/verify', AuthController.verifySignature);
 
