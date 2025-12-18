@@ -126,3 +126,22 @@ export const logout = (req: Request, res: Response) => {
     res.status(200).send("Logout effettuato con successo");
   });
 };
+
+/**
+ * Endpoint GET /auth/me
+ * Ottiene dati sull'utente autenticato.
+ */
+export const getUser = async (req: Request, res: Response) => {
+  if (!req.session.address) {
+    return res.status(401).json({ error: "Non autenticato", code: 401 });
+  }
+
+  try {
+    const user = await UserModel.findOne({ address: req.session.address });
+    if (!user) return res.status(404).json({ error: "Utente non trovato" });
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Errore server", code: 500 });
+  }
+};

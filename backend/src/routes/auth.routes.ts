@@ -12,4 +12,6 @@ router.post('/verify', AuthController.verifySignature);
 
 router.post('/logout', AuthController.logout);
 
+router.get('/me', AuthController.getUser);
+
 export default router;
