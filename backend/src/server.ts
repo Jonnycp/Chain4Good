@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
 import indexRouter from "./routes/index.ts";
+import cors from "cors";
 import { connectDB } from './database.ts';
 
 dotenv.config();
@@ -11,15 +12,10 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 
 // Configurazione CORS (per il frontend)
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    process.env.FRONTEND_URL || "http://localhost:5173"
-  );
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 
 // Configurazione Sessioni
 app.use(
