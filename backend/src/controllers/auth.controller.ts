@@ -22,13 +22,13 @@ export const getNonce = async (req: Request, res: Response) => {
 
     if (!existingUser) {
       req.session.nonce = newNonce;
-      req.session.address = walletAddress;
+      req.session.address = walletAddress; //TODO: Indirizzo temporeaneo
     } else {
       existingUser.nonce = newNonce;
       await existingUser.save();
     }
 
-    res.status(200).send(newNonce);
+    res.status(200).json({nonce: newNonce});
   } catch (error) {
     console.error("Errore nella generazione del nonce:", error);
     res
