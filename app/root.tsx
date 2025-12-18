@@ -1,8 +1,10 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, redirect, useLoaderData } from "react-router";
 
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { config } from "./wagmi.config";
+
+import AppProvider from "./context/AppProvider";
 
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -62,9 +64,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          <WagmiProvider config={config}>
-            {children}
-            </WagmiProvider>
+          <WagmiProvider config={config}>{children}</WagmiProvider>
         </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
@@ -73,6 +73,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const isLoginPage = url.pathname === "/login";
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
+      headers: {
+        Cookie: request.headers.get("Cookie") || "",
+      },
+    });
+
+    const user = res.ok ? await res.json() : null;
+
+    if (!user && !isLoginPage) {
+      return redirect("/login");
+    }
+    if (user && isLoginPage) {
+      return redirect("/");
+    }
+    return { user };
+  } catch (error) {
+    if (isLoginPage) return { user: null };
+    return redirect("/login");
+  }
+}
+
 export default function App() {
-  return <Outlet />;
+  const { user } = useLoaderData<typeof loader>();
+
+  return (
+    <AppProvider initialUser={user || null}>
+      <Outlet />
+    </AppProvider>
+  );
 }
