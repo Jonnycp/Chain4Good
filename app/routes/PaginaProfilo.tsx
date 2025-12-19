@@ -1,54 +1,67 @@
-import { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { useNavigate } from 'react-router-dom';
 
-import Header from '~/components/Header';
-import Navbar from '~/components/Navbar';
+import Header from '../components/Header';
+import Navbar from '../components/Navbar';
 
-import imgUser from '~/assets/img_user.png'; 
-import avatarPlaceholder from '~/assets/libersare.png';
+import avatarPlaceholder from '../assets/img_user.png'; 
+
+import { useNavigate, redirect, type ActionFunctionArgs, useSubmit } from "react-router";
+
+import { useApp } from "../context/AppProvider";
+import { useBalance } from "wagmi";
+import { getAddress, formatEther } from "viem";
+
+export async function action({ request }: ActionFunctionArgs) {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {
+      method: "POST",
+      headers: {
+        "Cookie": request.headers.get("Cookie") || "",
+      },
+      credentials: "include",
+    });
+
+    if (!response.ok) throw new Error("Errore nel logout");
+
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": "siwe-session=; Path=/; HttpOnly; Max-Age=0; SameSite=Lax",
+      },
+    });
+  } catch (error) {
+    return { error: "Logout fallito" };
+  }
+}
 
 export default function Profilo() {
+  const isEnte = false;
   const navigate = useNavigate();
+  const submit = useSubmit();
 
-  //  ROLE TOGGLE 
-  //const isEnte = true; 
-  const isEnte = false
-
-  const profileData = {
-    nome: isEnte ? "Rose" : "Rose",
-    walletAddress: "0x75df0e14e...",
-    saldo: "300.001",
-    email: "rose_random@gmail.com",
-    avatar: isEnte ? avatarPlaceholder : imgUser,
-    // Specific to Ente
-    denominazione: "Organizzazione di volontariato",
-  };
-
-  const handleLogout = () => {
-    console.log("Logout...");
-    navigate('/login');
-  };
+  const { user, loading } = useApp();
+  const { data: balance } = useBalance({
+    address: user?.address ? getAddress(user.address) : undefined,
+  });
+  //TODO: Gestire stable coin...
 
   return (
     <div className={`min-h-screen bg-white font-sans text-secondary ${isEnte ? 'pb-10' : 'pb-28'} relative`}>
       
-      {/* HEADER */}
       <Header 
         type={isEnte ? 'ente' : 'utente'} 
-        profileImage={profileData.avatar} 
+        profileImage={user?.profilePicture || avatarPlaceholder} 
         activePage="profilo"
       />
 
       <main className="w-full max-w-lg mx-auto px-6 mt-4">
-        <h1 className="text-2xl font-extrabold text-secondary mb-8">Il tuo profilo</h1>
+        <h2 className="text-2xl font-extrabold text-secondary mb-8">Il tuo profilo</h2>
         <div className="flex flex-col items-center mb-10">
           <div className="relative">
             {isEnte ? (
                 <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-green-400 to-blue-600 p-[3px]">
                     <div className="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
                         <img 
-                          src={profileData.avatar} 
+                          src={user?.profilePicture || avatarPlaceholder} 
                           alt="Avatar" 
                           className="w-full h-full object-cover rounded-full bg-slate-900"
                         />
@@ -56,7 +69,7 @@ export default function Profilo() {
                 </div>
             ) : (
                 <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent">
-                    <img src={profileData.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                    <img src={user?.profilePicture || avatarPlaceholder} alt="Avatar" className="w-full h-full object-cover" />
                 </div>
             )}
             <button className={`absolute bottom-1 right-2 text-white rounded-full p-1 border-2 border-white shadow-md flex items-center justify-center ${isEnte ? 'bg-green-600' : 'bg-primary'}`}>
@@ -73,7 +86,7 @@ export default function Profilo() {
         <div className="border border-slate-200 rounded-2xl py-6 px-4 text-center shadow-sm mb-10 bg-white">
           <p className="text-slate-600 font-bold text-sm mb-1">Nel wallet hai disponibili</p>
           <div className="text-4xl font-bold text-primary flex justify-center items-baseline gap-1">
-            {profileData.saldo} <span className="text-lg text-primary font-semibold">ETH</span>
+            {balance ? parseFloat(formatEther(balance.value)).toFixed(4) : "0.0000"} <span className="text-lg text-primary font-semibold">{balance ? balance.symbol : "ETH"}</span>
           </div>
         </div>
         <div className="space-y-6">
@@ -84,7 +97,7 @@ export default function Profilo() {
               </label>
               <div className="flex items-center bg-[#F3F4F6] rounded-xl px-3 h-12">
                 <Icon icon={isEnte ? "lucide:user" : "mdi:user-outline"} className="text-slate-900 text-lg mr-2" />
-                <span className="text-slate-600 font-medium truncate text-sm">{profileData.nome}</span>
+                <span className="text-slate-600 font-medium truncate text-sm">{user?.username}</span>
               </div>
             </div>
             <div className="w-1/2 space-y-2">
@@ -92,7 +105,7 @@ export default function Profilo() {
               <div className="flex items-center bg-[#F3F4F6] rounded-xl px-3 h-12">
                 <Icon icon="mdi:link-variant" className="text-slate-900 text-lg mr-2" />
                 <span className="text-slate-600 font-medium truncate text-sm">
-                    {profileData.walletAddress}
+                    {user?.address}
                 </span>
               </div>
             </div>
@@ -102,7 +115,7 @@ export default function Profilo() {
                 <label className="text-secondary font-extrabold text-sm">Denominazione sociale</label>
                 <div className="flex items-center bg-[#F3F4F6] rounded-xl px-3 h-12">
                   <Icon icon="ic:baseline-people" className="text-slate-900 text-xl mr-2" />
-                  <span className="text-slate-600 font-medium text-sm truncate">{profileData.denominazione}</span>
+                  <span className="text-slate-600 font-medium text-sm truncate">{"profileData.denominazione"}</span>
                 </div>
               </div>
           )}
@@ -114,7 +127,7 @@ export default function Profilo() {
               <Icon icon="mdi:email-outline" className="text-slate-900 text-lg mr-2" />
               <input 
                 type="email" 
-                value={profileData.email} 
+                value={user?.email || ""} 
                 readOnly
                 className="bg-transparent text-slate-600 font-medium w-full outline-none text-sm"
               />
@@ -133,7 +146,7 @@ export default function Profilo() {
                 </button>
 
                 <button 
-                    onClick={handleLogout}
+                    onClick={() => submit(null, { method: "post" })}
                     className="bg-[#1D3D5A] text-white h-14 rounded-xl shadow-lg flex-1 font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform text-lg"
                 >
                     <Icon icon="mdi:logout-variant" width="20" />
@@ -142,7 +155,7 @@ export default function Profilo() {
             </>
           ) : (
             <button 
-                onClick={handleLogout}
+                onClick={() => submit(null, { method: "post" })}
                 className="w-full bg-secondary text-white font-bold text-lg py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-transform hover:bg-slate-800"
             >
                 <Icon icon="mdi:logout-variant" className="text-xl rotate-180" /> 
