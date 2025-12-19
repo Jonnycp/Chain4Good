@@ -1,0 +1,56 @@
+import { Schema, model, Document } from "mongoose";
+
+export const CATEGORY_ENUM = [
+  "medical",
+  "education",
+  "environment",
+  "community",
+  "arts",
+  "sport",
+  "emergency",
+] as const;
+
+export interface Progetto extends Document {
+  title: string;
+  category: (typeof CATEGORY_ENUM)[number];
+  location: string;
+  descrizione: string;
+  usoFondi: string[];
+  ente: Schema.Types.ObjectId;
+  coverImage: string;
+  endDate: Date;
+  targetAmount: number;
+  currentAmount: number;
+  blockchainId?: number;
+  status: "raccolta" | "attivo" | "completato" | "annullato";
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+const ProjectSchema = new Schema<Progetto>({
+  title: { type: String, required: true, trim: true, index: true },
+  category: {
+    type: String,
+    required: true,
+    enum: CATEGORY_ENUM,
+  },
+  location: { type: String, required: true, trim: true },
+  descrizione: { type: String, required: true, trim: true },
+  usoFondi: { type: [String], required: true },
+  ente: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  coverImage: { type: String, required: true },
+  endDate: { type: Date, required: true },
+  targetAmount: { type: Number, required: true },
+  currentAmount: { type: Number, default: 0, required: true },
+  blockchainId: { type: Number, required: false },
+  status: {
+    type: String,
+    required: true,
+    enum: ["raccolta", "attivo", "completato", "annullato"],
+    default: "raccolta",
+  },
+  createdAt: { type: Date, default: Date.now, required: true },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export const ProjectModel = model<Progetto>("Project", ProjectSchema);
