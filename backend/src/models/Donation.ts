@@ -1,0 +1,23 @@
+import { Schema, model, Document } from "mongoose";
+
+export interface Donazione extends Document {
+  project: Schema.Types.ObjectId;
+  donor: Schema.Types.ObjectId;
+  amount: number;
+  symbol: string;
+  hashTransaction: string;
+  date: Date;
+}
+
+const DonationSchema = new Schema<Donazione>({
+  project: { type: Schema.Types.ObjectId, ref: "Project", required: true, index: true },
+  donor: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
+  amount: { type: Number, required: true },
+  symbol: { type: String, required: true, default: "USDC" },
+  hashTransaction: { type: String, required: true, unique: true, index: true },
+  date: { type: Date, default: Date.now, required: true },
+});
+
+DonationSchema.index({ project: 1, date: -1 }); //indice composto: ordinati per progetto e data da più recenti
+
+export const DonationModel = model<Donazione>("Donation", DonationSchema);
