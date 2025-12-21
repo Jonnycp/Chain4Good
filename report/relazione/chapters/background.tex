@@ -11,12 +11,12 @@
 \subsection{Blockchain}
 
 Una blockchain è una base di dati distribuita, condivisa e immutabile, mantenuta da una rete di nodi interconnessi secondo un'architettura \gls{p2p}. Dal punto di vista dei sistemi distribuiti, essa si configura come un sistema che garantisce affidabilità e sicurezza replicando i dati e le operazioni su molteplici nodi indipendenti \cite{rodrigues2010peer}.\\
-Tale paradigma architetturale è stato introdotto per la prima volta nel 2008 da Satoshi Nakamoto - pseudonimo utilizzato dall'autore o dal collettivo di persone dietro il \textit{white paper} di Bitcoin - come infrastruttura di supporto per la nota criptovaluta. 
+Tale paradigma architetturale è stato introdotto per la prima volta nel 2008 da Satoshi Nakamoto - pseudonimo utilizzato dall'autore o dal collettivo di persone dietro il \textit{white paper} di Bitcoin - come infrastruttura di supporto per la nota criptovaluta. \\
+Come suggerito dal termine stesso, la blockchain è una catena sequenziale di blocchi, ciascuno contenente un insieme di transazioni validate dalla rete.
+Ogni blocco è collegato al precedente attraverso un riferimento crittografico, detto \textit{hash}. Questa caratteristica rende il registro intrinsecamente resistente alla manomissione: qualsiasi tentativo di alterare le informazioni contenute in un blocco comporterebbe, infatti, l'invalidazione a cascata di tutti i blocchi successivi \cite{monrat2019survey}.
 
 %Essa si presenta come un elenco infinito di transazioni tra utenti che non si conoscono e non si fidano l’uno dell’altro, ma che, grazie a questa innovativa tecnologia, sono in grado di scambiarsi criptomoneta senza l’ausilio di un’autorità centrale
 
-Come suggerito dal termine stesso, la blockchain è una catena sequenziale di blocchi, ciascuno contenente un insieme di transazioni validate dalla rete.
-Ogni blocco è collegato al precedente attraverso un riferimento crittografico, detto \textit{hash}. Questa caratteristica rende il registro intrinsecamente resistente alla manomissione: qualsiasi tentativo di alterare le informazioni contenute in un blocco comporterebbe, infatti, l'invalidazione a cascata di tutti i blocchi successivi \cite{monrat2019survey}.
 
 \subsubsection{Transazioni}
 La transazione rappresenta l’unità fondamentale di informazione all’interno della blockchain. Essa descrive un’operazione richiesta da un utente, come ad esempio il trasferimento di un asset digitale (\textit{token}) o l'invocazione di uno \textit{Smart Contract} \cite{crosby2016blockchain}.
@@ -41,11 +41,11 @@ Come precedentemente affermato, la blockchain è un sistema intrinsecamente dece
 Il processo di validazione di un blocco impone dunque l'implementazione di algoritmi di consenso, come:
 
 \begin{itemize}
-	\item \gls{pow}: rappresenta il protocollo di consenso più noto e storicamente rilevante (introdotto da Bitcoin). In questo meccanismo, i nodi della rete, detti \textit{miner}, competono per risolvere un problema crittografico computazionalmente complesso ma facilmente verificabile. 
-	Il \textit{miner} che per primo individua una soluzione valida al problema, acquisisce il diritto di creare un nuovo blocco e propagarlo alla rete.
+	\item \gls{pow}: rappresenta il protocollo di consenso più noto e storicamente rilevante (introdotto da Bitcoin). In questo meccanismo, i nodi della rete, detti \textit{miner}, competono per risolvere un problema crittografico computazionalmente complesso ma facilmente verificabile. Il \textit{miner} che per primo individua una soluzione valida al problema, acquisisce il diritto di creare un nuovo blocco e propagarlo alla rete.
 	Tuttavia, l'aggiunta effettiva del blocco avviene solo se questo viene correttamente validato e accettato dalla maggioranza dei nodi. Se queste operazioni vanno a buon fine, il \textit{miner} riceve una ricompensa, generalmente erogata sotto forma di criptovaluta \cite{tschorsch2016bitcoin}.
 	
-	\item \gls{pos}: in questo protocollo, il processo di validazione è affidato ad un insieme di nodi scelti in funzione della quantità di criptovaluta vincolata come garanzia, in un processo noto come \textit{staking}. I nodi selezionati come \textit{validatori} sono responsabili della creazione dei blocchi e della verifica delle transazioni. \\ La sicurezza della rete è garantita da un sistema di disincentivi economici: qualora un validatore agisca in modo fraudolento o tenti di compromettere il sistema, incorre nella perdita parziale o totale dei fondi posti in \textit{staking}. 
+	\item \gls{pos}: % in questo protocollo, il processo di validazione è affidato ad un insieme di nodi scelti in funzione della quantità di criptovaluta vincolata come garanzia, in un processo noto come \textit{staking}. I nodi selezionati come \textit{validatori} sono responsabili della creazione dei blocchi e della verifica delle transazioni. \\ 
+	%La sicurezza della rete è garantita da un sistema di disincentivi economici: qualora un validatore agisca in modo fraudolento o tenti di compromettere il sistema, incorre nella perdita parziale o totale dei fondi posti in \textit{staking}.
 	Una volta raggiunto il consenso, il blocco viene aggiunto immutabilmente alla blockchain, aggiornando lo stato del \textit{ledger} distribuito.
 	
 \end{itemize}
@@ -63,54 +63,43 @@ L'adozione della tecnologia blockchain offre vantaggi significativi rispetto ai 
 
 
 \subsection{Ethereum Blockchain}
-
-Ethereum è una piattaforma decentralizzata, \textit{open-source} basata su bockchain, proposta da Vitalik Buterin nel 2013 e resa operativa con il primo rilascio stabile nel 2015 \cite{buterin2014next}.\\
-A differenza delle blockchain di prima generazione, concepite prevalentemente come registri distribuiti per il trasferimento di valore (come bitcoin), Ethereum nasce come una piattaforma \textit{general-purpose} in grado di superare alcune limitazioni strutturali, come la mancanza di Turing-completezza, e supportare l'esecuzione di applicazioni decentralizzate, le \gls{dapps}. \\
-A tal fine, Ethereum mette a disposizione l'\gls{evm}, una macchina virtuale decentralizzata all’interno della quale vengono eseguiti gli \textit{Smart Contract} utilizzando la potenza computazionale dei nodi che costituiscono la rete. 
+Ethereum è una piattaforma decentralizzata e \textit{open-source} basata su tecnologia blockchain, proposta da Vitalik Buterin nel 2013 e resa operativa con il primo rilascio stabile nel 2015 \cite{buterin2014next}.  
+A differenza delle blockchain di prima generazione, concepite prevalentemente come registri distribuiti per il trasferimento di valore (ad esempio Bitcoin), Ethereum nasce come una piattaforma \textit{general-purpose} progettata per l’esecuzione di programmi direttamente sulla blockchain.
+Questa estensione del modello tradizionale consente di superare alcune limitazioni delle piattaforme precedenti, quali la mancanza di Turing-completezza, e rende possibile la realizzazione di applicazioni decentralizzate, comunemente denominate \gls{dapps}.
 
 
 \subsubsection{Smart Contract}
-
-Gli \textit{smart contract} sono programmi immutabili memorizzati sulla blockchain di Ethereum. Essi consentono di definire ed applicare automaticamente regole e condizioni logiche, rendendo possibile la gestione di risorse digitali e l’esecuzione di accordi senza il ricorso a intermediari centralizzati. Come illustrato nel \textit{whitepaper} che ha introdotto questa tecnologia, gli \textit{smart contract} possono essere concepiti come entità crittografiche capaci di detenere e trasferire valore, il cui comportamento è rigidamente definito dal codice e la cui esecuzione è consentita esclusivamente al verificarsi delle condizioni prestabilite \cite{buterin2013ethereum}.
+Gli \textit{Smart Contract} sono programmi immutabili memorizzati sulla blockchain di Ethereum. Come illustrato nel \textit{whitepaper} che ha introdotto questa tecnologia, gli \textit{smart contract} possono essere concepiti come entità crittografiche capaci di detenere e trasferire valore, il cui comportamento è rigidamente definito dal codice e la cui esecuzione è consentita esclusivamente al verificarsi delle condizioni prestabilite \cite{buterin2013ethereum}.
 Per supportare la loro esecuzione, Ethereum adotta un modello basato su \textit{account}, distinguendo tra:
 \begin{itemize}
-	\item \textit{\gls{eoa}}: comunemente identificati come \textit{wallet}, sono controllati direttamente dagli utenti tramite una coppia di chiavi crittografiche: una chiave privata, utilizzata per firmare digitalmente le transazioni, e una chiave pubblica, che funge da indirizzo dell’account sulla rete.
-	Per effettuare una transazione è necessario che il mittente conosca l'indirizzo, ossia la chiave pubblica del \textit{wallet} del destinatario, e che firmi digitalmente la transazione prima di inviarla alla rete Ethereum con la propria chiave privata.
-	\item \textit{Contract Accounts}: sono account associati a uno \textit{smart contract} e non sono controllati da una chiave privata. Essi non possono avviare transazioni, ma vengono attivati esclusivamente in risposta a chiamate provenienti da un \gls{eoa} o da un altro \textit{smart contract}.  
+	\item \textit{\gls{eoa}}: controllati direttamente dagli utenti tramite una coppia di chiavi crittografiche. La chiave privata è utilizzata per firmare digitalmente le transazioni, mentre la chiave pubblica funge da indirizzo dell’account sulla rete Ethereum. Una transazione è valida solo se firmata dal mittente, che ne garantisce l’autenticità e l’integrità;
+	\item \textit{Contract Accounts}: account associati a uno \textit{Smart Contract}, privi di chiave privata. Essi non possono avviare transazioni, ma vengono attivati esclusivamente in risposta a chiamate provenienti da un \gls{eoa} o da un altro \textit{Smart Contract}.
+
 \end{itemize}
 
-La validazione delle transazioni e l'esecuzione degli \textit{smart contract} è affidata all’\gls{evm}. 
+Ogni interazione con uno \textit{Smart Contract} avviene tramite una transazione e comporta l’esecuzione di istruzioni all’interno dell'\gls{evm}. Il costo computazionale associato a tale esecuzione è quantificato in \textit{gas} ed è sostenuto dal mittente della transazione sotto forma di Ether, criptovaluta nativa di Ethereum. 
+
+\subsubsection{DApps}
+Le \gls{dapps} sono applicazioni decentralizzate che operano su una rete \gls{p2p}, anziché su infrastrutture basate su server centralizzati. 
+La logica applicativa è tipicamente implementata tramite \textit{Smart Contract}, mentre componenti quali l’interfaccia utente possono essere mantenute \textit{off-chain}, preservando comunque le proprietà di trasparenza, verificabilità e immutabilità offerte dalla tecnologia blockchain.
+
+
+\subsubsection{DAO}
+
+
+\subsection{Blockchain e Crowdfunding}
 
 
 
-
-Ethereum dispone di una criptovaluta nativa, l’Ether, che oltre a poter essere scambiato fra account, è generato dalla piattaforma stessa come ricompensa ai \textit{miner} per il lavoro computazionale svolto.
-Ciascuna transazione generata sulla rete Ethereum, sia essa un semplice trasferimento di Ether, o l’invocazione di una funzione di uno \textit{smart contract}, comporta un costo che è proporzionale alla complessità computazionale, alla banda utilizzata e/o alla quantità di \textit{storage} necessario. Questo meccanismo interno adottato da Ethereum prende il nome di “gas”. 
-
-Per ogni transazione l’utente può definire un \textit{gas price} e un \textit{gas limit}, ovvero rispettivamente l’ammontare che decide di pagare per ogni unità di gas consumata (valore espresso solitamente in Gwei, un sottomultiplo dell’Ether) e la quantità massima di gas consumabile. 
-In questo modo il mittente della transazione conosce a priori quale sarà il costo massimo dell’operazione, e garantisce al tempo stesso che ogni computazione giungerà\textit{} sempre a termine. Qualora infatti si verificasse ad esempio un loop infinito all’interno del codice di uno \textit{smart contract}, la computazione verrà interrotta non appena si sarà consumato tutto il gas messo a disposizione al momento della creazione della transazione. Il costo effettivo sarà determinato dall’effettiva quantità di gas utilizzato moltiplicato per il \textit{gas price} indicato e quindi detratto al mittente dal saldo del suo wallet in Ether.
-
-
-
-
+%Essi consentono di definire ed applicare automaticamente regole e condizioni logiche, rendendo possibile la gestione di risorse digitali e l’esecuzione di accordi senza il ricorso a intermediari centralizzati. 
 
 %\subsection{Smart Contract}
 %Gli Smart Contract sono programmi memorizzati ed eseguiti sulla blockchain Ethereum, associati a specifici account di tipo \textit{contract}. Essi vengono attivati automaticamente quando ricevono una transazione o un messaggio e possono leggere e modificare il proprio stato interno, trasferire Ether e interagire con altri. 
 %Gli Smart Contract possono essere scritti utilizzando diversi linguaggi di programmazione, il più utilizzato dei quali è al momento Solidity. Il codice sorgente scritto in Solidity, o in un qualsiasi altro linguaggio ad alto livello fra quelli supportati, deve essere poi compilato per produrre un \textit{bytecode} pronto per essere eseguito dalla \gls{evm}.
 
 
-\subsubsection{DApps}
-Le \gls{dapps}, sono applicazioni decentralizzate che operano su una rete \gls{p2p} aziché su server centralizzati. Una \gls{dapps} è qualcosa di più rispetto ad un contratto intelligente. I vantaggi rispetto ad un’applicazione centralizzata sono [20]:
-• Trasparenza: ogni nodo della rete può esplorare il codice ed essere più sicuro;
-• Resistenza alla censura: finchè un nodo è connesso alla rete Ethereum,
-potrà interagire con essa senza interferenze.
-• Resilienza: una DApp non avrà tempi di inattività, verrà eseguita fino a
-quando la piattaforma sarà operativa
-
-
-
-
-\subsubsection{DAO}
+%%GAS-Per ogni transazione l’utente può definire un \textit{gas price} e un \textit{gas limit}, ovvero rispettivamente l’ammontare che decide di pagare per ogni unità di gas consumata (valore espresso solitamente in Gwei, un sottomultiplo dell’Ether) e la quantità massima di gas consumabile. 
+%In questo modo il mittente della transazione conosce a priori quale sarà il costo massimo dell’operazione, e garantisce al tempo stesso che ogni computazione giungerà\textit{} sempre a termine. Qualora infatti si verificasse ad esempio un loop infinito all’interno del codice di uno \textit{smart contract}, la computazione verrà interrotta non appena si sarà consumato tutto il gas messo a disposizione al momento della creazione della transazione. Il costo effettivo sarà determinato dall’effettiva quantità di gas utilizzato moltiplicato per il \textit{gas price} indicato e quindi detratto al mittente dal saldo del suo wallet in Ether.
 
 
 
