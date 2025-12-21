@@ -65,15 +65,14 @@ L'adozione della tecnologia blockchain offre vantaggi significativi rispetto ai 
 \subsection{Ethereum Blockchain}
 
 Ethereum è una piattaforma decentralizzata, \textit{open-source} basata su bockchain, proposta da Vitalik Buterin nel 2013 e resa operativa con il primo rilascio stabile nel 2015 \cite{buterin2014next}.\\
-A differenza delle blockchain di prima generazione, concepite prevalentemente come registri distribuiti per il trasferimento di valore (come bitcoin), Ethereum è stata progettata come una piattaforma \textit{general-purpose} capace di supportare l'esecuzione di applicazioni decentralizzate, le \gls{dapps}.
+A differenza delle blockchain di prima generazione, concepite prevalentemente come registri distribuiti per il trasferimento di valore (come bitcoin), Ethereum nasce come una piattaforma \textit{general-purpose} in grado di superare alcune limitazioni strutturali, come la mancanza di Turing-completezza, e supportare l'esecuzione di applicazioni decentralizzate, le \gls{dapps}. \\
+A tal fine, Ethereum mette a disposizione l'\gls{evm}, una macchina virtuale decentralizzata all’interno della quale vengono eseguiti gli \textit{Smart Contract} utilizzando la potenza computazionale dei nodi che costituiscono la rete. 
 
 
 \subsubsection{Smart Contract}
 
-Gli \textit{smart contract} sono programmi immutabili memorizzati sulla blockchain di Ethereum, il cui codice viene eseguito in modo deterministico dai nodi della rete in risposta a transazioni valide. Essi consentono di definire ed applicare automaticamente regole e condizioni logiche, rendendo possibile la gestione di risorse digitali e l’esecuzione di accordi senza il ricorso a intermediari centralizzati. 
-Come descritto nel \textit{whitepaper} che ha introdotto questa tencologia, gli \textit{smart contract} possono essere interpretati come strutture crittografiche in grado di contenere e custodire valore, il cui utilizzo è consentito esclusivamente al verificarsi delle condizioni specificate nel codice.
-
-Per supportare l’esecuzione degli \textit{smart contract} e la gestione delle transazioni, Ethereum adotta un modello basato su \textit{account}, distinguendo tra:
+Gli \textit{smart contract} sono programmi immutabili memorizzati sulla blockchain di Ethereum. Essi consentono di definire ed applicare automaticamente regole e condizioni logiche, rendendo possibile la gestione di risorse digitali e l’esecuzione di accordi senza il ricorso a intermediari centralizzati. Come illustrato nel \textit{whitepaper} che ha introdotto questa tecnologia, gli \textit{smart contract} possono essere concepiti come entità crittografiche capaci di detenere e trasferire valore, il cui comportamento è rigidamente definito dal codice e la cui esecuzione è consentita esclusivamente al verificarsi delle condizioni prestabilite \cite{buterin2013ethereum}.
+Per supportare la loro esecuzione, Ethereum adotta un modello basato su \textit{account}, distinguendo tra:
 \begin{itemize}
 	\item \textit{\gls{eoa}}: comunemente identificati come \textit{wallet}, sono controllati direttamente dagli utenti tramite una coppia di chiavi crittografiche: una chiave privata, utilizzata per firmare digitalmente le transazioni, e una chiave pubblica, che funge da indirizzo dell’account sulla rete.
 	Per effettuare una transazione è necessario che il mittente conosca l'indirizzo, ossia la chiave pubblica del \textit{wallet} del destinatario, e che firmi digitalmente la transazione prima di inviarla alla rete Ethereum con la propria chiave privata.
@@ -81,11 +80,6 @@ Per supportare l’esecuzione degli \textit{smart contract} e la gestione delle 
 \end{itemize}
 
 La validazione delle transazioni e l'esecuzione degli \textit{smart contract} è affidata all’\gls{evm}. 
-
-
-\subsubsection{Ethereum Virtual Machine}
-
-una macchina virtuale decentralizzata Turing-completa eseguita in modo deterministico da tutti i nodi della rete. La \gls{evm} ha il compito di eseguire il codice degli \textit{smart contract} garantendo che le stesse istruzioni producano identici risultati su ogni nodo.
 
 
 
@@ -106,8 +100,14 @@ In questo modo il mittente della transazione conosce a priori quale sarà il cos
 
 
 \subsubsection{DApps}
+Le \gls{dapps}, sono applicazioni decentralizzate che operano su una rete \gls{p2p} aziché su server centralizzati. Una \gls{dapps} è qualcosa di più rispetto ad un contratto intelligente. I vantaggi rispetto ad un’applicazione centralizzata sono [20]:
+• Trasparenza: ogni nodo della rete può esplorare il codice ed essere più sicuro;
+• Resistenza alla censura: finchè un nodo è connesso alla rete Ethereum,
+potrà interagire con essa senza interferenze.
+• Resilienza: una DApp non avrà tempi di inattività, verrà eseguita fino a
+quando la piattaforma sarà operativa
 
-Le \gls{dapps} sono applicazioni decentralizzate che operano su una rete \gls{p2p}. 
+
 
 
 \subsubsection{DAO}
