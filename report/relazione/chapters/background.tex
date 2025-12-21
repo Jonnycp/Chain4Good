@@ -79,9 +79,9 @@ Per supportare la loro esecuzione, Ethereum adotta un modello basato su \textit{
 Ogni interazione con uno \textit{Smart Contract} avviene tramite una transazione e comporta l’esecuzione di istruzioni all’interno dell'\gls{evm}. Il costo computazionale associato a tale esecuzione è quantificato in \textit{gas} ed è sostenuto dal mittente della transazione sotto forma di Ether, criptovaluta nativa di Ethereum. 
 
 \subsubsection{DApps}
-Le \gls{dapps} sono applicazioni decentralizzate che operano su una rete \gls{p2p}. L’interazione con l’utente avviene mediante un’interfaccia grafica analoga a quella delle applicazioni tradizionali, mentre la componente di \textit{backend} assume un ruolo sostanzialmente differente. In particolare, la logica applicativa non è gestita da un’infrastruttura centralizzata, ma è implementata attraverso \textit{Smart Contract} distribuiti sulla blockchain, che ne definiscono in modo deterministico il comportamento. \\
-L’invocazione di uno \textit{Smart Contract} avviene mediante una transazione, la cui esecuzione può comportare una modifica persistente dello stato globale della blockchain. I dati associati alle transazioni e allo stato dei contratti sono memorizzati in forma crittografica, garantendone l’integrità e la non alterabilità nel tempo. \\
-L’esecuzione delle operazioni è soggetta ai meccanismi di consenso adottati dalla blockchain sottostante, che consentono la validazione distribuita delle transazioni e contribuiscono a garantire proprietà quali sicurezza, integrità e decentralizzazione del sistema.
+Le \gls{dapps} sono applicazioni decentralizzate che operano su una rete \gls{p2p}. \\
+L’interazione con l’utente avviene mediante un’interfaccia grafica analoga a quella delle applicazioni tradizionali, mentre la componente di \textit{backend} assume un ruolo sostanzialmente differente. In particolare, la logica applicativa non è gestita da un’infrastruttura centralizzata, ma è implementata attraverso \textit{Smart Contract} distribuiti sulla blockchain, che ne definiscono in modo deterministico il comportamento. \\
+L’esecuzione degli \textit{Smart Contract} avviene tramite transazioni validate dai meccanismi di consenso della blockchain sottostante.
 
 
 %-------------------------------------------------------------------------------------------------
@@ -90,12 +90,6 @@ L’esecuzione delle operazioni è soggetta ai meccanismi di consenso adottati d
 
 
 
-
-
-
-%\subsection{Smart Contract}
-%Gli Smart Contract sono programmi memorizzati ed eseguiti sulla blockchain Ethereum, associati a specifici account di tipo \textit{contract}. Essi vengono attivati automaticamente quando ricevono una transazione o un messaggio e possono leggere e modificare il proprio stato interno, trasferire Ether e interagire con altri. 
-%Gli Smart Contract possono essere scritti utilizzando diversi linguaggi di programmazione, il più utilizzato dei quali è al momento Solidity. Il codice sorgente scritto in Solidity, o in un qualsiasi altro linguaggio ad alto livello fra quelli supportati, deve essere poi compilato per produrre un \textit{bytecode} pronto per essere eseguito dalla \gls{evm}.
 
 
 %%GAS-Per ogni transazione l’utente può definire un \textit{gas price} e un \textit{gas limit}, ovvero rispettivamente l’ammontare che decide di pagare per ogni unità di gas consumata (valore espresso solitamente in Gwei, un sottomultiplo dell’Ether) e la quantità massima di gas consumabile. 
