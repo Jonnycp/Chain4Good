@@ -44,9 +44,7 @@ Il processo di validazione di un blocco impone dunque l'implementazione di algor
 	\item \gls{pow}: rappresenta il protocollo di consenso più noto e storicamente rilevante (introdotto da Bitcoin). In questo meccanismo, i nodi della rete, detti \textit{miner}, competono per risolvere un problema crittografico computazionalmente complesso ma facilmente verificabile. Il \textit{miner} che per primo individua una soluzione valida al problema, acquisisce il diritto di creare un nuovo blocco e propagarlo alla rete.
 	Tuttavia, l'aggiunta effettiva del blocco avviene solo se questo viene correttamente validato e accettato dalla maggioranza dei nodi. Se queste operazioni vanno a buon fine, il \textit{miner} riceve una ricompensa, generalmente erogata sotto forma di criptovaluta \cite{tschorsch2016bitcoin}.
 	
-	\item \gls{pos}: % in questo protocollo, il processo di validazione è affidato ad un insieme di nodi scelti in funzione della quantità di criptovaluta vincolata come garanzia, in un processo noto come \textit{staking}. I nodi selezionati come \textit{validatori} sono responsabili della creazione dei blocchi e della verifica delle transazioni. \\ 
-	%La sicurezza della rete è garantita da un sistema di disincentivi economici: qualora un validatore agisca in modo fraudolento o tenti di compromettere il sistema, incorre nella perdita parziale o totale dei fondi posti in \textit{staking}.
-	Una volta raggiunto il consenso, il blocco viene aggiunto immutabilmente alla blockchain, aggiornando lo stato del \textit{ledger} distribuito.
+	\item \gls{pos}: in questo protocollo, il processo di validazione è affidato ad un insieme di nodi scelti in funzione della quantità di criptovaluta vincolata come garanzia, in un processo noto come \textit{staking}. I nodi selezionati come \textit{validatori} sono responsabili della creazione dei blocchi e della verifica delle transazioni. Una volta raggiunto il consenso, il blocco viene aggiunto immutabilmente alla blockchain, aggiornando lo stato del \textit{ledger} distribuito.
 	
 \end{itemize}
 
@@ -62,14 +60,15 @@ L'adozione della tecnologia blockchain offre vantaggi significativi rispetto ai 
 	\end{itemize}
 
 
+%-------------------------------------------------------------------------------------------------
+
 \subsection{Ethereum Blockchain}
 Ethereum è una piattaforma decentralizzata e \textit{open-source} basata su tecnologia blockchain, proposta da Vitalik Buterin nel 2013 e resa operativa con il primo rilascio stabile nel 2015 \cite{buterin2014next}.  
 A differenza delle blockchain di prima generazione, concepite prevalentemente come registri distribuiti per il trasferimento di valore (ad esempio Bitcoin), Ethereum nasce come una piattaforma \textit{general-purpose} progettata per l’esecuzione di programmi direttamente sulla blockchain.
 Questa estensione del modello tradizionale consente di superare alcune limitazioni delle piattaforme precedenti, quali la mancanza di Turing-completezza, e rende possibile la realizzazione di applicazioni decentralizzate, comunemente denominate \gls{dapps}.
 
-
 \subsubsection{Smart Contract}
-Gli \textit{Smart Contract} sono programmi immutabili memorizzati sulla blockchain di Ethereum. Come illustrato nel \textit{whitepaper} che ha introdotto questa tecnologia, gli \textit{smart contract} possono essere concepiti come entità crittografiche capaci di detenere e trasferire valore, il cui comportamento è rigidamente definito dal codice e la cui esecuzione è consentita esclusivamente al verificarsi delle condizioni prestabilite \cite{buterin2013ethereum}.
+Gli \textit{Smart Contract} sono programmi immutabili memorizzati sulla blockchain di Ethereum. Come illustrato nel \textit{whitepaper} che ha introdotto questa tecnologia, gli \textit{Smart Contract} possono essere concepiti come entità crittografiche capaci di detenere e trasferire valore, il cui comportamento è rigidamente definito dal codice e la cui esecuzione è consentita esclusivamente al verificarsi delle condizioni prestabilite \cite{buterin2013ethereum}.
 Per supportare la loro esecuzione, Ethereum adotta un modello basato su \textit{account}, distinguendo tra:
 \begin{itemize}
 	\item \textit{\gls{eoa}}: controllati direttamente dagli utenti tramite una coppia di chiavi crittografiche. La chiave privata è utilizzata per firmare digitalmente le transazioni, mentre la chiave pubblica funge da indirizzo dell’account sulla rete Ethereum. Una transazione è valida solo se firmata dal mittente, che ne garantisce l’autenticità e l’integrità;
@@ -80,18 +79,19 @@ Per supportare la loro esecuzione, Ethereum adotta un modello basato su \textit{
 Ogni interazione con uno \textit{Smart Contract} avviene tramite una transazione e comporta l’esecuzione di istruzioni all’interno dell'\gls{evm}. Il costo computazionale associato a tale esecuzione è quantificato in \textit{gas} ed è sostenuto dal mittente della transazione sotto forma di Ether, criptovaluta nativa di Ethereum. 
 
 \subsubsection{DApps}
-Le \gls{dapps} sono applicazioni decentralizzate che operano su una rete \gls{p2p}, anziché su infrastrutture basate su server centralizzati. 
-La logica applicativa è tipicamente implementata tramite \textit{Smart Contract}, mentre componenti quali l’interfaccia utente possono essere mantenute \textit{off-chain}, preservando comunque le proprietà di trasparenza, verificabilità e immutabilità offerte dalla tecnologia blockchain.
+Le \gls{dapps} sono applicazioni decentralizzate che operano su una rete \gls{p2p}. L’interazione con l’utente avviene mediante un’interfaccia grafica analoga a quella delle applicazioni tradizionali, mentre la componente di \textit{backend} assume un ruolo sostanzialmente differente. In particolare, la logica applicativa non è gestita da un’infrastruttura centralizzata, ma è implementata attraverso \textit{Smart Contract} distribuiti sulla blockchain, che ne definiscono in modo deterministico il comportamento. \\
+L’invocazione di uno \textit{Smart Contract} avviene mediante una transazione, la cui esecuzione può comportare una modifica persistente dello stato globale della blockchain. I dati associati alle transazioni e allo stato dei contratti sono memorizzati in forma crittografica, garantendone l’integrità e la non alterabilità nel tempo. \\
+L’esecuzione delle operazioni è soggetta ai meccanismi di consenso adottati dalla blockchain sottostante, che consentono la validazione distribuita delle transazioni e contribuiscono a garantire proprietà quali sicurezza, integrità e decentralizzazione del sistema.
 
 
-\subsubsection{DAO}
-
+%-------------------------------------------------------------------------------------------------
 
 \subsection{Blockchain e Crowdfunding}
 
 
 
-%Essi consentono di definire ed applicare automaticamente regole e condizioni logiche, rendendo possibile la gestione di risorse digitali e l’esecuzione di accordi senza il ricorso a intermediari centralizzati. 
+
+
 
 %\subsection{Smart Contract}
 %Gli Smart Contract sono programmi memorizzati ed eseguiti sulla blockchain Ethereum, associati a specifici account di tipo \textit{contract}. Essi vengono attivati automaticamente quando ricevono una transazione o un messaggio e possono leggere e modificare il proprio stato interno, trasferire Ether e interagire con altri. 
