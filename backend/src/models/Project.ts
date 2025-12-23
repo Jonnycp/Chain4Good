@@ -1,4 +1,4 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 export const CATEGORY_ENUM = [
   "medical",
@@ -16,7 +16,7 @@ export interface Progetto extends Document {
   location: string;
   descrizione: string;
   usoFondi: string[];
-  ente: Schema.Types.ObjectId;
+  ente: Types.ObjectId;
   coverImage: string;
   endDate: Date;
   targetAmount: number;
