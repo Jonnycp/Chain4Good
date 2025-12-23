@@ -76,7 +76,8 @@ const CardHome = ({
   currency,
   numeroDonatori,
   lastDonors,
-}: Project) => {
+  isMyProject = false,
+}: Project & { isMyProject?: boolean }) => {
   // GIORNI MANCANTI
   const getTimeLeftLabel = () => {
     const now = new Date();
@@ -130,7 +131,7 @@ const CardHome = ({
         </Link>
 
         {/* BADGE STATO DINAMICO */}
-        {stato !== "raccolta" && (
+        {isMyProject && (
           <div
             className={`absolute top-0 right-0 px-6 py-2 rounded-bl-[24px] font-bold text-sm shadow-sm z-10 ${getBadgeConfig().className}`}
           >

@@ -12,6 +12,7 @@ export default function ProjectsGrid({
   emptyText = "Nessun progetto trovato.",
   categories,
   selectedCategory,
+  isMyProjects=false,
   setCategory,
 }: {
   title: string;
@@ -26,6 +27,7 @@ export default function ProjectsGrid({
     label: string;
     icon: string;
   }>;
+  isMyProjects?: boolean;
   selectedCategory?: string | null;
   setCategory?: (cat: string) => void;
 }) {
@@ -85,7 +87,7 @@ export default function ProjectsGrid({
                 key={project._id}
                 className="min-w-[85vw] sm:min-w-[320px] snap-center md:min-w-0 cursor-pointer"
               >
-                <CardHome {...project} />
+                <CardHome {...project} isMyProject/>
               </div>
             ))
           ) : (
