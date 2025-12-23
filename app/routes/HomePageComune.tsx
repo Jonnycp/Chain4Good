@@ -9,7 +9,7 @@ import { useApp } from "../context/AppProvider";
 
 export default function HomePage() {
   const { user, projects, setCategory, loading } = useApp();
-  const { explore, byCategory, selectedCategory } = projects;
+  const { explore, byCategory, selectedCategory, myProjects } = projects;
 
   const categories = [
     { id: "medical", label: "Spese mediche", icon: "icon-park-outline:like" },
@@ -63,9 +63,10 @@ export default function HomePage() {
                   Nuovo Progetto
                 </Link>
               } 
-              projects={[]}
-              loading={false}
-              skeletonCount={3}
+              isMyProjects={true}
+              projects={myProjects}
+              loading={loading.myProjects}
+              skeletonCount={1}
               emptyText={
                 <div className="col-span-full py-12 text-center bg-white rounded-3xl border border-dashed border-gray-300">
                   <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">

@@ -1,6 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
@@ -50,12 +50,14 @@ interface AppContextType {
   projects: {
     explore: Project[];
     byCategory: Project[];
+    myProjects: Project[];
     selectedCategory: string | null;
   };
   loading: {
     user: boolean;
     projectsExplore: boolean;
     projectsByCategory: boolean;
+    myProjects: boolean;
   };
   refetchAll: () => void;
   setCategory: (cat: string) => void;
@@ -70,6 +72,14 @@ export default function AppProvider({
   children: ReactNode;
   initialUser?: AppContextType["user"];
 }) {
+  
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (initialUser) {
+      queryClient.setQueryData(["authUser"], initialUser);
+    }
+  }, [initialUser, queryClient]);
+
   //Query utente
   const {
     data: user,
@@ -102,7 +112,7 @@ export default function AppProvider({
      const res = await fetch(`${API_BASE_URL}/projects?limit=6&sort=endDate&order=asc`, {
         credentials: "include",
       });
-      if (res.status === 401) return window.location.reload();
+      if (res.status === 401) return [];
       if (!res.ok)
         throw new Error("Errore durante il fetch dei progetti");
       return res.json();
@@ -130,17 +140,39 @@ export default function AppProvider({
     enabled: user !== null && !userLoading,
   });
 
+  //Query progetti ente
+  const {
+    data: myProjects,
+    isLoading: isLoadingMyProjects,
+    refetch: refetchMyProjects,
+  } = useQuery({
+    queryKey: ["projects", "myProjects"],
+    queryFn: async () => {
+     const res = await fetch(`${API_BASE_URL}/projects/me`, {
+        credentials: "include",
+      });
+      if (res.status === 401) return [];
+      if (!res.ok)
+        throw new Error("Errore durante il fetch dei progetti");
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: user !== null && !userLoading && user.isEnte,
+  });
+
   const value = {
     user: user || null,
     loading: {
       user: userLoading,
       projectsExplore: isLoadingExplore,
       projectsByCategory: isLoadingCategory,
+      myProjects: isLoadingMyProjects,
     },
     projects: {
       explore: projectsExplore || [],
       byCategory: projectsByCategory || [],
       selectedCategory,
+      myProjects: myProjects || [],
     },
     setCategory: (cat: string) => {
       setSelectedCategory(cat);
@@ -149,6 +181,7 @@ export default function AppProvider({
       refetchUser();
       refetchProjectsExplore();
       refetchProjectsByCategory();
+      refetchMyProjects();
     },
   };
 
