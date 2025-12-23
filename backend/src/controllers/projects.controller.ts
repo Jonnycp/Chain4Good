@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { ProjectModel } from "../models/Project.ts";
 import { DonationModel } from "../models/Donation.ts";
+import { UserModel } from "../models/User.ts";
 import { CATEGORY_ENUM } from "../models/Project.ts";
 
 /**
@@ -49,45 +50,51 @@ export const getProjects = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Limite non valido", code: 400 });
     }
 
-    const filter: any = { status: { $nin: ["annullato", "completato", "attivo"] } }; // not-in: Escludi annullati e completati
+    const filter: any = {
+      status: { $nin: ["annullato", "completato", "attivo"] },
+    }; // not-in: Escludi annullati e completati
 
     if (category) filter.category = category;
     if (near) filter.location = new RegExp(near as string, "i"); //case insensitive, match parziale
 
     const projectsWithStats = await ProjectModel.aggregate([
       { $match: filter },
-      { //Join con ente
+      {
+        //Join con ente
         $lookup: {
           from: "users",
           localField: "ente",
           foreignField: "_id",
-          as: "ente"
-        }
+          as: "ente",
+        },
       },
       { $unwind: "$ente" }, //trasforma in oggetto singolo
-      { //Join con donazioni
-        $lookup: { 
+      {
+        //Join con donazioni
+        $lookup: {
           from: "donations",
           let: { projectId: "$_id" },
           pipeline: [
             { $match: { $expr: { $eq: ["$project", "$$projectId"] } } },
             { $sort: { date: -1 } }, //TODO: Appesantisce query unire tutte le donazioni
           ],
-          as: "donazioni"
-        }
+          as: "donazioni",
+        },
       },
-      { //join con utenti donatori
+      {
+        //join con utenti donatori
         $lookup: {
           from: "users",
           let: { donorIds: { $slice: ["$donazioni.donor", 5] } },
           pipeline: [
             { $match: { $expr: { $in: ["$_id", "$$donorIds"] } } },
-            { $project: { _id: 1, profilePicture: 1 } }
+            { $project: { _id: 1, profilePicture: 1 } },
           ],
-          as: "lastDonors"
-        }
+          as: "lastDonors",
+        },
       },
-      { //Render finale
+      {
+        //Render finale
         $project: {
           titolo: "$title",
           cover: "$coverImage",
@@ -105,19 +112,21 @@ export const getProjects = async (req: Request, res: Response) => {
               as: "d",
               in: {
                 id: "$$d._id",
-                profilePicture: "$$d.profilePicture"
-              }
-            }
+                profilePicture: "$$d.profilePicture",
+              },
+            },
           },
           ente: {
             id: "$ente._id",
             nome: "$ente.enteDetails.nome",
-            profilePicture: "$ente.profilePicture"
-          }
-        }
+            profilePicture: "$ente.profilePicture",
+          },
+        },
       },
-      { $sort: { [(sort as string) || "createdAt"]: order === "asc" ? 1 : -1 } },
-      ...(limit ? [{ $limit: Number(limit) }] : [])
+      {
+        $sort: { [(sort as string) || "createdAt"]: order === "asc" ? 1 : -1 },
+      },
+      ...(limit ? [{ $limit: Number(limit) }] : []),
     ]);
 
     res.json(projectsWithStats);
@@ -136,10 +145,93 @@ export const getProjects = async (req: Request, res: Response) => {
 export const getCategories = async (req: Request, res: Response) => {
   try {
     res.json(CATEGORY_ENUM);
-  }
-  catch (error) {
+  } catch (error) {
     res
       .status(500)
       .json({ error: "Errore nel caricamento categorie", code: 500 });
+  }
+};
+
+/**
+ * Endpoint GET /projects/me
+ * Restituisce lista di progetti creati dall'ente autenticato
+ * */
+export const getMyProjects = async (req: Request, res: Response) => {
+  try {
+    const user = await UserModel.findOne({ address: req.session.address! });
+
+    if (!user) {
+      return res.status(404).json({ error: "Utente non trovato", code: 404 });
+    }
+    const projectsWithStats = await ProjectModel.aggregate([
+      { $match: { ente: user._id } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "ente",
+          foreignField: "_id",
+          as: "ente",
+        },
+      },
+      { $unwind: "$ente" },
+      {
+        $lookup: {
+          from: "donations",
+          let: { projectId: "$_id" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$project", "$$projectId"] } } },
+            { $sort: { date: -1 } },
+          ],
+          as: "donazioni",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          let: { donorIds: { $slice: ["$donazioni.donor", 5] } },
+          pipeline: [
+            { $match: { $expr: { $in: ["$_id", "$$donorIds"] } } },
+            { $project: { _id: 1, profilePicture: 1 } },
+          ],
+          as: "lastDonors",
+        },
+      },
+      {
+        $project: {
+          titolo: "$title",
+          cover: "$coverImage",
+          stato: "$status",
+          luogo: "$location",
+          endDate: "$endDate",
+          targetAmount: "$targetAmount",
+          currentAmount: "$currentAmount",
+          createdAt: "$createdAt",
+          currency: "$currency",
+          numeroDonatori: { $size: { $setUnion: ["$donazioni.donor", []] } },
+          lastDonors: {
+            $map: {
+              input: "$lastDonors",
+              as: "d",
+              in: {
+                id: "$$d._id",
+                profilePicture: "$$d.profilePicture",
+              },
+            },
+          },
+          ente: {
+            id: "$ente._id",
+            nome: "$ente.enteDetails.nome",
+            profilePicture: "$ente.profilePicture",
+          },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+
+    res.json(projectsWithStats);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Errore nel caricamento dei progetti", code: 500 });
   }
 };
