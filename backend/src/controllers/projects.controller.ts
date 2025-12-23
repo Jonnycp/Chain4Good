@@ -97,6 +97,7 @@ export const getProjects = async (req: Request, res: Response) => {
           targetAmount: "$targetAmount",
           currentAmount: "$currentAmount",
           createdAt: "$createdAt",
+          currency: "$currency",
           numeroDonatori: { $size: { $setUnion: ["$donazioni.donor", []] } },
           lastDonors: {
             $map: {
@@ -110,7 +111,7 @@ export const getProjects = async (req: Request, res: Response) => {
           },
           ente: {
             id: "$ente._id",
-            nome: "$ente.enteDetails.denominazione",
+            nome: "$ente.enteDetails.nome",
             profilePicture: "$ente.profilePicture"
           }
         }
