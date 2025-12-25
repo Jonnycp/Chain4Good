@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface HeaderCoverProps {
   type: 'utente' | 'ente';
-  coverImage: string;
+  coverImage?: string;
   location?: string;
   onShare?: () => void;
   onDelete?: () => void;
@@ -38,9 +38,13 @@ export default function HeaderCover({
 
   return (
     <div className="relative w-full h-[340px]">
-      
-      <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
-      
+      {coverImage ? (
+        <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
+      ) : (
+        <div className="w-full h-full bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 flex items-center justify-center">
+          <Icon icon="mdi:image-off-outline" className="text-white opacity-60" width="64" />
+        </div>
+      )}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent h-32 pointer-events-none" />
       
       <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20 pt-10">
