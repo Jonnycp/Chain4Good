@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
-const API_BASE_URL =
+export const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 export type Project = {
@@ -118,7 +119,7 @@ export default function AppProvider({
       return res.json();
     },
     staleTime: 1000 * 60 * 5,
-    enabled: user !== null && !userLoading,
+    enabled: user !== null && !userLoading && !user.isEnte,
   });
 
   //Query progetti per categoria
@@ -137,7 +138,7 @@ export default function AppProvider({
       }
       ).then((res) => res.json()),
     staleTime: 1000 * 60 * 5,
-    enabled: user !== null && !userLoading,
+    enabled: user !== null && !userLoading && !user.isEnte,
   });
 
   //Query progetti ente
@@ -156,9 +157,11 @@ export default function AppProvider({
         throw new Error("Errore durante il fetch dei progetti");
       return res.json();
     },
+    retry: false,
     staleTime: 1000 * 60 * 5,
     enabled: user !== null && !userLoading && user.isEnte,
   });
+
 
   const value = {
     user: user || null,
