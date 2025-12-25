@@ -87,7 +87,7 @@ export default function ProjectsGrid({
                 key={project._id}
                 className="min-w-[85vw] sm:min-w-[320px] snap-center md:min-w-0 cursor-pointer"
               >
-                <CardHome {...project} isMyProject/>
+                <CardHome {...project} isMyProject={isMyProjects}/>
               </div>
             ))
           ) : (
