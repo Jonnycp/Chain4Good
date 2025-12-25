@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { generateNonce, SiweMessage } from "siwe";
 import { UserModel } from "../models/User.ts";
+import { checkIfIsEnte } from "../services/blockchain.service.ts";
 
 /**
  * Endpoint POST /auth/nonce
@@ -60,6 +61,7 @@ export const verifySignature = async (req: Request, res: Response) => {
       let user = await UserModel.findOne({
         address: data.address.toLowerCase(),
       });
+      const isVerifiedEnte = await checkIfIsEnte(data.address.toLowerCase());
 
       if (!user) {
         if (
@@ -76,6 +78,8 @@ export const verifySignature = async (req: Request, res: Response) => {
             nonce: generateNonce(),
             lastLogin: new Date(),
             username: `user-${data.address.toLowerCase().substring(0, 6)}`,
+            profilePicture: "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=" + data.address.toLowerCase(),
+            isEnte: isVerifiedEnte,
           });
         }
       } else {
@@ -85,6 +89,7 @@ export const verifySignature = async (req: Request, res: Response) => {
             code: 401,
           });
         } else {
+          user.isEnte = isVerifiedEnte;
           user.nonce = generateNonce();
           user.lastLogin = new Date();
           await user.save();
