@@ -108,6 +108,7 @@ export default function HomePage() {
               skeletonCount={3}
               emptyIcon="solar:box-minimalistic-linear"
               emptyText="Nessun progetto in scadenza."
+              isMyProjects={false}
             />
 
             <ProjectsGrid
@@ -120,6 +121,7 @@ export default function HomePage() {
               setCategory={setCategory}
               emptyIcon="solar:box-minimalistic-linear"
               emptyText="Nessun progetto trovato in questa categoria."
+              isMyProjects={false}
             />
 
             {/* Navbar Mobile (Solo per Utente) */}
