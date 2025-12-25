@@ -8,6 +8,17 @@ export interface Utente extends Document {
   nonce: string;
   createdAt: Date;
   lastLogin?: Date;
+  isEnte: boolean;
+  enteDetails : {
+    nome: string;
+    denominazioneSociale: string;
+    descrizioneEnte: string;
+    indirizzoSedeLegale: string;
+    codiceFiscale: number;
+    partitaIva?: number;
+    sitoWeb?: string;
+    bannerImage?: string;
+  } | null;
 }
 
 const UserSchema = new Schema<Utente>({
@@ -30,6 +41,16 @@ const UserSchema = new Schema<Utente>({
   nonce: { type: String, required: true },
   createdAt: { type: Date, default: Date.now, required: true },
   lastLogin: { type: Date, default: Date.now, required: true },
+  isEnte: { type: Boolean, default: false },
+  enteDetails: {
+    nome: { type: String },
+    denominazioneSociale: { type: String },
+    descrizioneEnte: { type: String },
+    indirizzoSedeLegale: { type: String },
+    codiceFiscale: { type: String },
+    partitaIva: { type: String },
+    sitoWeb: { type: String }
+  }
 });
 
 export const UserModel = model<Utente>("User", UserSchema);
