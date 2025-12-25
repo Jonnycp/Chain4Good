@@ -3,8 +3,6 @@ import { Icon } from '@iconify/react';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 
-import avatarPlaceholder from '../assets/img_user.png'; 
-
 import { useNavigate, redirect, type ActionFunctionArgs, useSubmit } from "react-router";
 
 import { useApp } from "../context/AppProvider";
@@ -34,7 +32,6 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Profilo() {
-  const isEnte = false;
   const navigate = useNavigate();
   const submit = useSubmit();
 
@@ -45,11 +42,11 @@ export default function Profilo() {
   //TODO: Gestire stable coin...
 
   return (
-    <div className={`min-h-screen bg-white font-sans text-secondary ${isEnte ? 'pb-10' : 'pb-28'} relative`}>
+    <div className={`min-h-screen bg-white font-sans text-secondary ${user?.isEnte ? 'pb-10' : 'pb-28'} relative`}>
       
       <Header 
-        type={isEnte ? 'ente' : 'utente'} 
-        profileImage={user?.profilePicture || avatarPlaceholder} 
+        type={user?.isEnte ? 'ente' : 'utente'} 
+        profileImage={user?.profilePicture || ''} 
         activePage="profilo"
       />
 
@@ -57,22 +54,22 @@ export default function Profilo() {
         <h2 className="text-2xl font-extrabold text-secondary mb-8">Il tuo profilo</h2>
         <div className="flex flex-col items-center mb-10">
           <div className="relative">
-            {isEnte ? (
+            {user?.isEnte ? (
                 <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-green-400 to-blue-600 p-[3px]">
                     <div className="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
                         <img 
-                          src={user?.profilePicture || avatarPlaceholder} 
-                          alt="Avatar" 
+                          src={user?.profilePicture} 
+                          alt={user?.username}
                           className="w-full h-full object-cover rounded-full bg-slate-900"
                         />
                     </div>
                 </div>
             ) : (
                 <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent">
-                    <img src={user?.profilePicture || avatarPlaceholder} alt="Avatar" className="w-full h-full object-cover" />
+                    <img src={user?.profilePicture} alt={user?.username} className="w-full h-full object-cover" />
                 </div>
             )}
-            <button className={`absolute bottom-1 right-2 text-white rounded-full p-1 border-2 border-white shadow-md flex items-center justify-center ${isEnte ? 'bg-green-600' : 'bg-primary'}`}>
+            <button className={`absolute bottom-1 right-2 text-white rounded-full p-1 border-2 border-white shadow-md flex items-center justify-center ${user?.isEnte ? 'bg-green-600' : 'bg-primary'}`}>
               <Icon icon="mdi:plus" width="18" />
             </button>
           </div>
@@ -93,11 +90,11 @@ export default function Profilo() {
           <div className="flex gap-4">
             <div className="w-1/2 space-y-2">
               <label className="text-secondary font-extrabold text-sm">
-                  {isEnte ? "Nome ente" : "Nome utente"}
+                  {user?.isEnte ? "Nome ente" : "Nome utente"}
               </label>
               <div className="flex items-center bg-[#F3F4F6] rounded-xl px-3 h-12">
-                <Icon icon={isEnte ? "lucide:user" : "mdi:user-outline"} className="text-slate-900 text-lg mr-2" />
-                <span className="text-slate-600 font-medium truncate text-sm">{user?.username}</span>
+                <Icon icon={user?.isEnte ? "lucide:user" : "mdi:user-outline"} className="text-slate-900 text-lg mr-2" />
+                <span className="text-slate-600 font-medium truncate text-sm">{user?.isEnte ? user?.enteDetails?.nome : user?.username}</span>
               </div>
             </div>
             <div className="w-1/2 space-y-2">
@@ -110,12 +107,12 @@ export default function Profilo() {
               </div>
             </div>
           </div>
-          {isEnte && (
+          {user?.isEnte && (
               <div className="space-y-2">
                 <label className="text-secondary font-extrabold text-sm">Denominazione sociale</label>
                 <div className="flex items-center bg-[#F3F4F6] rounded-xl px-3 h-12">
                   <Icon icon="ic:baseline-people" className="text-slate-900 text-xl mr-2" />
-                  <span className="text-slate-600 font-medium text-sm truncate">{"profileData.denominazione"}</span>
+                  <span className="text-slate-600 font-medium text-sm truncate">{user.enteDetails?.denominazioneSociale}</span>
                 </div>
               </div>
           )}
@@ -136,7 +133,7 @@ export default function Profilo() {
 
         </div>
         <div className="mt-12 flex gap-3">
-          {isEnte ? (
+          {user?.isEnte ? (
             <>
                 <button 
                     onClick={() => navigate(-1)}
@@ -167,7 +164,7 @@ export default function Profilo() {
       </main>
 
       {/* NAVBAR */}
-      {!isEnte && <Navbar active="profilo"/>}
+      {!user?.isEnte && <Navbar active="profilo"/>}
 
     </div>
   );
