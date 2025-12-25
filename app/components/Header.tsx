@@ -47,9 +47,9 @@ export default function Header({
             alt="Chain4Good Logo" 
             className="h-8 md:h-9 w-auto object-contain" 
         />
-        <span className="text-lg md:text-xl font-extrabold text-secondary tracking-tight">
+        <h1 className="text-lg md:text-xl font-extrabold text-secondary tracking-tight">
              Chain<span className="text-primary">4</span>Good
-        </span>
+        </h1>
       </div>
     
       <div className="flex items-center gap-6">
