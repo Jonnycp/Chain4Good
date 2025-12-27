@@ -12,16 +12,18 @@
 \subsection{Login e autenticazione}
 
 
+
+
 \subsection{Dashboard donatore}
 La \textit{dashboard} del donatore è l'interfaccia attraverso la quale i donatori possono interagire direttamente con la piattaforma a seguito della procedura di autenticazione. Essa è progettata per fornire una visione sinottica e intuitiva delle iniziative di \gls{cf} attive, permettendo all'utente di monitorare variabili critiche relative al loro stato di avanzamento, come \textit{budget} raggiunto e scadenza. \\
 Una volta selezionata l’iniziativa di interesse, l’utente ha la possibilità di procedere con l’operazione di donazione. \\
-Il sistema adotta il modello di raccolta \textit{Keep-it-all}, in base al quale l’Ente beneficiario conserva i fondi raccolti anche nel caso in cui l’obiettivo economico prefissato non venga raggiunto entro i termini stabiliti. \\
-Tale scelta progettuale risulta coerente con la tipologia degli Enti autorizzati alla creazione delle iniziative, individuati esclusivamente in Enti del Terzo Settore e \gls{onp}, per i quali anche contributi parziali possono comunque risultare funzionali al perseguimento delle finalità sociali.
+Il sistema adotta il modello di raccolta \textit{keep-it-all}, in base al quale l’Ente beneficiario conserva i fondi raccolti anche nel caso in cui l’obiettivo economico prefissato non venga raggiunto entro i termini stabiliti. \\
+Tale scelta progettuale risulta coerente con la tipologia degli Enti autorizzati alla creazione delle iniziative, individuati esclusivamente in Enti del Terzo Settore e \gls{onp}, per i quali anche contributi parziali possono risultare funzionali al perseguimento delle finalità sociali.
 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.45\textwidth]{images/home_utente.pdf}
+	\includegraphics[width=0.45\textwidth]{images/Home.pdf}
 	\caption{Dashboard del donatore}
 	\label{fig:dashboard-donatore}
 \end{figure}
@@ -30,27 +32,27 @@ Tale scelta progettuale risulta coerente con la tipologia degli Enti autorizzati
 
 
 \subsection{Creazione progetto}
+La creazione di un progetto costituisce l’atto attraverso il quale il beneficiario formalizza la propria proposta sulla piattaforma.
 
+Tra le altre informazioni, il sistema impone l'inserimento dell'obiettivo economico e il termine temporale della raccolta. Queste variabili sono essenziali per automatizzare la gestione dei fondi in modalità \textit{trustless}, in quanto lo \textit{Smart Contract} li utilizza per determinare autonomamente il successo della campagna.
 
-
+Per incrementare la credibilità dell'iniziativa e consolidare il rapporto fiduciario con i donatori, invece, il sistema impone l'inserimento di un piano dettagliato delle spese. Tale prospetto non ha solo finalità informative, ma si configura come un impegno formale che funge da parametro di confronto per i sostenitori, ai quali spetta il compito di valutare la coerenza degli obiettivi dichiarati con le richieste di spesa, affinché i fondi raccolti possano essere sbloccati.
 
 
 \begin{figure}[h]
 	\centering
-	\begin{minipage}{0.46\textwidth}
+	\begin{minipage}{0.45\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{images/nuovo_progetto1.pdf}
 	\end{minipage}
 	\hspace{0.9cm}
-	\begin{minipage}{0.46\textwidth}
+	\begin{minipage}{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{images/nuovo_progetto2.pdf}
+		\includegraphics[width=\textwidth]{images/NuovoProgetto 2.pdf}
 	\end{minipage}
 	\caption{Inserimento di un nuovo progetto}
-	\label{fig:Inserimento progetto}
+	\label{fig:inserimento progetto}
 \end{figure}
-
-
 
 
 
@@ -62,18 +64,20 @@ Una volta sottomessa la richiesta, la piattaforma permette ai donatori di analiz
 
 \begin{figure}
 	\centering
-	\begin{minipage}{0.46\textwidth}
+	\begin{minipage}{0.45\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{images/nuova_spesa.pdf}
 	\end{minipage}
 	\hspace{0.9cm}
-	\begin{minipage}{0.40\textwidth}
+	\begin{minipage}{0.45\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{images/valutazione_spesa.pdf}
 	\end{minipage}
 	\caption{Valutazione di una richiesta di spesa}
 	\label{fig:valutazione-spesa}
 \end{figure}
+
+
 
 \subsubsection{Meccanismo di validazione}
 Per garantire l'operatività del sistema ed evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per agire secondo le seguenti regole:
