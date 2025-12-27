@@ -10,11 +10,20 @@
 
 \subsection{L'obiettivo di Chain4Good}
 
-%Nel settore del crowdfunding benefico, la fiducia tra enti promotori e donatori rappresenta un fattore critico, soprattutto per la gestione e la destinazione effettiva dei fondi raccolti. Le piattaforme di \textit{crowdfunding} tradizionali operano prevalentemente come intermediari centralizzati e, nella maggior parte dei casi, non forniscono strumenti sufficienti per garantire una tracciabilità completa e verificabile delle spese sostenute. Di conseguenza, il donatore dispone di informazioni limitate sull’impatto concreto del proprio contributo e deve affidarsi alla buona fede dell’ente promotore o della piattaforma stessa.
+Chain4Good nasce per superare i limiti strutturali delle piattaforme di \gls{cf} esistenti. 
 
-%\textit{Chain4Good} si colloca in questo contesto come una piattaforma di \textit{crowdfunding} decentralizzato che sfrutta la tecnologia blockchain per introdurre un modello di gestione dei fondi trasparente e verificabile. L’approccio adottato consente agli enti di suddividere le iniziative di raccolta in progetti distinti, ciascuno identificato univocamente sulla blockchain. Le donazioni effettuate dagli utenti vengono crittograficamente vincolate al progetto di riferimento attraverso uno \textit{Smart Contract}, eliminando la possibilità di utilizzi non autorizzati o non tracciabili delle risorse raccolte.
 
-%A differenza dei modelli centralizzati, in Chain4Good i fondi non vengono immediatamente trasferiti all’ente promotore, ma sono custoditi all’interno di uno \textit{Smart Contract} che funge da \textit{vault} digitale. L’erogazione delle risorse è subordinata a un processo di approvazione decentralizzato, nel quale i donatori possono esprimere il proprio consenso sulle richieste di spesa presentate dall’ente. Questo meccanismo estende le proprietà di trasparenza, immutabilità e verificabilità della blockchain al livello applicativo del \textit{crowdfunding}, rafforzando il rapporto di fiducia tra le parti coinvolte.
+
+
+
+
+% L'obiettivo primario della piattaforma è restituire al donatore un ruolo attivo e di controllo sull'intero ciclo di vita del finanziamento. Grazie all'integrazione della tecnologia \textit{blockchain} e all'uso di \textit{Smart Contract}, i fondi raccolti non vengono trasferiti immediatamente all'ente promotore, ma sono custoditi all’interno di uno \textit{Smart Contract} che funge da \textit{vault} digitale.
+
+
+% L’erogazione delle risorse è subordinata a un processo di approvazione decentralizzato, nel quale i donatori possono esprimere il proprio consenso sulle richieste di spesa presentate dall’ente. Questo meccanismo estende le proprietà di trasparenza, immutabilità e verificabilità della blockchain al livello applicativo del \textit{crowdfunding}, rafforzando il rapporto di fiducia tra le parti coinvolte.
+
+
+% L’approccio adottato consente agli enti di suddividere le iniziative di raccolta in progetti distinti, ciascuno identificato univocamente sulla blockchain. Le donazioni effettuate dagli utenti vengono crittograficamente vincolate al progetto di riferimento attraverso uno \textit{Smart Contract}, eliminando la possibilità di utilizzi non autorizzati o non tracciabili delle risorse raccolte.
 
 
 %Chain4Good, che propone un’evoluzione del crowdfunding blockchain-based introducendo un controllo distribuito e continuo sull’utilizzo dei fondi, mediante una vault on-chain che blocca le donazioni e ne consente lo sblocco solo previa approvazione maggioritaria dei donatori, non pesata. L’integrazione di richieste di spesa documentate, votazioni motivate e verifica delle prove di acquisto realizza un modello che non si limita a garantire la trasparenza delle transazioni, ma estende la tracciabilità all’intero ciclo decisionale e operativo del progetto. In tal modo, Chain4Good si distingue dallo stato dell’arte come piattaforma orientata non solo alla raccolta, ma anche alla responsabilità, partecipazione e fiducia verificabile,
@@ -22,9 +31,46 @@
 
 \subsection{Analisi dei requisiti}
 
-\subsection{Analisi SWOT}
+\subsubsection{Requisiti funzionali}
 
-\subsection{Architettura del Software}
+%gestione degli enti e dei progetti: il sistema deve consentire a enti autorizzati di creare e gestire progetti di crowdfunding, specificando informazioni quali obiettivo di raccolta, descrizione, categoria, materiale multimediale ed eventuali vincoli temporali. Ogni progetto deve essere identificato in modo univoco all’interno del sistema
+
+%Visualizzazione e consultazione dei progetti
+%La piattaforma deve permettere agli utenti di visualizzare i progetti attivi e di consultare i relativi dettagli, al fine di supportare una scelta consapevole in fase di donazione.
+
+%Donazione in criptovaluta
+%Il sistema deve consentire agli utenti donatori di effettuare donazioni in criptovaluta, associando ogni transazione al progetto selezionato. Le donazioni devono essere registrate in modo permanente sulla blockchain tramite smart contract.
+
+%Gestione dei fondi tramite smart contract
+%I fondi raccolti devono essere trasferiti e custoditi all’interno di uno smart contract di tipo Vault, che ne impedisce l’utilizzo diretto fino all’approvazione di una richiesta di spesa, garantendo così il vincolo crittografico dei fondi al progetto di riferimento.
+
+%Richiesta e approvazione delle spese
+%Il sistema deve permettere all’ente promotore di un progetto di inviare richieste di spesa corredate da documentazione giustificativa. I donatori devono poter esprimere un voto di approvazione o rifiuto, con meccanismo di maggioranza semplice e senza ponderazione del voto.
+
+%Erogazione dei fondi e rendicontazione
+%In caso di approvazione della richiesta, il sistema deve trasferire automaticamente i fondi al wallet dell’ente. Dopo l’esecuzione della spesa, l’ente deve fornire una prova di acquisto prima di poter avanzare nuove richieste.
+
+%Consultazione dello storico delle transazioni
+%Il sistema deve consentire agli utenti di interrogare la blockchain tramite l’identificativo del progetto, visualizzando lo storico completo delle donazioni, delle richieste di spesa e delle transazioni effettuate.
+
+
+
+\subsubsection{Requisiti non funzionali}
+
+
+%\subsection{Analisi SWOT}
+
+
+
+\subsection{Architettura del Sistema}
 Prima di poter procedere alla progettazione dell’architettura del sistema da realizzare si è resa necessaria l’individuazione delle tecnologie da utilizzare in fase di sviluppo per poter comprendere come queste potessero interagire tra loro e soddisfare tutti i requisiti funzionali e non funzionali emersi dalla precedente fase di analisi.
 
+\subsubsection{Architettura del Software}
+
+Backend e frontend
+
+
+\subsubsection{Strumenti di sviluppo e deployment}
+
+% è stata adottata la containerizzazione tramite \textit{Docker}, che ha permesso di standardizzare l’ambiente di esecuzione dell’applicazione, riducendo le dipendenze dall’infrastruttura sottostante e facilitando le fasi di distribuzione e avvio del sistema.
 
