@@ -47,48 +47,43 @@ Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il conc
 In questa sezione sono riportati per punti i requisiti richiesti per il funzionamento della piattaforma.
 
 \subsubsection{Requisiti funzionali}
-I requisiti funzionali elencati definiscono le funzionalità attese del sistema.
+I requisiti funzionali definiscono le funzionalità che la piattaforma deve implementare. Si distinguono i requisiti funzionali per:
 
-Requisiti funzionali per gli Enti Beneficiari:
 \begin{enumerate}
-	\item \textbf{Creazione progetto}:
-	\item \textbf{Consultazione dello stato dei progetti}:
-	\item \textbf{Inserimento di una richiesta di spesa}: 
-	\item \textbf{Caricamento della prova di acquisto}:
-	\item \textbf{Vincolo di sequenzialità sulle richieste di spesa:} l'Ente non può sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
+	\item gli Enti Beneficiari:
+	\begin{itemize}
+		\item \textbf{Creazione progetto}: L'ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, budget target e data di scadenza.
+		\item \textbf{Inserimento di una richiesta di spesa}: l'Ente deve poter richiedere il rilascio di una parte dei fondi raccolti, specificando l'importo necessario e allegando obbligatoriamente un preventivo;
+		\item \textbf{Caricamento della prova di acquisto}: dopo l'ottenimento dei soldi, l'Ente deve poter caricare la fattura che attesti l'effettivo impiego dell'importo per lo scopo dichiarato;
+		\item \textbf{Vincolo di sequenzialità sulle richieste di spesa:} l'Ente non può sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
+	\end{itemize}
+	
+	
+	\item per i Donatori:
+	\begin{itemize}
+		\item \textbf{Consultazione dei progetti}:
+		\item \textbf{Donazione ad un progetto}: l'utente deve poter selezionare un progetto 
+		\item \textbf{Votazione delle richieste di spesa}: il donatore deve poter visualizzare il preventivo allegato e votare (favorevole o contrario) alla richiesta di spesa dell'ente;
+		\item \textbf{Consultazione dello storico delle donazioni}:
+	\end{itemize}
+	
+	
+	\item per la Piattaforma:
+	\begin{itemize}
+		\item \textbf{Registrazione delle donazioni}:
+		\item \textbf{Blocco dei fondi}: 
+		\item \textbf{Gestione del processo di votazione}:
+		\item \textbf{Erogazione automatica dei fondi}:
+		\item \textbf{Registrazione delle operazioni}:
+	\end{itemize}
+	
+	
+	
 	
 \end{enumerate}
 
 
 %il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi.
-
-Requisiti funzionali per gli utenti donatori:
-\begin{enumerate}
-	\item \textbf{Consultazione dei progetti}:
-	\item \textbf{Donazione ad un progetto}: 
-	\item \textbf{Votazione delle richieste di spesa}:
-	\item \textbf{Consultazione dello storico delle donazioni}:
-\end{enumerate}
-
-
-Requisiti funzionali per la piattaforma:
-\begin{enumerate}
-	\item \textbf{Registrazione delle donazioni}:
-	\item \textbf{Blocco dei fondi}: 
-	\item \textbf{Gestione del processo di votazione}:
-	\item \textbf{Erogazione automatica dei fondi}:
-	\item \textbf{Registrazione delle operazioni}:
-
-\end{enumerate}
-
-
-
-
-
-
-
-
-
 
 % Descrizione dei requisiti funzionali mediante diagramma UML dei casi d'uso
 
@@ -97,10 +92,7 @@ Requisiti funzionali per la piattaforma:
 Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le caratteristiche che pur non essendo funzionalità, il sistema deve garantire. 
 
 \begin{enumerate}
-	\item \textbf{Creazione progetto:} il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi;
-	\item \textbf{Rimozione di un progetto:}
-	\item \textbf{Visualizzazione dei progetti attivi:}
-	\item \textbf{}
+	\item \textbf{}:
 	\item \textbf{}
 	\item \textbf{}
 	
