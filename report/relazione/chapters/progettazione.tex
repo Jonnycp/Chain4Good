@@ -70,13 +70,13 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 	\end{itemize}
 	
 	
-	\item per la Piattaforma:
+	\item per il Sistema (logica implementata tramite Smart Contract):
 	\begin{itemize}
-		\item Registrazione delle donazioni:
-		\item Blocco dei fondi: 
-		\item Gestione del processo di votazione:
-		\item Erogazione automatica dei fondi:
-		\item Registrazione delle operazioni:
+		\item Registrazione delle donazioni: il sistema deve registrare ogni donazione effettuata;
+		\item Blocco dei fondi: il sistema deve impedire il trasferimento dei fondi, previo consenso dei donatori;
+		\item Gestione del processo di votazione: il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa;
+		\item Erogazione automatica dei fondi: il sistema deve trasferire automaticamente i fondi al \textit{wallet} dell'Ente, qualora la richiesta di spesa venga approvata dai donatori;
+		\item Registrazione delle operazioni: il sistema deve registrare \textit{on-chain} le richieste di spesa, gli esiti delle votazioni e il trasferimento dei fondi sbloccati;
 	\end{itemize}
 	
 \end{enumerate}
