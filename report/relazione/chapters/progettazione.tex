@@ -18,13 +18,10 @@ Tuttavia, essa consente di rendere l’intero processo di richiesta, approvazion
 Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il concetto stesso di donazione, il quale non si configura più come un mero atto di fiducia, bensì come un processo intrinsecamente sicuro e verificabile in ogni sua fase.
 
 
-%Alla luce di tali considerazioni, l’adozione della tecnologia \textit{blockchain} permette di ridefinire il concetto stesso di donazione, che non si configura più come un mero atto di fiducia, ma come un processo intrinsecamente sicuro e verificabile in ogni sua fase.
-%Ecco che quindi, adottando questa tecnologia, l'idea stessa di donazione evolve, trasformandosi da un mero atto di fiducia ad un processo intrinsecamente sicuro e verificabile in ogni sua fase. 
-
+%l'idea stessa di donazione evolve
 
 % Ogni operazione di donazione, infatti, viene registrata in modo permanente sulla \textit{blockchain} e può essere verificata pubblicamente, assicurando l'integrità delle informazioni e aumentando il livello di trasparenza. \\
 % In tal senso, Chain4Good si distingue dallo stato dell’arte proponendosi come piattaforma orientata non solo alla raccolta fondi per fini prettamente filantropici, ma anche alla partecipazione e fiducia verificabile.
-
 
 
 %\begin{table}
@@ -44,28 +41,60 @@ Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il conc
 %\end{table}
 
 
-
-
 %Questo meccanismo estende le proprietà di trasparenza, immutabilità e verificabilità della \textit{blockchain} al livello applicativo dl \gls{cf}, rafforzando il rapporto di fiducia tra le parti coinvolte.
-
 
 \subsection{Analisi dei requisiti}
 In questa sezione sono riportati per punti i requisiti richiesti per il funzionamento della piattaforma.
 
 \subsubsection{Requisiti funzionali}
-I requisiti funzionali elencati definiscono il comportamento atteso della piattaforma Chain4Good.
+I requisiti funzionali elencati definiscono le funzionalità attese del sistema.
 
+Requisiti funzionali per gli Enti Beneficiari:
 \begin{enumerate}
-	\item \textbf{Creazione progetto:} il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi.
-	\item \textbf{Consultazione dello stato dei progetti:}
-	\item \textbf{Inserimento di una richiesta di spesa:} 
-	\item \textbf{Caricamento della prova di acquisto:}
+	\item \textbf{Creazione progetto}:
+	\item \textbf{Consultazione dello stato dei progetti}:
+	\item \textbf{Inserimento di una richiesta di spesa}: 
+	\item \textbf{Caricamento della prova di acquisto}:
 	\item \textbf{Vincolo di sequenzialità sulle richieste di spesa:} l'Ente non può sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
 	
 \end{enumerate}
 
 
-I requisiti non funzionali definiscono le proprietà qualitative del sistema Chain4Good.
+%il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi.
+
+Requisiti funzionali per gli utenti donatori:
+\begin{enumerate}
+	\item \textbf{Consultazione dei progetti}:
+	\item \textbf{Donazione ad un progetto}: 
+	\item \textbf{Votazione delle richieste di spesa}:
+	\item \textbf{Consultazione dello storico delle donazioni}:
+\end{enumerate}
+
+
+Requisiti funzionali per la piattaforma:
+\begin{enumerate}
+	\item \textbf{Registrazione delle donazioni}:
+	\item \textbf{Blocco dei fondi}: 
+	\item \textbf{Gestione del processo di votazione}:
+	\item \textbf{Erogazione automatica dei fondi}:
+	\item \textbf{Registrazione delle operazioni}:
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+% Descrizione dei requisiti funzionali mediante diagramma UML dei casi d'uso
+
+
+\subsubsection{Requisiti non funzionali}
+Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le caratteristiche che pur non essendo funzionalità, il sistema deve garantire. 
 
 \begin{enumerate}
 	\item \textbf{Creazione progetto:} il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi;
@@ -74,17 +103,9 @@ I requisiti non funzionali definiscono le proprietà qualitative del sistema Cha
 	\item \textbf{}
 	\item \textbf{}
 	\item \textbf{}
-	\item \textbf{}
-	\item \textbf{}
 	
 \end{enumerate}
 
-
-
-
-
-\subsubsection{Requisiti non funzionali}
-Di seguito si riporta l'elenco dei requisiti non funzionali, ovvero tutte le caratteristiche che pur non essendo funzionalità, che il sistema deve garantire.
 
 
 
