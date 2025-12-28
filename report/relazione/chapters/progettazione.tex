@@ -52,39 +52,37 @@ Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il conc
 \subsection{Analisi dei requisiti}
 
 
-
-
 \subsubsection{Requisiti funzionali}
 
+%I requisiti funzionali elencati definiscono il comportamento atteso della piattaforma Chain4Good, in termini di funzioni che il sistema deve implementare. In particolare, le funzionalità che devono essere garantite per l'Ente sono riportate di seguito:
 
-%gestione degli enti e dei progetti: il sistema deve consentire a enti autorizzati di creare e gestire progetti di crowdfunding, specificando informazioni quali obiettivo di raccolta, descrizione, categoria, materiale multimediale ed eventuali vincoli temporali. Ogni progetto deve essere identificato in modo univoco all’interno del sistema
+\begin{enumerate}
+	\item \textbf{Creazione progetto:} il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi.
+	\item \textbf{Consultazione dello stato dei progetti:}
+	\item \textbf{Inserimento di una richiesta di spesa:} 
+	\item \textbf{Caricamento della prova di acquisto:}
+	\item \textbf{Vincolo di sequenzialità sulle richieste di spesa:} l'Ente non può sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
+	
+\end{enumerate}
 
-%Visualizzazione e consultazione dei progetti
-%La piattaforma deve permettere agli utenti di visualizzare i progetti attivi e di consultare i relativi dettagli, al fine di supportare una scelta consapevole in fase di donazione.
 
-%Donazione in criptovaluta
-%Il sistema deve consentire agli utenti donatori di effettuare donazioni in criptovaluta, associando ogni transazione al progetto selezionato. Le donazioni devono essere registrate in modo permanente sulla blockchain tramite smart contract.
+I requisiti non funzionali definiscono le proprietà qualitative del sistema Chain4Good.
 
-%Gestione dei fondi tramite smart contract
-%I fondi raccolti devono essere trasferiti e custoditi all’interno di uno smart contract di tipo Vault, che ne impedisce l’utilizzo diretto fino all’approvazione di una richiesta di spesa, garantendo così il vincolo crittografico dei fondi al progetto di riferimento.
+\begin{enumerate}
+	\item \textbf{Creazione progetto:} il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi;
+	\item \textbf{Rimozione di un progetto:}
+	\item \textbf{Visualizzazione dei progetti attivi:}
+	
+\end{enumerate}
 
-%Richiesta e approvazione delle spese
-%Il sistema deve permettere all’ente promotore di un progetto di inviare richieste di spesa corredate da documentazione giustificativa. I donatori devono poter esprimere un voto di approvazione o rifiuto, con meccanismo di maggioranza semplice e senza ponderazione del voto.
-
-%Erogazione dei fondi e rendicontazione
-%In caso di approvazione della richiesta, il sistema deve trasferire automaticamente i fondi al wallet dell’ente. Dopo l’esecuzione della spesa, l’ente deve fornire una prova di acquisto prima di poter avanzare nuove richieste.
-
-%Consultazione dello storico delle transazioni
-%Il sistema deve consentire agli utenti di interrogare la blockchain tramite l’identificativo del progetto, visualizzando lo storico completo delle donazioni, delle richieste di spesa e delle transazioni effettuate.
 
 
 
 
 \subsubsection{Requisiti non funzionali}
+Di seguito si riporta l'elenco dei requisiti non funzionali, ovvero tutte le caratteristiche che pur non essendo funzionalità, che il sistema deve garantire.
 
 
-
-%\subsection{Analisi SWOT}
 
 
 
