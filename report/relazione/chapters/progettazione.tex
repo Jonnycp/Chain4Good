@@ -53,16 +53,12 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 	\item l'Ente Beneficiario:
 	\begin{itemize}
 		\item Creazione progetto: l'Ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, \textit{budget target} e data di scadenza.
-		\item Inserimento di una richiesta di spesa: l'Ente deve poter richiedere il rilascio di una parte dei fondi raccolti allegando il preventivo di spesa;
+		\item Inserimento di una richiesta di spesa: l'Ente deve poter richiedere il rilascio di una parte dei fondi raccolti avanzando una richiesta di spesa e allegando il relativo preventivo;
 		\item Caricamento della prova di acquisto: l'Ente deve poter caricare la fattura che attesti l'effettivo impiego dell'importo richiesto per lo scopo dichiarato;
-	
-		% \item Vincolo di sequenzialità sulle richieste di spesa: l'Ente non può sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
-		
 	\end{itemize}
 	
 	
 	\item per i Donatori:
-	
 	\begin{itemize}
 		\item Consultazione dei progetti: il donatore deve poter visualizzare l'elenco delle iniziative di \gls{cf} attive e i relativi dettagli;
 		\item Donazione ad un progetto: il donatore deve poter selezionare un progetto e scegliere arbitrariamente l'importo da donare;
@@ -77,6 +73,8 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 		\item Gestione del processo di votazione: il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa;
 		\item Erogazione automatica dei fondi: il sistema deve trasferire automaticamente i fondi al \textit{wallet} dell'Ente, qualora la richiesta di spesa venga approvata dai donatori;
 		\item Registrazione delle operazioni: il sistema deve registrare \textit{on-chain} le richieste di spesa, gli esiti delle votazioni e il trasferimento dei fondi sbloccati;
+		\item Vincolo di sequenzialità sulle richieste di spesa: l'Ente non deve poter sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
+		
 	\end{itemize}
 	
 \end{enumerate}
