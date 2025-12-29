@@ -63,7 +63,7 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
 Per poter accedere a tali risorse, il beneficiario deve formalizzare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) attraverso l'inserimento dei seguenti parametri: nome della spesa, importo richiesto, finalità dell'esborso e preventivo.
 
-La sottomissione di una nuova richiesta di spesa, tuttavia, è vincolata al caricamento della prova di acquisto relativa alla richiesta precedentemente approvata dalla comunità di votanti. 
+La sottomissione di una nuova richiesta di spesa, tuttavia, è vincolata al caricamento della prova di acquisto relativa alla richiesta precedentemente approvata dalla comunità di votanti (insieme degli individui che finanzia un'iniziativa di \gls{cf}).
 Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate.
 
 
@@ -87,7 +87,7 @@ Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fo
 \subsubsection{Meccanismo di validazione}
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per agire secondo le seguenti regole:
 \begin{itemize}
-	\item La richiesta è approvata se la maggioranza dei votanti (rappresentata dalla comunità di individui che finanzia un'iniziativa) esprime un parere favorevole. In presenza di una partecipazione parziale, la soglia di maggioranza viene ricalcolata in funzione dei soli voti espressi.
+	\item La richiesta è approvata se la maggioranza dei votanti esprime un parere favorevole. In presenza di una partecipazione parziale, la soglia di maggioranza viene ricalcolata in funzione dei soli voti espressi.
 	\item Qualora non venga registrata alcuna attività di voto, invece, il sistema approva automaticamente la richiesta.
 \end{itemize}
 
