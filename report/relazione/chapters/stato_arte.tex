@@ -45,55 +45,72 @@ La letteratura converge nel considerare le piattaforme di \gls{cf} caratterizzat
 
 \end{itemize}
 
-Nel complesso, queste criticità evidenziano come le piattaforme tradizionali di \gls{cf} si fondino su un modello fortemente fiduciario, nel quale il corretto funzionamento del sistema dipende dal comportamento onesto degli intermediari e dei promotori delle iniziative. \\
-Sebbene questo paradigma abbia democratizzato l'accesso al capitale, l'architettura adottata introduce inefficienze strutturali che limitano il potenziale del modello di \gls{cf}.
+Nel complesso, queste criticità evidenziano come le piattaforme tradizionali di \gls{cf} si fondino su un modello fortemente fiduciario, nel quale il corretto funzionamento del sistema dipende dal comportamento onesto degli intermediari e dei promotori delle iniziative. 
+Sebbene questo paradigma abbia dunque democratizzato l'accesso al capitale, l'architettura adottata introduce inefficienze strutturali che limitano il potenziale del modello di \gls{cf}.
 
 
 
 \subsection{Crowdfunding e blockchain}
 
-
-Grazie ai vantaggi che essa introduce \ref{tab:blockchain_vantaggi}, la \textit{blockchain} ha il potenziale di risolvere i limiti strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}.
-
-La blockchain è un registro distribuito, condiviso e immutabile gestito da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Tale paradigma architetturale è stato introdotto per la prima volta nel 2008 con la pubblicazione del \textit{white paper} “Bitcoin: A Peer-to-Peer Electronic Cash System” da parte di Satoshi Nakamoto, con l'obiettivo di creare un sistema di pagamento elettronico decentralizzato che permettesse a due controparti di effettuare transazioni in modo sicuro, senza l'ausilio di autorità centrali \cite{nakamoto2007bitcoin}. 
-
+\subsubsection{Il ruolo della blockchain nel \textit{crowdfunding}}
+La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti precedentemente discusse \cite{shelke2022blockchain}. \\
+Nello specifico, l'efficacia di tale tecnologia risiede nella capacità di implementare nativamente le proprietà di decentralizzazione, trasparenza e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}).
 
 
-\begin{table}[b]
+
+
+%\\La \textit{blockchain} è un registro distribuito, condiviso e immutabile, strutturato in una catena sequenziale di blocchi. Ciascun blocco contiene un insieme di transazioni (ossia operazioni richieste dagli utenti, come il trasferimento di \textit{asset} digitali) la cui validità e integrità sono garantite da protocolli di consenso, eseguiti in modo distribuito all’interno di una rete \gls{p2p} \cite{nakamoto2007bitcoin}.
+
+
+
+% di questa trasformazione è rappresentato dagli \textbf{\textit{Smart Contract}}, ossia programmi immutabili memorizzati direttamente all'interno del registro distribuito ed eseguiti esclusivamente al verificarsi di determinate condizioni \cite{buterin2013ethereum}. Questi permettdono di trasformare
+
+
+% Le regole di gestione dei fondi (come le soglie di rilascio o le condizioni di rimborso) divengono vincoli ingegneristici non manomissibili, rendendo la piattaforma una strategia di finanziamento \textit{state-of-the-art} \cite{hartmann2019alternative}. L'adozione della \textit{blockchain} permette quindi di disintermediare il processo, eliminando i \textit{gatekeeper} centralizzati e riducendo drasticamente le asimmetrie informative tra donatori e beneficiari \cite{alia2024ihsan}.
+
+
+% Le proprietà di trasparenza, affidabilità e fiducia, identificati come fattori determinanti per il successo di una piattaforma di \gls{cf}, non rappresentano più meri obiettivi da perseguire, bensì proprietà strutturali garantite dalla \textit{blockchain} stessa (Tabella~\ref{tab:blockchain_vantaggi}).
+
+
+
+% La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. 
+
+%Adottando questa tecnologia, le proprietà di trasparenza, affidabilità e fiducia, identificati come fattori determinanti per il successo di una piattaforma di \gls{cf}, non rappresentano più meri obiettivi da perseguire, bensì proprietà strutturali garantite dalla \textit{blockchain} stessa (Tabella~\ref{tab:blockchain_vantaggi}).
+
+
+
+
+\medspace
+\begin{table}[h]
 \centering
 \renewcommand{\arraystretch}{1.3} % spazio verticale tra le righe
 \resizebox{\textwidth}{!}{
 	\begin{tabular}{p{3.5cm} p{10cm}}
 		\hline
-		\textbf{Caratteristica} & \textbf{Descrizione} \\
+		\textbf{Proprietà} & \textbf{Descrizione} \\
 		\hline
-		Decentralizzazione & La replicazione del registro su più nodi consente al sistema di operare correttamente anche in presenza di guasti, eliminando i \textit{single point of failure} \cite{rodrigues2010peer}. \\
+		Decentralizzazione & La replicazione del registro su più nodi consente al sistema di operare correttamente anche in presenza di guasti, eliminando i \gls{spof} \cite{rodrigues2010peer}. \\
 		\hline
 		Immutabilità & Ogni transazione è irreversibile; una volta registrata nella blockchain, non può essere cancellata o modificata, poiché qualsiasi alterazione comprometterebbe l’intera catena dei blocchi \cite{monrat2019survey}. \\
 		\hline
-		Trasparenza & Tutte le transazioni sono verificabili pubblicamente nelle \textit{blockchain permissionless} oppure dai membri autorizzati nelle \textit{blockchain permissioned} \cite{crosby2016blockchain}. \\
+		Trasparenza & Tutte le transazioni sono verificabili pubblicamente (nelle \textit{blockchain permissionless}) oppure dai membri autorizzati (nelle \textit{blockchain permissioned}) \cite{crosby2016blockchain}. \\
 		\hline
 		Sicurezza & L’uso combinato della crittografia asimmetrica per l’autenticazione e dei protocolli di consenso distribuito per l’integrità del registro, rende il sistema resistente ad attacchi e frodi. \\
 		\hline
 	\end{tabular}
 }
-\caption{Vantaggi della tecnologia \textit{blockchain}}
+\caption{Caratteristiche della tecnologia \textit{blockchain}}
 \label{tab:blockchain_vantaggi}
 \end{table}
 
 
 
+\subsubsection{Soluzioni esistenti}
 
 
-
-
-
-
-%La \textit{blockchain} elimina il bisogno di intermediari perché sfrutta il potenziale degli \textit{Smart Contract} per memorizzare ogni transazione \textit{on-chain} e per 
-
-
-%Dall’analisi delle soluzioni esistenti emerge come la tecnologia \textit{blockchain} rappresenti un valido strumento per affrontare alcune delle principali criticità delle piattaforme di \gls{cf} esistenti.
 %La maggior parte degli studi esistenti mostrano un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa. \\
+
+
 %Tuttavia, nonostante i progressi introdotti, permangono alcune limitazioni comuni, quali un coinvolgimento talvolta limitato dei donatori nelle decisioni successive alla raccolta e una tracciabilità non sempre completa dell’intero ciclo di vita della donazione. 
 %In particolare, emerge la necessità di modelli che consentano ai donatori di partecipare attivamente alle decisioni relative all’utilizzo delle risorse raccolte al fine di verificare la coerenza tra gli obiettivi dichiarati e l’effettivo impiego dei fondi. Tali aspetti risultano centrali per la costruzione di un rapporto di fiducia duraturo, soprattutto in contesti filantropici.
 
