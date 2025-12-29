@@ -32,11 +32,11 @@ In questo scenario, il modello contemporaneo di \gls{cf} si articola in un’arc
 La letteratura converge nel considerare le piattaforme di \gls{cf} caratterizzate da una serie di criticità strutturali, riconducibili principalmente al loro modello architetturale centralizzato. Si distinguono:
 
 \begin{itemize}
-	\item assenza di trasparenza nell'utilizzo dei fondi: i donatori non dispongono di strumenti efficaci per verificare l'intero ciclo di vita delle donazioni \cite{alia2024ihsan}. La tracciabilità delle quote donate è, infatti, demandata al fruitore della donazione, il quale ha il compito di fornire aggiornamenti sullo stato di avanzamento dell'iniziativa finanziata;
+	\item limitata trasparenza nell'utilizzo dei fondi: i donatori non dispongono di strumenti efficaci per verificare l'intero ciclo di vita delle donazioni \cite{alia2024ihsan}. La tracciabilità delle quote donate è, infatti, demandata al fruitore della donazione, il quale ha il compito di fornire aggiornamenti sullo stato di avanzamento dell'iniziativa finanziata;
 	
-	\item scarsa fiducia e frodi: l'assenza di protocolli di verifica automatizzati rende le piattaforme di \gls{cf} tradizionali vulnerabili a comportamenti fraudolenti, come la creazione di campagne ingannevoli o la mancata realizzazione dei progetti finanziati \cite{rejeb2025mapping}. Questo clima di incertezza scoraggia la partecipazione degli utenti, alimentando una diffusa sfiducia nei confronti delle piattaforme.
+	\item scarsa fiducia e rischio di frodi: l'assenza di protocolli di verifica automatizzati rende le piattaforme di \gls{cf} tradizionali vulnerabili a comportamenti fraudolenti, come la creazione di campagne ingannevoli o la mancata realizzazione dei progetti finanziati \cite{rejeb2025mapping}. Questo clima di incertezza scoraggia la partecipazione degli utenti, alimentando una diffusa sfiducia nei confronti delle piattaforme.
 	
-	\item centralizzazione: l'architettura centralizzata utilizzata dalla maggior parte delle piattaforme (es. GoFundMe) introduce \gls{spof} e attribuisce la gestione dei fondi raccolti interamente alla piattaforma \cite{mukherjee2024crowdfunding};
+	\item centralizzazione: l'architettura centralizzata utilizzata dalla maggior parte delle piattaforme introduce \gls{spof} e attribuisce la gestione dei fondi raccolti interamente alla piattaforma \cite{mukherjee2024crowdfunding};
 	
 	\item mancanza di sicurezza: la gestione centralizzata dei dati espone le piattaforme ad attacchi malevoli, con conseguenze rilevanti in termini di perdita di fondi e fiducia degli utenti \cite{mukherjee2024crowdfunding}. 
 	
@@ -53,17 +53,47 @@ Sebbene questo paradigma abbia democratizzato l'accesso al capitale, l'architett
 \subsection{Crowdfunding e blockchain}
 
 
+Grazie ai vantaggi che essa introduce \ref{tab:blockchain_vantaggi}, la \textit{blockchain} ha il potenziale di risolvere i limiti strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}.
 
-Le proprietà di decentralizzazione e immutabilità, rendono la \textit{blockchain} la soluzione adatta per il superamento dei limiti strutturali delle piattaforme di \gls{cf} centralizzate. 
+La blockchain è un registro distribuito, condiviso e immutabile gestito da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Tale paradigma architetturale è stato introdotto per la prima volta nel 2008 con la pubblicazione del \textit{white paper} “Bitcoin: A Peer-to-Peer Electronic Cash System” da parte di Satoshi Nakamoto, con l'obiettivo di creare un sistema di pagamento elettronico decentralizzato che permettesse a due controparti di effettuare transazioni in modo sicuro, senza l'ausilio di autorità centrali \cite{nakamoto2007bitcoin}. 
+
+
+
+\begin{table}[b]
+\centering
+\renewcommand{\arraystretch}{1.3} % spazio verticale tra le righe
+\resizebox{\textwidth}{!}{
+	\begin{tabular}{p{3.5cm} p{10cm}}
+		\hline
+		\textbf{Caratteristica} & \textbf{Descrizione} \\
+		\hline
+		Decentralizzazione & La replicazione del registro su più nodi consente al sistema di operare correttamente anche in presenza di guasti, eliminando i \textit{single point of failure} \cite{rodrigues2010peer}. \\
+		\hline
+		Immutabilità & Ogni transazione è irreversibile; una volta registrata nella blockchain, non può essere cancellata o modificata, poiché qualsiasi alterazione comprometterebbe l’intera catena dei blocchi \cite{monrat2019survey}. \\
+		\hline
+		Trasparenza & Tutte le transazioni sono verificabili pubblicamente nelle \textit{blockchain permissionless} oppure dai membri autorizzati nelle \textit{blockchain permissioned} \cite{crosby2016blockchain}. \\
+		\hline
+		Sicurezza & L’uso combinato della crittografia asimmetrica per l’autenticazione e dei protocolli di consenso distribuito per l’integrità del registro, rende il sistema resistente ad attacchi e frodi. \\
+		\hline
+	\end{tabular}
+}
+\caption{Principali caratteristiche della tecnologia blockchain}
+\label{tab:blockchain_vantaggi}
+\end{table}
 
 
 
 
-%La \textit{blockchain} elimina il bisogno di intermediari perché sfrutta il potenziale degli \textit{Smart Contract} per memorizzare ogni transazione 
+
+
+
+
+
+%La \textit{blockchain} elimina il bisogno di intermediari perché sfrutta il potenziale degli \textit{Smart Contract} per memorizzare ogni transazione \textit{on-chain} e per 
 
 
 %Dall’analisi delle soluzioni esistenti emerge come la tecnologia \textit{blockchain} rappresenti un valido strumento per affrontare alcune delle principali criticità delle piattaforme di \gls{cf} esistenti.
-%I lavori esaminati mostrano un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa. \\
+%La maggior parte degli studi esistenti mostrano un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa. \\
 %Tuttavia, nonostante i progressi introdotti, permangono alcune limitazioni comuni, quali un coinvolgimento talvolta limitato dei donatori nelle decisioni successive alla raccolta e una tracciabilità non sempre completa dell’intero ciclo di vita della donazione. 
 %In particolare, emerge la necessità di modelli che consentano ai donatori di partecipare attivamente alle decisioni relative all’utilizzo delle risorse raccolte al fine di verificare la coerenza tra gli obiettivi dichiarati e l’effettivo impiego dei fondi. Tali aspetti risultano centrali per la costruzione di un rapporto di fiducia duraturo, soprattutto in contesti filantropici.
 
