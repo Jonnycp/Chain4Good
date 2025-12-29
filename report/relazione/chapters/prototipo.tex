@@ -10,7 +10,8 @@
 
 
 \subsection{Login e autenticazione}
-L'accesso alla piattaforma Chain4Good adotta il paradigma dell'identità decentralizzata. La procedura di \textit{login} avviene esclusivamente attraverso l'interfacciamento con \textit{Metamask}, che funge da interfaccia tra l'utente e la rete \textit{blockchain}.
+
+La procedura di \textit{login} avviene esclusivamente attraverso l'interfacciamento con \textit{Metamask}, che funge da interfaccia tra l'utente e la rete \textit{blockchain}.
 
 
 
@@ -60,8 +61,11 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 \subsection{Inserimento e valutazione spesa}
 
 A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
-Per accedere a tali risorse, il beneficiario deve formalizzare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) attraverso l'inserimento dei seguenti parametri: nome della spesa, importo richiesto, finalità dell'esborso e preventivo. \\
-Una volta sottomessa la richiesta, la piattaforma permette ai donatori di analizzare la documentazione ed esercitare il proprio diritto di voto.
+Per poter accedere a tali risorse, il beneficiario deve formalizzare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) attraverso l'inserimento dei seguenti parametri: nome della spesa, importo richiesto, finalità dell'esborso e preventivo.
+
+La sottomissione di una nuova richiesta di spesa, tuttavia, è vincolata al caricamento della prova di acquisto relativa alla richiesta precedentemente approvata dalla comunità di votanti. 
+Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate.
+
 
 \begin{figure} [h]
 	\centering
@@ -87,5 +91,6 @@ Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programma
 	\item Qualora non venga registrata alcuna attività di voto, invece, il sistema approva automaticamente la richiesta.
 \end{itemize}
 
-Al soddisfacimento dei requisiti di approvazione, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma raccolta verso il \textit{Wallet} del beneficiario. 
+Al soddisfacimento dei requisiti di approvazione, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma raccolta verso il \textit{wallet} del beneficiario. 
+
 
