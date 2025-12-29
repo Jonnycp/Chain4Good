@@ -84,20 +84,27 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 
 % Descrizione dei requisiti funzionali mediante diagramma UML dei casi d'uso
 
+
+
+
 \subsubsection{Requisiti non funzionali}
 Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le caratteristiche che pur non essendo funzionalità, il sistema deve garantire. 
 
 \begin{enumerate}
 	\item \textbf{Immutabilità}: ogni transazione relativa a donazioni, votazioni e rilascio di fondi deve essere registrata su un registro distribuito in modo permanente e non modificabile;
 	\item \textbf{Accessibilità ai dati}: la \textit{Webapp} deve astrarre la complessità della \textit{blockchain}, permettendo la consultazione dei dati \textit{on-chain}, come lo storico delle transazioni effettuate da ogni utente, tramite interfacce intuitive;
-	\item \textbf{Architettura decentralizzata}: il sistema non deve presentare \gls{spof}, per cui anche in caso di down della \textit{Webapp}, i fondi devono rimanere accessibili e gestibili;
-	
+	\item \textbf{Integrità dei dati}: data l'onerosità dello \textit{storage} su blockchain, i file pesanti, come preventivi e prove d'acquisto, devono essere memorizzati in un \textit{database} \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione;
 \end{enumerate}
+
+
+     % \item \textbf{Architettura decentralizzata}: il sistema non deve presentare \gls{spof}, per cui anche in caso di down della \textit{Webapp}, i fondi devono rimanere accessibili e gestibili;
+
 
 
 
 \subsection{Architettura del Sistema}
 Prima di poter procedere alla progettazione dell’architettura del sistema da realizzare si è resa necessaria l’individuazione delle tecnologie da utilizzare in fase di sviluppo per poter comprendere come queste potessero interagire tra loro e soddisfare tutti i requisiti funzionali e non funzionali emersi dalla precedente fase di analisi.
+
 
 \subsubsection{Architettura del Software}
 
@@ -105,6 +112,12 @@ Prima di poter procedere alla progettazione dell’architettura del sistema da r
 
 
 \subsubsection{Strumenti di sviluppo e deployment}
+
+
+
+
+
+
 
 % è stata adottata la containerizzazione tramite \textit{Docker}, che ha permesso di standardizzare l’ambiente di esecuzione dell’applicazione, riducendo le dipendenze dall’infrastruttura sottostante e facilitando le fasi di distribuzione e avvio del sistema.
 
