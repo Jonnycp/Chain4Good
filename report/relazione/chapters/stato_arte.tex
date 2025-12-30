@@ -53,14 +53,22 @@ Sebbene questo paradigma abbia dunque democratizzato l'accesso al capitale, l'ar
 \subsection{Crowdfunding e blockchain}
 
 \subsubsection{Il ruolo della blockchain nel \textit{crowdfunding}}
+La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. In particolare, l'efficacia di tale tecnologia risiede nelle proprietà native di decentralizzazione, trasparenza, immutabilità e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}) che essa implementa. 
 
-La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. L'efficacia di tale tecnologia risiede nella capacità di implementare nativamente le proprietà di decentralizzazione, trasparenza e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}), favorendo la transizione da un modello basato sulla fiducia in un intermediario a un paradigma \textit{trustless}, in cui la validità delle operazioni non è garantita da un ente centrale, bensì da protocolli crittografici e dal consenso distribuito.
+La \textit{blockchain}, infatti, è un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}.
 
-La \textit{blockchain}, infatti, è un registro condiviso e immutabile, strutturato in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici.
-Ciascun blocco contiene un insieme di transazioni, ossia operazioni richieste dagli utenti (come il trasferimento di \textit{asset} digitali), la cui validità e integrità sono garantite da protocolli di consenso eseguiti dai nodi della rete.
-Nel contesto del \gls{cf}, l’impiego di tale tecnologia risponde a requisiti fondamentali di affidabilità, sicurezza e tracciabilità delle donazioni.
-Nello specifico, la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate. 
-Contestualmente, la trasparenza intrinseca del \textit{ledger}, derivante dalla sua natura pubblica e verificabile, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
+Nello specifico, nel contesto del \gls{cf}:
+\begin{itemize}
+	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
+	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain}, come le transazioni di donazione, i dettagli sulle campagne di raccolta fondi);
+	\item la trasparenza intrinseca del \textit{ledger}, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
+\end{itemize}
+
+% L’impiego di tale tecnologia nel \gls{cf}, dunque, risponde a specifiche esigenze di affidabilità, sicurezza e tracciabilità delle donazioni.
+
+
+% favorendo la transizione da un modello basato sulla fiducia in un intermediario a un ecosistema \textit{trustless}, nel quale la validità e integrità delle operazioni è garantita direttamente dall’infrastruttura tecnologica.
+
 
 \medskip
 \begin{table}[h]
@@ -84,11 +92,6 @@ Contestualmente, la trasparenza intrinseca del \textit{ledger}, derivante dalla 
 \caption{Caratteristiche della tecnologia \textit{blockchain}}
 \label{tab:blockchain_vantaggi}
 \end{table}
-
-
-
-%L'applicazione di tale infrastruttura del dominio del \gls{cf}, risponde a specifiche esigenze di affidabilità, tracciabilità e sicurezza.
-%Nello specifico, la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate. Parallelamente, la proprietà di trasparenza, garantita alla natura pubblica e verificabile dello stesso, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
 
 
 % di questa trasformazione è rappresentato dagli \textbf{\textit{Smart Contract}}, ossia programmi immutabili memorizzati direttamente all'interno del registro distribuito ed eseguiti esclusivamente al verificarsi di determinate condizioni \cite{buterin2013ethereum}. Questi permettdono di trasformare
