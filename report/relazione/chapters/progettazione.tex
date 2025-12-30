@@ -96,6 +96,13 @@ Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le cara
 	\item \textbf{Integrità dei dati}: data l'onerosità dello \textit{storage} su blockchain, i file pesanti, come preventivi e prove d'acquisto, devono essere memorizzati in un \textit{database} \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione;
 \end{enumerate}
 
+%il sistema deve garantire la sicurezza: deve essre accessibile sia da computer che da telefono
+% sicurezza: i dati devono rimanere all'interno dll'applicazione, protetti, deve essere sicuro replayact
+%forse sicurezza: i dati stanno nell'applicazione e non sono accessibili a chi non è loggato; per vedere i dati devi essere autenticato 
+%
+
+
+
 
      % \item \textbf{Architettura decentralizzata}: il sistema non deve presentare \gls{spof}, per cui anche in caso di down della \textit{Webapp}, i fondi devono rimanere accessibili e gestibili;
 
@@ -114,16 +121,18 @@ Prima di poter procedere alla progettazione dell’architettura del sistema da r
 \subsubsection*{Backend}
 
 
+\subsubsection*{Blockchain}
+
 
 \subsubsection{Strumenti di sviluppo}
-Per supportare le diverse fasi di sviluppo del \textit{software} sono stati utilizzati i seguenti strumenti:
+%Per supportare le diverse fasi di sviluppo del \textit{software} sono stati utilizzati i seguenti strumenti:
 
-\begin{itemize}
-	\item \textbf{Git}: sistema di controllo di versione distribuito, utilizzato per il tracciamento delle modifiche del codice sorgente.
-	\item \textbf{GitHub}: piattaforma di \textit{hosting} del \textit{repository} remoto e supporto alla collaborazione.
-	\item \textbf{Docker}: tecnologia di containerizzazione per la standardizzazione dell’ambiente di esecuzione.
-\end{itemize}
-
+%\begin{itemize}
+%	\item \textit{Visual studio code}
+%	\item \textbf{Git}: software di controllo di versione distribuito, utilizzato per il tracciamento delle modifiche del codice sorgente.
+%	\item \textbf{GitHub}: piattaforma di \textit{hosting} del \textit{repository} remoto e supporto alla collaborazione.
+%	\item \textbf{Docker}: tecnologia di containerizzazione per la standardizzazione dell’ambiente di esecuzione.
+%\end{itemize}
 
 
 
