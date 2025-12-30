@@ -53,22 +53,18 @@ Sebbene questo paradigma abbia dunque democratizzato l'accesso al capitale, l'ar
 \subsection{Crowdfunding e blockchain}
 
 \subsubsection{Il ruolo della blockchain nel \textit{crowdfunding}}
-La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. In particolare, l'efficacia di tale tecnologia risiede nelle proprietà native di decentralizzazione, trasparenza, immutabilità e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}) che implementa. 
+La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. L'efficacia di tale tecnologia risiede nelle proprietà native di decentralizzazione, trasparenza, immutabilità e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}) che implementa. 
 
 La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}.
 
 L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantaggi:
 \begin{itemize}
 	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
-	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain}, come le transazioni di donazione o i dettagli sulle campagne di raccolta fondi;
+	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain} \cite{salido2021mapping}, come le transazioni di donazione o i dettagli sulle campagne di raccolta fondi;
 	\item la trasparenza intrinseca del \textit{ledger}, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
 \end{itemize}
 
 % L’impiego di tale tecnologia nel \gls{cf}, dunque, risponde a specifiche esigenze di affidabilità, sicurezza e tracciabilità delle donazioni.
-
-
-% favorendo la transizione da un modello basato sulla fiducia in un intermediario a un ecosistema \textit{trustless}, nel quale la validità e integrità delle operazioni è garantita direttamente dall’infrastruttura tecnologica.
-
 
 \medskip
 \begin{table}[h]
@@ -97,10 +93,18 @@ L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantag
 % di questa trasformazione è rappresentato dagli \textbf{\textit{Smart Contract}}, ossia programmi immutabili memorizzati direttamente all'interno del registro distribuito ed eseguiti esclusivamente al verificarsi di determinate condizioni \cite{buterin2013ethereum}. Questi permettdono di trasformare
 
 
-
-
 \subsubsection{Soluzioni esistenti}
-%La maggior parte degli studi esistenti mostrano un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa. \\
+
+
+La maggior parte degli studi esaminati mostra un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa.
+
+
+
+Gli \textit{Smart Contract} sono programmi immutabili, registrati direttamente sulla \textit{blockchain}, che vengono eseguiti automaticamente al verificarsi di condizioni prestabilite.
+
+
+
+
 
 %Tuttavia, nonostante i progressi introdotti, permangono alcune limitazioni comuni, quali un coinvolgimento talvolta limitato dei donatori nelle decisioni successive alla raccolta e una tracciabilità non sempre completa dell’intero ciclo di vita della donazione. 
 %In particolare, emerge la necessità di modelli che consentano ai donatori di partecipare attivamente alle decisioni relative all’utilizzo delle risorse raccolte al fine di verificare la coerenza tra gli obiettivi dichiarati e l’effettivo impiego dei fondi. Tali aspetti risultano centrali per la costruzione di un rapporto di fiducia duraturo, soprattutto in contesti filantropici.
@@ -114,7 +118,7 @@ L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantag
 %https://link.springer.com/chapter/10.1007/978-981-15-1137-0_6#Sec7
 
 
-%Nel contesto del \gls{cf}, l’interesse verso la blockchain deriva dalla possibilità di affrontare alcune delle criticità associate ai modelli di piattaforma tradizionali. In particolare, la natura decentralizzata della blockchain consente di ridurre il ruolo dell’intermediario fiduciario, mentre l’immutabilità dei dati registrati garantisce l’integrità delle informazioni relative alle transazioni e agli eventi associati alle campagne di raccolta fondi. Ogni operazione può essere verificata pubblicamente, aumentando il livello di trasparenza nei confronti di tutti gli attori coinvolti.
+%In particolare, la natura decentralizzata della blockchain consente di ridurre il ruolo dell’intermediario fiduciario, mentre l’immutabilità dei dati registrati garantisce l’integrità delle informazioni relative alle transazioni e agli eventi associati alle campagne di raccolta fondi. Ogni operazione può essere verificata pubblicamente, aumentando il livello di trasparenza nei confronti di tutti gli attori coinvolti.
 
 
 %Risulta evidente che il crowdfunding rappresenti uno strumento fondamentale per la democratizzazione dell’accessibilità ai finanziamenti per una vasta gamma di progetti e organizzazioni; tuttavia, i limiti caratteristici delle piattaforme tradizionali hanno evidenziato la necessità di un’evoluzione verso modelli Web3 – Kickstarter stessa ne è ha preso atto in un comunicato del 2021
