@@ -70,7 +70,7 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 	
 	\item per il Sistema (logica implementata tramite Smart Contract):
 	\begin{itemize}
-		\item \textbf{Registrazione delle donazioni}: il sistema deve registrare ogni donazione effettuata;
+		\item \textbf{Registrazione delle donazioni}: il sistema deve registrare \textit{on-chain} ogni donazione effettuata;
 		\item \textbf{Blocco dei fondi}: il sistema deve impedire il trasferimento dei fondi, previo consenso dei donatori;
 		\item \textbf{Gestione del processo di votazione}: il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa;
 		\item \textbf{Erogazione automatica dei fondi}: il sistema deve trasferire automaticamente i fondi al \textit{wallet} dell'Ente, qualora la richiesta di spesa venga approvata dai donatori;
@@ -85,16 +85,24 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 % Descrizione dei requisiti funzionali mediante diagramma UML dei casi d'uso
 
 
-
-
 \subsubsection{Requisiti non funzionali}
 Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le caratteristiche che pur non essendo funzionalità, il sistema deve garantire. 
 
 \begin{enumerate}
+	
 	\item \textbf{Immutabilità}: ogni transazione relativa a donazioni, votazioni e rilascio di fondi deve essere registrata su un registro distribuito in modo permanente e non modificabile;
-	\item \textbf{Accessibilità ai dati}: la \textit{Webapp} deve astrarre la complessità della \textit{blockchain}, permettendo la consultazione dei dati \textit{on-chain}, come lo storico delle transazioni effettuate da ogni utente, tramite interfacce intuitive;
-	\item \textbf{Integrità dei dati}: data l'onerosità dello \textit{storage} su blockchain, i file pesanti, come preventivi e prove d'acquisto, devono essere memorizzati in un \textit{database} \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione;
+	
+	\item \textbf{Integrità dei dati}: i file pesanti, come preventivi e prove d'acquisto, devono essere memorizzati \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione;
+	
+	\item \textbf{Usabilità}: la \textit{Webapp} deve consentire agli utenti di consultare i dati \textit{on-chain}, come lo storico delle donazioni effettuate, attraverso interfacce intuitive e accessibili;
+	
+	\item \textbf{Sicurezza}: l'accesso alle funzionalità della piattaforma e alla consultazione dettagliata dei dati deve essere limitato ai soli utenti autenticati;
+	
+	\item \textbf{Portabilità}: la \textit{Webapp} deve essere fruibile sia da dispositivi \textit{desktop} che \textit{mobile};
 \end{enumerate}
+
+
+
 
 %il sistema deve garantire la sicurezza: deve essre accessibile sia da computer che da telefono
 % sicurezza: i dati devono rimanere all'interno dll'applicazione, protetti, deve essere sicuro replayact
@@ -114,6 +122,7 @@ Prima di poter procedere alla progettazione dell’architettura del sistema da r
 
 
 \subsubsection{Architettura del Software}
+
 
 \subsubsection*{Frontend}
 
