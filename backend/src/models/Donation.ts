@@ -13,7 +13,7 @@ const DonationSchema = new Schema<Donazione>({
   project: { type: Schema.Types.ObjectId, ref: "Project", required: true, index: true },
   donor: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
   amount: { type: Number, required: true },
-  symbol: { type: String, required: true, default: "USDC" },
+  symbol: { type: String, required: true, default: "EURC" },
   hashTransaction: { type: String, required: true, unique: true, index: true },
   date: { type: Date, default: Date.now, required: true },
 });

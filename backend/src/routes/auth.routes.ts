@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as AuthController from '../controllers/auth.controller.ts'; 
+import { isAuth } from '../middleware/auth.middleware.ts';
 
 const router = Router();
 
@@ -12,6 +13,6 @@ router.post('/verify', AuthController.verifySignature);
 
 router.post('/logout', AuthController.logout);
 
-router.get('/me', AuthController.getUser);
+router.get('/me', isAuth, AuthController.getUser);
 
 export default router;
