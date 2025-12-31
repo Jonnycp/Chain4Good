@@ -95,15 +95,12 @@ La maggior parte degli studi esaminati mostra un ricorso diffuso a \textit{Smart
 
 Gli \textit{Smart Contract} sono programmi immutabili, registrati direttamente sulla \textit{blockchain}, che vengono eseguiti automaticamente al verificarsi di condizioni prestabilite  \cite{patil2021blockchain}.
 
-Un esempio significativo è il modello proposto in \cite{patil2021blockchain}, in cui le clausole automatizzate impediscono l'erogazione immediata e integrale dei fondi al beneficiario. Il capitale rimane infatti vincolato nel contratto e viene rilasciato in modo incrementale solo al raggiungimento di obiettivi prefissati.
+Un esempio significativo è il modello proposto in \cite{patil2021blockchain}, in cui le clausole automatizzate impediscono l'erogazione immediata e integrale dei fondi al beneficiario. Il capitale rimane infatti vincolato nel contratto e viene rilasciato in modo incrementale solo al raggiungimento di obiettivi intermedi (\textit{milestones}) stabiliti in fase di creazione del progetto.
+In questo modello, la tutela dei donatori è supportata dalla figura di un utente \textit{Admin}, che funge da supervisore centrale con la responsabilità di approvare l’inserimento dei progetti in piattaforma e convalidare l’effettivo completamento di ogni fase operativa prima di autorizzare lo sblocco delle quote di capitale.
 
-Una filosofia analoga, tesa a garantire che i contributori mantengano il controllo sulle quote donate, è alla base del lavoro di Yadav e Sarasvathi \cite{yadav2020venturing}. In questo studio, tuttavia, il rilascio dei fondi non è legato esclusivamente a \textit{milestone} temporali, ma è subordinato all'approvazione di una specifica richiesta di spesa avanzata dal promotore del progetto, il quale è tenuto a dettagliare la finalità dell'esborso, l'ammontare richiesto e l'indirizzo pubblico del fornitore destinatario del pagamento. L'autorizzazione invece è delegata a un sistema di voto integrato nello \textit{Smart Contract}, che esegue la transazione solo previo raggiungimento di un \textit{quorum} superiore al 50\% dei consensi tra i donatori. 
-
-La differenza sostanziale tra i due approcci è che in \cite{patil2021blockchain} 
-
-Mentre il sistema di Patil et al. si configura come un modello supervisionato, in cui una figura centrale di \textit{Admin} funge da garante approvando l'inserimento dei progetti per tutelare i finanziatori da potenziali frodi, l'architettura di Yadav e Sarasvathi elimina ogni intermediazione amministrativa in favore di una struttura puramente decentralizzata e partecipativa.
-
-
+Al contrario, il modello di Yadav e Sarasvathi \cite{yadav2020venturing} elimina ogni intermediazione in favore di una struttura puramente decentralizzata. 
+In questo lavoro, infatti, il rilascio dei fondi non è legato esclusivamente a \textit{milestone} temporali, ma è subordinato all'approvazione di una specifica richiesta di spesa avanzata dal promotore del progetto. Quest'ultimo è tenuto a dettagliare la finalità dell’esborso, l’importo richiesto e l’indirizzo pubblico del fornitore destinatario del pagamento. 
+L’autorizzazione è delegata a un sistema di voto integrato nello \textit{Smart Contract}, che esegue la transazione solo previo raggiungimento di un \textit{quorum} superiore al 50\% dei consensi tra i soli sostenitori dello specifico progetto. 
 
 
 
@@ -111,6 +108,9 @@ Mentre il sistema di Patil et al. si configura come un modello supervisionato, i
 
 %Tuttavia, nonostante i progressi introdotti, permangono alcune limitazioni comuni, quali un coinvolgimento talvolta limitato dei donatori nelle decisioni successive alla raccolta e una tracciabilità non sempre completa dell’intero ciclo di vita della donazione. 
 %In particolare, emerge la necessità di modelli che consentano ai donatori di partecipare attivamente alle decisioni relative all’utilizzo delle risorse raccolte al fine di verificare la coerenza tra gli obiettivi dichiarati e l’effettivo impiego dei fondi. Tali aspetti risultano centrali per la costruzione di un rapporto di fiducia duraturo, soprattutto in contesti filantropici.
+
+%La maggior parte degli studi esaminati mostra un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa. Un approccio simile è alla base del lavoro di Yadav e Sarasvathi \cite{yadav2020venturing}, in cui però il rilascio dei fondi non è legato esclusivamente a \textit{milestone} temporali, ma è subordinato all'approvazione di una specifica richiesta di spesa avanzata dal promotore del progetto, il quale è tenuto a dettagliare la finalità dell'esborso, l'ammontare richiesto e l'indirizzo pubblico del fornitore destinatario del pagamento. Sebbene nel modello di Patil et al., lo sblocco del capitale è mediata da un utente \textit{Admin}, in \cite{yadav2020venturing}, l'autorizzazione è delegata a un sistema di voto integrato nello \textit{Smart Contract}, che esegue la transazione solo previo raggiungimento di un \textit{quorum} superiore al 50\% dei consensi tra i donatori.  Rispetto al modello precedente, dunque, questa architettura elimina ogni intermediazione in favore di una struttura puramente decentralizzata. 
+
 
 
 
