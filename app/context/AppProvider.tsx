@@ -36,7 +36,7 @@ interface AppContextType {
     profilePicture: string;
     nonce: string;
     createdAt: Date;
-    lastLogin?: Date;
+    updatedAt: Date;
     isEnte: boolean;
     enteDetails: {
       nome: string;

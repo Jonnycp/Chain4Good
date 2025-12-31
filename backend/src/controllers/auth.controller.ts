@@ -76,7 +76,6 @@ export const verifySignature = async (req: Request, res: Response) => {
           user = await UserModel.create({
             address: data.address.toLowerCase(),
             nonce: generateNonce(),
-            lastLogin: new Date(),
             username: `user-${data.address.toLowerCase().substring(0, 6)}`,
             profilePicture: "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=" + data.address.toLowerCase(),
             isEnte: isVerifiedEnte,
@@ -91,7 +90,6 @@ export const verifySignature = async (req: Request, res: Response) => {
         } else {
           user.isEnte = isVerifiedEnte;
           user.nonce = generateNonce();
-          user.lastLogin = new Date();
           await user.save();
         }
       }

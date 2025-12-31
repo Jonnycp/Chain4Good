@@ -7,7 +7,7 @@ export interface Utente extends Document {
   profilePicture?: string;
   nonce: string;
   createdAt: Date;
-  lastLogin?: Date;
+  updatedAt: Date;
   isEnte: boolean;
   enteDetails : {
     nome: string;
@@ -40,7 +40,6 @@ const UserSchema = new Schema<Utente>({
   profilePicture: { type: String, default: "" },
   nonce: { type: String, required: true },
   createdAt: { type: Date, default: Date.now, required: true },
-  lastLogin: { type: Date, default: Date.now, required: true },
   isEnte: { type: Boolean, default: false },
   enteDetails: {
     nome: { type: String },
@@ -49,8 +48,9 @@ const UserSchema = new Schema<Utente>({
     indirizzoSedeLegale: { type: String },
     codiceFiscale: { type: String },
     partitaIva: { type: String },
-    sitoWeb: { type: String }
+    sitoWeb: { type: String },
+    bannerImage: { type: String },
   }
-});
+}, { timestamps: true });
 
 export const UserModel = model<Utente>("User", UserSchema);

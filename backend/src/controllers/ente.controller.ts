@@ -43,7 +43,7 @@ export const getEnteById = async (req: Request, res: Response) => {
               let: { projectId: "$_id" },
               pipeline: [
                 { $match: { $expr: { $eq: ["$project", "$$projectId"] } } },
-                { $sort: { date: -1 } },
+                { $sort: { createdAt: -1 } },
               ],
               as: "donazioni",
             },

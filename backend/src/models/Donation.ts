@@ -6,7 +6,8 @@ export interface Donazione extends Document {
   amount: number;
   symbol: string;
   hashTransaction: string;
-  date: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const DonationSchema = new Schema<Donazione>({
@@ -15,9 +16,8 @@ const DonationSchema = new Schema<Donazione>({
   amount: { type: Number, required: true },
   symbol: { type: String, required: true, default: "EURC" },
   hashTransaction: { type: String, required: true, unique: true, index: true },
-  date: { type: Date, default: Date.now, required: true },
-});
+}, { timestamps: true });
 
-DonationSchema.index({ project: 1, date: -1 }); //indice composto: ordinati per progetto e data da più recenti
+DonationSchema.index({ project: 1, createdAt: -1 }); //indice composto: ordinati per progetto e data da più recenti
 
 export const DonationModel = model<Donazione>("Donation", DonationSchema);

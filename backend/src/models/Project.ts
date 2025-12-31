@@ -25,7 +25,7 @@ export interface Progetto extends Document {
   currency: string;
   status: "raccolta" | "attivo" | "completato" | "annullato";
   createdAt: Date;
-  updatedAt?: Date;
+  updatedAt: Date
 }
 
 const ProjectSchema = new Schema<Progetto>({
@@ -50,9 +50,7 @@ const ProjectSchema = new Schema<Progetto>({
     required: true,
     enum: ["raccolta", "attivo", "completato", "annullato"],
     default: "raccolta",
-  },
-  createdAt: { type: Date, default: Date.now, required: true },
-  updatedAt: { type: Date, default: Date.now },
-});
+  }
+}, { timestamps: true });
 
 export const ProjectModel = model<Progetto>("Project", ProjectSchema);
