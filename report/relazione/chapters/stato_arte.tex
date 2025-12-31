@@ -11,7 +11,7 @@
 
 \subsection{Crowdfunding}
 
-Il \textit{\gls{cf}} è un modello di finanziamento collettivo in cui una pluralità di individui decide di destinare il proprio denaro, prevalentemente tramite piattaforme digitali, a supporto di progetti e iniziative di varia natura \cite{brunello2016crowdfunding}. \\
+Il \textit{\gls{cf}} è un modello di finanziamento collettivo in cui una pluralità di individui decide di destinare il proprio denaro, prevalentemente tramite piattaforme digitali, a supporto di progetti e iniziative di varia natura \cite{patil2021blockchain}. \\
 In ragione della sua etimologia, dall'inglese \textit{crowd} "folla" e \textit{funding}, finanziamento, il \gls{cf} è stato definito come una pratica di microfinanziamento "dal basso" \cite{thalassinos2023crowdfunding}, la cui peculiarità risiede nella capacità di aggregare numerosi contributi finanziari di modesta entità a partire da un'ampia platea di sostenitori. 
 
 La letteratura attribuisce al Web 2.0 il principale catalizzatore del successo del \gls{cf} \cite{brunetti2016web}. Lo sviluppo di Internet e la capillare diffusione di canali digitali di comunicazione, come i \textit{social-media}, infatti, ha permesso non solo di ampliare la platea di donatori, ma anche di abbattere i limiti geografici, trasformando la "folla" in una comunità attiva e globale. \\
@@ -41,7 +41,6 @@ La letteratura converge nel considerare le piattaforme di \gls{cf} caratterizzat
 	\item mancanza di sicurezza: la gestione centralizzata dei dati espone le piattaforme ad attacchi malevoli, con conseguenze rilevanti in termini di perdita di fondi e fiducia degli utenti \cite{mukherjee2024crowdfunding}. 
 	
 	% \item alti costi operativi: le piattaforme tradizionali applicano commissioni elevate per la gestione delle campagne, riducendo il capitale disponibile per i progetti finanziati;
-	
 
 \end{itemize}
 
@@ -50,21 +49,13 @@ Sebbene questo paradigma abbia dunque democratizzato l'accesso al capitale, l'ar
 
 
 
+
 \subsection{Crowdfunding e blockchain}
 
 \subsubsection{Il ruolo della blockchain nel \textit{crowdfunding}}
 La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. L'efficacia di tale tecnologia risiede nelle proprietà native di decentralizzazione, trasparenza, immutabilità e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}) che implementa. 
 
-La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}.
-
-L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantaggi:
-\begin{itemize}
-	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
-	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain} \cite{salido2021mapping}, come le transazioni di donazione o i dettagli sulle campagne di raccolta fondi;
-	\item la trasparenza intrinseca del \textit{ledger}, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
-\end{itemize}
-
-% L’impiego di tale tecnologia nel \gls{cf}, dunque, risponde a specifiche esigenze di affidabilità, sicurezza e tracciabilità delle donazioni.
+La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}.\\
 
 \medskip
 \begin{table}[h]
@@ -90,17 +81,34 @@ L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantag
 \end{table}
 
 
-% di questa trasformazione è rappresentato dagli \textbf{\textit{Smart Contract}}, ossia programmi immutabili memorizzati direttamente all'interno del registro distribuito ed eseguiti esclusivamente al verificarsi di determinate condizioni \cite{buterin2013ethereum}. Questi permettdono di trasformare
+L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantaggi:
+\begin{itemize}
+	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
+	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain} \cite{salido2021mapping}, come le transazioni di donazione o i dettagli sulle campagne di raccolta fondi;
+	\item la trasparenza intrinseca del \textit{ledger}, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
+\end{itemize}
 
 
 \subsubsection{Soluzioni esistenti}
-
-
+Le potenzialità della tecnologia \textit{blockchain} analizzate nel paragrafo precedente hanno dato origine a diverse implementazioni sperimentali in letteratura, volte a prototipare sistemi di \gls{cf} decentralizzati. \\
 La maggior parte degli studi esaminati mostra un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa.
 
+Gli \textit{Smart Contract} sono programmi immutabili, registrati direttamente sulla \textit{blockchain}, che vengono eseguiti automaticamente al verificarsi di condizioni prestabilite  \cite{patil2021blockchain}.
+
+Nello modello proposto da Patil et al., queste clausole automatizzate mirano a impedire il trasferimento immediato e totale dei fondi raccolti verso i beneficiari. In particolare, il capitale viene invece vincolato nel contratto e rilasciato gradualmente solo al completamento di traguardi intermedi stabiliti dai proponenti stessi. Questo approccio, volto garantire che i contributori mantengano il controllo sui fondi investiti, è stato riproposto da Yadav e Sarasvathi, i quali però prevedono che per utilizzare una quota del capitale, il \textit{Project Manager} sottoponga alla piattaforma una specifica richiesta di spesa, indicando l'importo e l'indirizzo del fornitore destinatario del pagamento. La transazione viene autorizzata ed eseguita automaticamente dal contratto solo se la richiesta ottiene il consenso della maggioranza dei sostenitori (superiore al 50\%) attraverso un sistema di voto integrato.
 
 
-Gli \textit{Smart Contract} sono programmi immutabili, registrati direttamente sulla \textit{blockchain}, che vengono eseguiti automaticamente al verificarsi di condizioni prestabilite.
+
+
+
+
+
+
+% Un filone rilevante della ricerca si focalizza sull'uso di \textit{Smart Contract} per delegare il controllo dei flussi finanziari direttamente ai contributori.
+
+% Per mitigare il rischio di frode, diverse soluzioni propongono il rilascio frazionato del capitale. In \cite{patil2021blockchain} l'architettura prevede la suddivisione del progetto in fasi o \textit{milestones} predefinite; lo \textit{smart contract} rilascia una porzione del finanziamento solo al raggiungimento di ciascun traguardo, prevedendo rimborsi proporzionali in caso di cancellazione.
+
+
 
 
 
