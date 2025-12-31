@@ -95,23 +95,13 @@ La maggior parte degli studi esaminati mostra un ricorso diffuso a \textit{Smart
 
 Gli \textit{Smart Contract} sono programmi immutabili, registrati direttamente sulla \textit{blockchain}, che vengono eseguiti automaticamente al verificarsi di condizioni prestabilite  \cite{patil2021blockchain}.
 
-Un esempio significativo è il modello di Patil et al., in cui le clausole automatizzate impediscono l'erogazione immediata e integrale dei fondi al beneficiario. Il capitale rimane infatti vincolato nel contratto e viene rilasciato in modo incrementale solo al raggiungimento di obiettivi prefissati.
+Un esempio significativo è il modello proposto in \cite{patil2021blockchain}, in cui le clausole automatizzate impediscono l'erogazione immediata e integrale dei fondi al beneficiario. Il capitale rimane infatti vincolato nel contratto e viene rilasciato in modo incrementale solo al raggiungimento di obiettivi prefissati.
 
-Una filosofia analoga, tesa a garantire che i contributori mantengano il controllo sulle quote donate, è alla base del lavoro di Yadav e Sarasvathi. In questo studio, tuttavia, il rilascio dei fondi non è legato esclusivamente a \textit{milestone} temporali, ma è subordinato all'approvazione di una specifica richiesta di spesa avanzata dal promotore del progetto, tenuto a dettagliare la finalità dell'esborso, l'ammontare richiesto e l'indirizzo pubblico del fornitore destinatario del pagamento. L'autorizzazione invece è delegata a un sistema di voto integrato nello \textit{Smart Contract}, che esegue la transazione solo previo raggiungimento di un \textit{quorum} superiore al 50\% dei consensi tra i donatori.
+Una filosofia analoga, tesa a garantire che i contributori mantengano il controllo sulle quote donate, è alla base del lavoro di Yadav e Sarasvathi \cite{yadav2020venturing}. In questo studio, tuttavia, il rilascio dei fondi non è legato esclusivamente a \textit{milestone} temporali, ma è subordinato all'approvazione di una specifica richiesta di spesa avanzata dal promotore del progetto, il quale è tenuto a dettagliare la finalità dell'esborso, l'ammontare richiesto e l'indirizzo pubblico del fornitore destinatario del pagamento. L'autorizzazione invece è delegata a un sistema di voto integrato nello \textit{Smart Contract}, che esegue la transazione solo previo raggiungimento di un \textit{quorum} superiore al 50\% dei consensi tra i donatori. 
 
+La differenza sostanziale tra i due approcci è che in \cite{patil2021blockchain} 
 
-
-
-
-
-
-
-
-
-
-% Un filone rilevante della ricerca si focalizza sull'uso di \textit{Smart Contract} per delegare il controllo dei flussi finanziari direttamente ai contributori.
-
-% Per mitigare il rischio di frode, diverse soluzioni propongono il rilascio frazionato del capitale. In \cite{patil2021blockchain} l'architettura prevede la suddivisione del progetto in fasi o \textit{milestones} predefinite; lo \textit{smart contract} rilascia una porzione del finanziamento solo al raggiungimento di ciascun traguardo, prevedendo rimborsi proporzionali in caso di cancellazione.
+Mentre il sistema di Patil et al. si configura come un modello supervisionato, in cui una figura centrale di \textit{Admin} funge da garante approvando l'inserimento dei progetti per tutelare i finanziatori da potenziali frodi, l'architettura di Yadav e Sarasvathi elimina ogni intermediazione amministrativa in favore di una struttura puramente decentralizzata e partecipativa.
 
 
 
