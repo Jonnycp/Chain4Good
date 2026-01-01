@@ -24,8 +24,72 @@ Il successo della metodologia adottata è risultato fortemente legato ai fattori
 
 
 \subsection{Pianificazione delle attività}
-La pianificazione delle attività ha previsto l'identificazione sistematica di tutte le fasi operative di progetto, tramite la redazione di un elenco delle principali attività da svolgere. \\ Successivamente, per gestire la sequenzialità e il parallelismo dei \textit{task} individuati, è stato redatto Diagramma di Gantt. \\
+La pianificazione delle attività ha previsto l'identificazione sistematica di tutte le fasi operative di progetto, tramite la redazione di un elenco delle principali attività da svolgere (Tabella~\ref{table:pianificazione}). \\ Successivamente, per gestire la sequenzialità e il parallelismo dei \textit{task} individuati, è stato redatto Diagramma di Gantt. \\
 Questo approccio ha permesso di confrontare costantemente i tempi effettivi di esecuzione con la durata stimata in fase di pianificazione, garantendo il rispetto delle scadenze.
+
+
+\begin{table}[h]
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabularx}{\textwidth}{|
+			p{1.2cm}|
+			X|
+			>{\centering\arraybackslash}p{1.8cm}|
+		}
+		\hline
+		\textbf{ID} & \textbf{Descrizione delle attività} & \textbf{Durata (ore)} \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 1 – Ideazione e analisi}} \\
+		\hline
+		T1 & \textit{Brainstorming} e definizione dell’idea progettuale & 6 \\
+		T2 & Analisi del problema e del dominio applicativo & 10 \\
+		T3 & Analisi dei requisiti e studio della fattibilità & 12 \\
+		T4 & Analisi dei rischi e criticità & 6 \\
+		T5 & Studio delle tecnologie e della \textit{blockchain} & 16 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 2 – Progettazione}} \\
+		\hline
+		T6 & Progettazione dell’architettura del sistema & 14 \\
+		T7 & \textit{Design} delle interfacce utente & 25 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 3 – Implementazione del sistema}} \\
+		\hline
+		T8 & Sviluppo del \textit{Backend} & 35 \\
+		T9 & Sviluppo del \textit{Frontend} & 35 \\
+		T10 & Redazione della documentazione tecnica & 35 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 4 – Test e miglioramenti}} \\
+		\hline
+		T11 & Integrazione dei componenti & 10 \\
+		T12 & Verifica del prodotto e delle funzionalità implementate & 8 \\
+		T13 & Correzione dei bug e perfezionamenti & 12 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 5 – Conclusione}} \\
+		\hline
+		T14 & Consegna & 2 \\
+		\hline
+		\multicolumn{2}{|r|}{\textbf{Totale ore}} & \textbf{226} \\
+		\hline
+	\end{tabularx}
+	\caption{Pianificazione delle attività di progetto.}
+	\label{table:pianificazione}
+\end{table}
+\vspace*{\fill}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -44,8 +108,8 @@ Questo approccio ha permesso di confrontare costantemente i tempi effettivi di e
 %Rischi di progetto: relativi alla gestione delle attività e dei tempi di sviluppo. In particolare, la variabilità dei requisiti e la limitata esperienza iniziale con alcune tecnologie utilizzate rappresentano potenziali fonti di ritardo.
 
 %Rischio di dominio: Un ulteriore rischio individuato riguarda la volatilità del valore delle criptovalute utilizzate per le donazioni. L’adozione di criptovalute ad alta volatilità potrebbe infatti generare una discrepanza significativa tra il valore atteso delle donazioni e il valore effettivamente disponibile al momento dell’utilizzo dei fondi. 
-%Per mitigare tale rischio, il sistema è stato progettato per utilizzare stableco. Questa scelta contribuisce a migliorare la prevedibilità economica delle donazioni e a rafforzare la fiducia degli utenti nel corretto utilizzo delle risorse.
-
+%Per mitigare tale rischio, il sistema è stato eprogettato per utilizzare stableco. Questa scelta contribuisce a migliorare la prevedibilità economica delle donazioni e a rafforzare la fiducia degli utenti nel corretto utilizzo delle risorse.
+% La soluzione più citata per mitigare l'incertezza finanziaria è l'uso di stablecoin (come USDT o USDC), ovvero criptovalute ancorate a una valuta fiat.
 
 %altri rischi sono connessi alle caratteristiche del sistema sviluppato, come la scalabilità, l’usabilità dell’interfaccia e l’affidabilità complessiva del prototipo.
 
@@ -54,7 +118,14 @@ Questo approccio ha permesso di confrontare costantemente i tempi effettivi di e
 
 
 \subsection{Stima dei costi}
-La stima dei costi del progetto è stata effettuata in termini di tempo/persona, tenendo conto della dimensione del sistema, delle tecnologie adottate e dell’esperienza di ciascuno. Considerata la natura prototipale del progetto, è stata adottata una stima qualitativa ispirata ai modelli algoritmici dei costi, come il CoCoMo.
+La stima dei costi del progetto è stata effettuata in termini di tempo/persona, tenendo conto della natura prototipale del progetto, della dimensione del sistema, delle tecnologie adottate e dell’esperienza di dominio di ciascuno.
+Per dare una base quantitativa alla stima, si è fatto riferimento al modello algoritmico \gls{cocomo}, applicando la formula:
+
+$$
+	\frac{M}{P} = C \times D \times \times S \times M
+$$
+
+
 
 
 
