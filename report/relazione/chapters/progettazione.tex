@@ -100,16 +100,99 @@ Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le cara
 \subsection{Architettura del Sistema}
 Prima di poter procedere alla progettazione dell’architettura del sistema da realizzare si è resa necessaria l’individuazione delle tecnologie da utilizzare in fase di sviluppo per poter comprendere come queste potessero interagire tra loro e soddisfare tutti i requisiti funzionali e non funzionali emersi dalla precedente fase di analisi.
 
-\subsubsection{Architettura del Software}
 
 
-\subsubsection*{Frontend}
+\subsection{Stack tecnologico}
+
+\subsubsection{Front-end}
+La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate per lo sviluppo del front-end della piattaforma.
+
+\smallskip
+\begin{table}[h]
+	\centering
+	\renewcommand{\arraystretch}{1.3}
+	\setlength{\tabcolsep}{12pt}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{p{4cm} p{9cm}}
+			\hline
+			\textbf{Tecnologia} & \textbf{Descrizione} \\
+			\hline
+			TypeScript & Linguaggio utilizzato per lo sviluppo del \textit{front-end}. \\
+			\hline
+			React JS & Libreria utilizzata per la realizzazione dell’interfaccia utente secondo un’architettura a componenti. \\
+			\hline
+			React Router & Libreria impiegata per la gestione della navigazione \textit{client-side}. \\
+			\hline
+			@tanstack/react-query & Libreria utilizzata per la gestione delle chiamate asincrone al \textit{backend}, con supporto a \textit{caching}, sincronizzazione dei dati e gestione automatica degli stati di caricamento ed errore. \\
+			\hline
+			Tailwind CSS & \textit{Framework} CSS utilizzato per la definizione dello stile grafico e la realizzazione di \textit{layout} responsivi e coerenti. \\
+			\hline
+			Vite & Strumento di \textit{build} e sviluppo utilizzato per la compilazione del codice TypeScript e l’esecuzione dell’applicazione durante la fase di sviluppo. \\
+			\hline
+			Wagmi & Libreria utilizzata per l’integrazione Web3 e l’interazione con \textit{wallet} Ethereum e \textit{Smart Contract} tramite \textit{hook React}. \\
+			\hline
+			viem & \textit{Client} RPC a basso livello, utilizzato internamente per la comunicazione con i nodi \textit{blockchain} e il recupero dei dati \textit{on-chain}. \\
+			\hline
+			SIWE & Protocollo di autenticazione adottato per verificare l’identità dell’utente tramite firma crittografica del \textit{wallet}. \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Tecnologie e librerie utilizzate per lo sviluppo del front-end.}
+	\label{tab:frontend_stack}
+\end{table}
 
 
-\subsubsection*{Backend}
+\subsubsection{Back-end}
 
 
-\subsubsection*{Blockchain}
+
+
+\subsubsection{Blockchain}
+
+
+
+\smallskip
+\begin{table}[h]
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.3}
+	\setlength{\tabcolsep}{12pt}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{p{4cm} p{9cm}}
+			\hline
+			\textbf{Tecnologia} & \textbf{Descrizione} \\
+			\hline
+			Solidity & Linguaggio utilizzato per lo sviluppo degli \textit{Smart Contract}. \\
+			\hline
+			Hardhat & Ambiente di sviluppo impiegato per simulare una \textit{blockchain} locale durante la fase di sviluppo. \\
+			\hline
+			@openzeppelin/contracts & Libreria di \textit{Smart Contract} riutilizzabili, utilizzata per integrare componenti standard e meccanismi di sicurezza, come il controllo degli accessi. \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Tecnologie utilizzati per la componente \textit{blockchain}.}
+	\label{tab:blockchain_stack}
+\end{table}
+
+
+
+
+% Oltre all’impiego di linguaggi, librerie e ambienti di sviluppo per la realizzazione degli smart contract, il progetto prevede la definizione di specifiche componenti applicative on-chain che implementano la logica funzionale del sistema di crowdfunding. Tali componenti non costituiscono tecnologie a sé stanti, ma rappresentano strutture e meccanismi progettati per rispondere ai requisiti applicativi del dominio.
+%In particolare, la custodia dei fondi raccolti è affidata a un contratto dedicato, indicato come \textit{Smart Contract Vault}, che svolge la funzione di contenitore decentralizzato delle donazioni. Le risorse economiche versate dagli utenti non vengono trasferite immediatamente al promotore del progetto, ma rimangono bloccate all’interno del vault fino al verificarsi delle condizioni previste, quali l’approvazione di una richiesta di spesa. Questo approccio consente di separare la gestione dei fondi dalla logica off-chain e di vincolare l’utilizzo delle risorse alle regole definite nel codice dello smart contract.
+% Il collegamento tra i dati gestiti off-chain e la logica on-chain è realizzato mediante l’introduzione di un identificativo univoco di progetto (\textit{ProjectID}). Tale identificativo funge da riferimento comune tra frontend, backend e smart contract, permettendo di associare in modo non ambiguo le informazioni descrittive di un progetto alle operazioni eseguite sulla blockchain. L’utilizzo del \textit{ProjectID} consente inoltre di garantire la verificabilità delle operazioni, permettendo agli utenti di correlare le informazioni visualizzate nell’interfaccia applicativa con le transazioni registrate on-chain.
+% Infine, il progetto integra un meccanismo di voto on-chain per la gestione delle richieste di spesa. Tale meccanismo consente ai donatori di esprimere un’approvazione o un rifiuto in merito all’utilizzo dei fondi raccolti, secondo un processo di decisione collettiva implementato direttamente negli smart contract. Le votazioni e i relativi esiti sono registrati sulla blockchain, rendendo il processo trasparente, verificabile e resistente a manipolazioni. Lo sblocco dei fondi avviene esclusivamente al raggiungimento delle condizioni di consenso previste, garantendo un controllo condiviso sull’allocazione delle risorse.
+
+
+
+
+
+%La componente blockchain del progetto è stata realizzata mediante lo sviluppo di \textit{Smart Contract} in linguaggio \textit{Solidity}, eseguiti su una \textit{blockchain} compatibile con la \gls{evm}.
+
+% Per lo sviluppo, il \textit{testing} e il \textit{deployment} degli \textit{Smart Contract} è stato utilizzato l’ambiente \textit{Hardhat}, che consente la compilazione del codice \textit{Solidity}, l’esecuzione di test automatizzati e la simulazione di una rete \textit{blockchain} locale. 
+
+% Al fine di garantire sicurezza e conformità agli standard, gli \textit{Smart Contract}  fanno uso della libreria \texttt{@openzeppelin/contracts}, che fornisce implementazioni affidabili di componenti riutilizzabili, quali meccanismi di controllo degli accessi e interfacce standard per la gestione dei \textit{token}.
+
+% Dal punto di vista funzionale, gli \textit{Smart Contract} sviluppati implementano un meccanismo di custodia decentralizzata dei fondi tramite un contratto di tipo \textit{vault}, all’interno del quale vengono bloccate le donazioni effettuate dagli utenti. Il sistema include inoltre componenti \textit{on-chain} per la registrazione delle donazioni, la creazione delle richieste di spesa e la gestione delle votazioni dei donatori, che regolano lo sblocco dei fondi secondo le regole definite contrattualmente.
 
 
 
@@ -130,9 +213,9 @@ Per favorire lo sviluppo parallelo e la portabilità del sistema \textit{softwar
 			\hline
 			Git & \gls{vcs} impiegato per la gestione del codice sorgente secondo una strategia di \textit{branching} collaborativa per permettere lo sviluppo parallelo. \\
 			\hline
-			GitHub & Piattaforma di \textit{hosting} del \textit{repository} remoto, utilizzata per supportare la collaborazione e la condivisione del codice tra i membri del gruppo. \\
+			GitHub & Piattaforma di \textit{hosting} del \textit{repository} remoto, utilizzata per supportare la collaborazione tra i membri del gruppo. \\
 			\hline
-			Docker & Utilizzato per la standardizzazione e l’isolamento dell’ambiente di esecuzione, garantendo coerenza e riproducibilità tra le diverse fasi di sviluppo. \\
+			Docker & Utilizzato per la standardizzazione e l’isolamento dell’ambiente di esecuzione. \\
 			\hline
 		\end{tabular}
 	}
