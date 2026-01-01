@@ -140,16 +140,45 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 	\caption{Tecnologie e librerie utilizzate per lo sviluppo del front-end.}
 	\label{tab:frontend_stack}
 \end{table}
-
+\clearpage
 
 \subsubsection{Back-end}
+La Tabella~\ref{tab:backend_stack} riassume le principali tecnologie e librerie adottate per lo sviluppo della componente \textit{back-end} della piattaforma.
 
-
-
+\smallskip
+\begin{table}[h]
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.3}
+	\setlength{\tabcolsep}{12pt}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{p{4cm} p{9cm}}
+			\hline
+			\textbf{Tecnologia} & \textbf{Descrizione} \\
+			\hline
+			TypeScript & Linguaggio utilizzato per lo sviluppo del \textit{back-end}, al fine di garantire tipizzazione statica e maggiore robustezza del codice. \\
+			\hline
+			Express.js & \textit{Framework} per Node.js utilizzato per la realizzazione delle API REST e per la gestione delle richieste provenienti dal \textit{front-end.} \\
+			\hline
+			MongoDB & Database NoSQL utilizzato per la memorizzazione dei dati \textit{off-chain}, quali metadati dei progetti, informazioni sugli utenti e dati di sessione. \\
+			\hline
+			Mongoose & \gls{odm} utilizzato per la definizione dei modelli di dati e l’interazione con il database MongoDB. \\
+			\hline
+			express-session & \textit{Middleware} utilizzato per la gestione delle sessioni lato server, impiegato nel processo di autenticazione degli utenti. \\
+			\hline
+			SIWE & Libreria utilizzata per l’implementazione del protocollo \textit{Sign-In with Ethereum}, basato sulla verifica di messaggi firmati tramite \textit{wallet} Ethereum. \\
+			\hline
+			ethers.js & Libreria JavaScript utilizzata per l’interazione con la \textit{blockchain} Ethereum, in particolare per il recupero di informazioni \textit{on-chain}. \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Tecnologie e librerie utilizzate per lo sviluppo del \textit{back-end}.}
+	\label{tab:backend_stack}
+\end{table}
+\clearpage
 
 \subsubsection{Blockchain}
-
-
+La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adottate per l'implementazione della componente \textit{blockchain} del sistema.
 
 \smallskip
 \begin{table}[h]
@@ -164,15 +193,16 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 			\hline
 			Solidity & Linguaggio utilizzato per lo sviluppo degli \textit{Smart Contract}. \\
 			\hline
-			Hardhat & Ambiente di sviluppo impiegato per simulare una \textit{blockchain} locale durante la fase di sviluppo. \\
+			Hardhat & Ambiente di sviluppo utilizzato per la compilazione, il testing e il deployment degli \textit{Smart Contract}, nonché per la simulazione di una \textit{blockchain} locale. \\
 			\hline
 			@openzeppelin/contracts & Libreria di \textit{Smart Contract} riutilizzabili, utilizzata per integrare componenti standard e meccanismi di sicurezza, come il controllo degli accessi. \\
 			\hline
 		\end{tabular}
 	}
-	\caption{Tecnologie utilizzati per la componente \textit{blockchain}.}
+	\caption{Tecnologie utilizzate per la componente \textit{blockchain}.}
 	\label{tab:blockchain_stack}
 \end{table}
+\smallskip
 
 
 
@@ -183,9 +213,6 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 % Infine, il progetto integra un meccanismo di voto on-chain per la gestione delle richieste di spesa. Tale meccanismo consente ai donatori di esprimere un’approvazione o un rifiuto in merito all’utilizzo dei fondi raccolti, secondo un processo di decisione collettiva implementato direttamente negli smart contract. Le votazioni e i relativi esiti sono registrati sulla blockchain, rendendo il processo trasparente, verificabile e resistente a manipolazioni. Lo sblocco dei fondi avviene esclusivamente al raggiungimento delle condizioni di consenso previste, garantendo un controllo condiviso sull’allocazione delle risorse.
 
 
-
-
-
 %La componente blockchain del progetto è stata realizzata mediante lo sviluppo di \textit{Smart Contract} in linguaggio \textit{Solidity}, eseguiti su una \textit{blockchain} compatibile con la \gls{evm}.
 
 % Per lo sviluppo, il \textit{testing} e il \textit{deployment} degli \textit{Smart Contract} è stato utilizzato l’ambiente \textit{Hardhat}, che consente la compilazione del codice \textit{Solidity}, l’esecuzione di test automatizzati e la simulazione di una rete \textit{blockchain} locale. 
@@ -193,7 +220,6 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 % Al fine di garantire sicurezza e conformità agli standard, gli \textit{Smart Contract}  fanno uso della libreria \texttt{@openzeppelin/contracts}, che fornisce implementazioni affidabili di componenti riutilizzabili, quali meccanismi di controllo degli accessi e interfacce standard per la gestione dei \textit{token}.
 
 % Dal punto di vista funzionale, gli \textit{Smart Contract} sviluppati implementano un meccanismo di custodia decentralizzata dei fondi tramite un contratto di tipo \textit{vault}, all’interno del quale vengono bloccate le donazioni effettuate dagli utenti. Il sistema include inoltre componenti \textit{on-chain} per la registrazione delle donazioni, la creazione delle richieste di spesa e la gestione delle votazioni dei donatori, che regolano lo sblocco dei fondi secondo le regole definite contrattualmente.
-
 
 
 \subsubsection{Strumenti di sviluppo}
@@ -222,6 +248,8 @@ Per favorire lo sviluppo parallelo e la portabilità del sistema \textit{softwar
 	\caption{Strumenti utilizzati per lo sviluppo del progetto}
 	\label{tab:development_tools}
 \end{table}
+
+
 
 
 
