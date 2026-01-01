@@ -194,7 +194,7 @@ La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adott
 			\hline
 			Solidity & Linguaggio utilizzato per lo sviluppo degli \textit{Smart Contract}. \\
 			\hline
-			Hardhat & Ambiente di sviluppo utilizzato per la compilazione, il testing e il deployment degli \textit{Smart Contract}, nonché per la simulazione di una \textit{blockchain} locale. \\
+			Hardhat & Ambiente di sviluppo utilizzato per la compilazione, il testing e il \textit{deployment} degli \textit{Smart Contract}, nonché per la simulazione di una \textit{blockchain} locale. \\
 			\hline
 			@openzeppelin/contracts & Libreria di \textit{Smart Contract} riutilizzabili, utilizzata per integrare componenti standard e meccanismi di sicurezza, come il controllo degli accessi. \\
 			\hline
@@ -215,12 +215,9 @@ La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adott
 
 
 %La componente blockchain del progetto è stata realizzata mediante lo sviluppo di \textit{Smart Contract} in linguaggio \textit{Solidity}, eseguiti su una \textit{blockchain} compatibile con la \gls{evm}.
-
 % Per lo sviluppo, il \textit{testing} e il \textit{deployment} degli \textit{Smart Contract} è stato utilizzato l’ambiente \textit{Hardhat}, che consente la compilazione del codice \textit{Solidity}, l’esecuzione di test automatizzati e la simulazione di una rete \textit{blockchain} locale. 
-
 % Al fine di garantire sicurezza e conformità agli standard, gli \textit{Smart Contract}  fanno uso della libreria \texttt{@openzeppelin/contracts}, che fornisce implementazioni affidabili di componenti riutilizzabili, quali meccanismi di controllo degli accessi e interfacce standard per la gestione dei \textit{token}.
 
-% Dal punto di vista funzionale, gli \textit{Smart Contract} sviluppati implementano un meccanismo di custodia decentralizzata dei fondi tramite un contratto di tipo \textit{vault}, all’interno del quale vengono bloccate le donazioni effettuate dagli utenti. Il sistema include inoltre componenti \textit{on-chain} per la registrazione delle donazioni, la creazione delle richieste di spesa e la gestione delle votazioni dei donatori, che regolano lo sblocco dei fondi secondo le regole definite contrattualmente.
 
 
 \subsubsection{Strumenti di sviluppo}
@@ -250,9 +247,6 @@ Per favorire lo sviluppo parallelo e la portabilità del sistema \textit{softwar
 	\caption{Strumenti utilizzati per lo sviluppo del progetto}
 	\label{tab:development_tools}
 \end{table}
-
-
-
 
 
 
