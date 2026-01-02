@@ -10,7 +10,7 @@ router.get('/categories', ProjectController.getCategories);
 
 router.get("/me", isAuth, isEnte, ProjectController.getMyProjects);
 
-// router.get('/:id', isAuth, ProjectController.getProjectById);
+router.get('/:id', isAuth, ProjectController.getProjectById);
 
 // router.get("/donated", isAuth, ProjectController.getMyDonations);
 

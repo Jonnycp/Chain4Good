@@ -76,7 +76,7 @@ export const getProjects = async (req: Request, res: Response) => {
           let: { projectId: "$_id" },
           pipeline: [
             { $match: { $expr: { $eq: ["$project", "$$projectId"] } } },
-            { $sort: { date: -1 } }, //TODO: Appesantisce query unire tutte le donazioni
+            { $sort: { createdAt: -1 } }, //TODO: Appesantisce query unire tutte le donazioni
           ],
           as: "donazioni",
         },
@@ -180,7 +180,7 @@ export const getMyProjects = async (req: Request, res: Response) => {
           let: { projectId: "$_id" },
           pipeline: [
             { $match: { $expr: { $eq: ["$project", "$$projectId"] } } },
-            { $sort: { date: -1 } },
+            { $sort: { createdAt: -1 } },
           ],
           as: "donazioni",
         },
@@ -233,5 +233,51 @@ export const getMyProjects = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ error: "Errore nel caricamento dei progetti", code: 500 });
+  }
+};
+
+/**
+ * Endpoint GET /projects/:id
+ * Restituisce i dettagli di un progetto dato il suo ID
+ */
+
+export const getProjectById = async (req: Request, res: Response) => {
+  try {
+    const projectId = req.params.id;
+
+    const project = await ProjectModel.findById(projectId).populate<{
+      ente: {
+        _id: string;
+        profilePicture: string;
+        enteDetails: {
+          nome: string;
+          denominazioneSociale: string;
+        };
+      };
+    }>({
+      path: "ente",
+      select:
+        "_id profilePicture enteDetails.nome enteDetails.denominazioneSociale",
+    });
+
+    if (!project) {
+      return res.status(404).json({ error: "Progetto non trovato", code: 404 });
+    }
+
+    const user = await UserModel.findOne({ address: req.session.address! }); //TODO: sarebbe meglio mettere in sessione l'id
+    const isMy = user?._id.toString() === project?.ente._id.toString();
+
+    const ente = {
+      _id: project.ente._id,
+      profilePicture: project.ente.profilePicture,
+      nome: project.ente.enteDetails?.nome,
+      denominazioneSociale: project.ente.enteDetails?.denominazioneSociale,
+    };
+
+    res.json({ ...project.toObject(), isMy, ente });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Errore nel caricamento del progetto", code: 500 });
   }
 };
