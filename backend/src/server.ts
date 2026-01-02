@@ -33,6 +33,9 @@ app.use(
 );
 //TODO: Non usare default MemoryStore in prod, usare connect-mongo
 
+// File statici (uploads)
+app.use('/uploads', express.static('uploads'));
+
 // Router rotte
 app.use("/", indexRouter);
 
