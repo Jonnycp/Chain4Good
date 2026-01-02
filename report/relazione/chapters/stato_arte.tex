@@ -54,7 +54,7 @@ Sebbene questo paradigma abbia dunque democratizzato l'accesso al capitale, l'ar
 
 \subsubsection{Il ruolo della blockchain nel \textit{crowdfunding}}
 La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. L'efficacia di tale tecnologia risiede nelle proprietà native di decentralizzazione, trasparenza, immutabilità e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}) che implementa. \\
-La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici.
+La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}.
 
 \medskip
 \begin{table}[h]
@@ -80,7 +80,6 @@ La \textit{blockchain}, infatti, si configura come un registro distribuito, cond
 \label{tab:blockchain_vantaggi}
 \end{table}
 
- Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}. \\
 L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantaggi:
 \begin{itemize}
 	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
@@ -90,25 +89,30 @@ L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantag
 
 
 \subsubsection{Soluzioni esistenti}
-Le potenzialità della tecnologia \textit{blockchain} analizzate nel paragrafo precedente hanno dato origine a diverse implementazioni sperimentali in letteratura, volte a prototipare sistemi di \gls{cf} decentralizzati. \\
-La maggior parte degli studi esaminati mostra un ricorso diffuso a \textit{Smart Contract} \footnote{programmi immutabili, registrati direttamente sulla \textit{blockchain} ed eseguiti automaticamente al verificarsi di condizioni prestabilite \cite{patil2021blockchain}} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa. 
-
-Un esempio significativo è il modello proposto in \cite{patil2021blockchain}, in cui le clausole automatizzate impediscono l'erogazione immediata e integrale dei fondi al beneficiario. Il capitale rimane infatti vincolato nel contratto e viene rilasciato in modo incrementale solo al raggiungimento di obiettivi intermedi stabiliti in fase di creazione del progetto.
-La peculiarità di questo modello, tuttavia, si esplica nella presenza di un utente \textit{Admin} a cui è delegata la responsabilità di approvare l’inserimento dei progetti in piattaforma e di autorizzare lo sblocco delle quote raccolte. 
-
+Le potenzialità della tecnologia \textit{blockchain} analizzate nel paragrafo precedente hanno dato origine a diverse implementazioni sperimentali in letteratura, volte a prototipare sistemi di \gls{cf} decentralizzati. Tali soluzioni mirano principalmente a superare i limiti dei modelli tradizionali attraverso l’eliminazione degli intermediari fiduciari e l’introduzione di meccanismi di controllo trasparenti e verificabili.\\
+Le principali applicazioni si basano sull'utilizzo degli \textit{Smart Contract}, ossia programmi immutabili, registrati direttamente sulla \textit{blockchain} ed eseguiti automaticamente al verificarsi di condizioni prestabilite \cite{patil2021blockchain}. Questi contratti vengono principalmente utilizzati per gestire il ciclo di vita delle donazioni e per implementare meccanismi di approvazione delle richieste di spesa fondati sul consenso dei donatori. \\
+Nel modello proposto da Patil et al. \cite{patil2021blockchain}, ad esempio, gli \textit{Smart Contract} hanno la funzione di impedire l'erogazione immediata e integrale dei fondi donati al beneficiario. Il capitale rimane vincolato nel contratto e viene rilasciato in modo incrementale solo al raggiungimento di obiettivi intermedi (\textit{milestone}) stabiliti in fase di creazione del progetto. Tuttavia, lo sblocco delle risorse e l’approvazione dell’inserimento dei progetti in piattaforma sono affidati a un utente con ruolo di \textit{Admin}, il che riduce il grado di decentralizzazione del sistema. \\
 Diversamente, l'architettura proposta da Yadav e Sarasvathi \cite{yadav2020venturing} elimina ogni figura di supervisione esterna in favore di una struttura puramente decentralizzata.
 In questo studio, infatti, il rilascio dei fondi è sempre incrementale ma è delegato a un sistema di voto integrato nello \textit{Smart Contract}. 
 In particolare, affinché il beneficiario possa utilizzare una quota parte dei fondi raccolti deve presentare una richiesta di spesa, specificando la causale dell'esborso, l’importo richiesto e l’indirizzo pubblico del fornitore destinatario del pagamento. \\
-Lo \textit{Smart Contract} esegue la transazione direttamente verso il fornitore solo qualora venga raggiunta una maggioranza dei voti superiore al 50\% tra i soli sostenitori del progetto. 
+Solo se la proposta viene approvata da almeno il 50\% dei sostenitori del progetto, lo \textit{Smart Contract} esegue la transazione direttamente verso il fornitore. Il valore aggiunto di questo approccio si esplica dunque nella capacità di aumentare la partecipazione dei donatori lungo l'intero ciclo di vita della donazione.
+
+Nel complesso, le soluzioni analizzate in letteratura dimostrano come l’impiego della tecnologia \textit{blockchain} e degli \textit{Smart Contract} consenta di introdurre meccanismi di controllo più trasparenti e verificabili rispetto ai modelli di \gls{cf} tradizionali. Tali caratteristiche risultano particolarmente rilevanti nel contesto della raccolta fondi a fini filantropici,  ambito nel quale si colloca il presente lavoro e in cui la fiducia dei donatori e la tracciabilità dell’utilizzo delle risorse rappresentano requisiti centrali.
 
 
+
+
+
+% “Abbiamo privilegiato un modello che fosse tecnicamente solido ma soprattutto adottabile nel mondo reale, eticamente inclusivo e difendibile dal punto di vista operativo e normativo.”
+
+% Questi aspetti assumono un ruolo centrale nel contesto della raccolta fondi a fini benefici, in cui la fiducia del donatore non è limitata alla fase di finanziamento iniziale, ma si estende alla verifica dell’impatto e della correttezza nell’impiego delle risorse raccolte.
+
+%Alla luce di tali considerazioni, emerge la necessità di modelli che consentano ai donatori di partecipare attivamente alle decisioni relative all’utilizzo delle risorse raccolte al fine di verificare la coerenza tra gli obiettivi dichiarati e l’effettivo impiego dei fondi. Tali aspetti risultano centrali per la costruzione di un rapporto di fiducia duraturo, soprattutto in contesti filantropici.
 
 
 
 % Complessivamente, nonostante i progressi introdotti, permangono alcune limitazioni comuni, quali un coinvolgimento talvolta limitato dei donatori nelle decisioni successive alla raccolta e una tracciabilità non sempre completa dell’intero ciclo di vita della donazione. 
 %In particolare, emerge la necessità di modelli che consentano ai donatori di partecipare attivamente alle decisioni relative all’utilizzo delle risorse raccolte al fine di verificare la coerenza tra gli obiettivi dichiarati e l’effettivo impiego dei fondi. Tali aspetti risultano centrali per la costruzione di un rapporto di fiducia duraturo, soprattutto in contesti filantropici.
-
-%La maggior parte degli studi esaminati mostra un ricorso diffuso a \textit{Smart Contract} per la gestione delle donazioni e a meccanismi di approvazione basati sul consenso dei donatori, per l'approvazione delle richieste di spesa. Un approccio simile è alla base del lavoro di Yadav e Sarasvathi \cite{yadav2020venturing}, in cui però il rilascio dei fondi non è legato esclusivamente a \textit{milestone} temporali, ma è subordinato all'approvazione di una specifica richiesta di spesa avanzata dal promotore del progetto, il quale è tenuto a dettagliare la finalità dell'esborso, l'ammontare richiesto e l'indirizzo pubblico del fornitore destinatario del pagamento. Sebbene nel modello di Patil et al., lo sblocco del capitale è mediata da un utente \textit{Admin}, in \cite{yadav2020venturing}, l'autorizzazione è delegata a un sistema di voto integrato nello \textit{Smart Contract}, che esegue la transazione solo previo raggiungimento di un \textit{quorum} superiore al 50\% dei consensi tra i donatori.  Rispetto al modello precedente, dunque, questa architettura elimina ogni intermediazione in favore di una struttura puramente decentralizzata. 
 
 
 
@@ -121,6 +125,3 @@ Lo \textit{Smart Contract} esegue la transazione direttamente verso il fornitore
 
 
 %In particolare, la natura decentralizzata della blockchain consente di ridurre il ruolo dell’intermediario fiduciario, mentre l’immutabilità dei dati registrati garantisce l’integrità delle informazioni relative alle transazioni e agli eventi associati alle campagne di raccolta fondi. Ogni operazione può essere verificata pubblicamente, aumentando il livello di trasparenza nei confronti di tutti gli attori coinvolti.
-
-
-%Risulta evidente che il crowdfunding rappresenti uno strumento fondamentale per la democratizzazione dell’accessibilità ai finanziamenti per una vasta gamma di progetti e organizzazioni; tuttavia, i limiti caratteristici delle piattaforme tradizionali hanno evidenziato la necessità di un’evoluzione verso modelli Web3 – Kickstarter stessa ne è ha preso atto in un comunicato del 2021

@@ -92,18 +92,17 @@ Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non �
 
 
 
-
 \subsection{Analisi dei rischi}
 L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. \\
 In primo luogo, sono stati presi in considerazione i rischi di progetto, quali la possibile sottostima dei tempi di sviluppo e la variabilità dei requisiti individuati in fase di pianificazione.
 
-Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riallocazione delle risorse in presenza di ritardi non previsti.
+Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riorganizzazione.
 
-Al fine di ridurre le criticità connesse all’evoluzione dei requisiti nel corso del progetto, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione.
+Al fine di ridurre le criticità connesse all’evoluzione dei requisiti, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione.
 
 Oltre ai rischi di progetto, sono stati analizzati quelli legati al dominio applicativo del \gls{cf}. In particolare, sulla base di quanto emerso dall'analisi in letteratura, è stata considerata la possibilità che l'Ente promotore non utilizzasse i fondi raccolti per le finalità dichiarate.
-Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, affinché le risorse raccolte fossero sbloccate esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori. 
-Al fine di rafforzare ulteriormente la trasparenza del processo, si è deciso di vincolare la presentazione di nuove richieste di spesa al caricamento del preventivo relativo alla richiesta precedente.
+Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, affinché le risorse raccolte fossero sbloccate esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori (tramite \textit{Smart Contract}).
+Al fine di rafforzare ulteriormente la trasparenza del processo di donazione, si è deciso di vincolare la presentazione di nuove richieste di spesa al caricamento del preventivo relativo alla richiesta precedente.
 
 Un’ulteriore fonte di rischio è rappresentata dalla volatilità delle criptovalute utilizzate per effettuare le donazioni. Per mitigare tale rischio, il sistema è stato progettato per utilizzare \textit{stablecoin}, ossia criptovalute progettate per mantenere un valore stabile rispetto a una valuta reale di riferimento (ad esempio, 1 USDC = 1 Dollaro USA), eliminando le oscillazioni di prezzo tipiche di criptovalute come Bitcoin. 
 
