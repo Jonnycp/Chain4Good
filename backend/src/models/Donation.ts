@@ -1,8 +1,9 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, Types, model, Document } from "mongoose";
 
 export interface Donazione extends Document {
-  project: Schema.Types.ObjectId;
-  donor: Schema.Types.ObjectId;
+  project: Types.ObjectId;
+  donor: Types.ObjectId;
+  messaggio?: string;
   amount: number;
   symbol: string;
   hashTransaction: string;
@@ -11,8 +12,9 @@ export interface Donazione extends Document {
 }
 
 const DonationSchema = new Schema<Donazione>({
-  project: { type: Schema.Types.ObjectId, ref: "Project", required: true, index: true },
-  donor: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
+  project: { type: Types.ObjectId, ref: "Project", required: true, index: true },
+  donor: { type: Types.ObjectId, ref: "User", required: true, index: true },
+  messaggio: { type: String, default: "" },
   amount: { type: Number, required: true },
   symbol: { type: String, required: true, default: "EURC" },
   hashTransaction: { type: String, required: true, unique: true, index: true },
