@@ -91,14 +91,21 @@ Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non �
 % In particolare, la pianificazione dei \textit{task} riportata in Tabella~\ref{table:pianificazione}, ha consentito di stimare in modo puntuale l’impegno complessivo richiesto per lo sviluppo del progetto.
 
 \subsection{Analisi dei rischi}
-L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. 
+L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. \\
+In primo luogo, sono stati presi in considerazione i rischi di progetto, quali la possibile sottostima dei tempi di sviluppo e la variabilità dei requisiti individuati in fase di pianificazione.
 
-In primo luogo, sono stati considerati i rischi di progetto legati la dominio applicativo del \gls{cf}. in particolare, è stata analizzata la possibilità che i fondi raccolti non siano utilizzati per i fini dichiarati dall'Ente promotore. 
-Tuttavia, nel sistema proposto, tale rischio viene mitigato attraverso un meccanismo di custodia decentralizzata dei fondi, implementato mediante uno \textit{Smart Contract} che sblocca le risorse esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori. 
+Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riallocazione delle risorse in presenza di ritardi imprevisti.
 
-Un ulteriore rischio di progetto è rappresentato dalla volatilità delle criptovalute utilizzate per le donazioni, che può determinare una variazione del controvalore economico dei fondi raccolti rispetto al \textit{budget} inizialmente previsto. Sebbene questo rischio non possa essere eliminato, la registrazione \textit{on-chain} delle transazioni garantisce trasparenza e tracciabilità sull’andamento delle risorse.
+Al fine di ridurre le criticità connesse all’evoluzione dei requisiti nel corso del progetto, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione.
 
-Accanto a questi aspetti, sono stati presi in esame i rischi di processo, quali la possibile sottostima dei tempi di sviluppo e l'evoluzione dei requisiti nel corso del progetto. Per ridurre l'impatto di tali incertezze è stato adottato un approccio di sviluppo di tipo incrementale, che ha consentito di adattare progressivamente le soluzioni progettuali sulla base delle evidenze emerse durante l'implementazione. 
+% Oltre ai rischi di progetto, sono stati poi presi in esame quelli legati al dominio applicativo del \gls{cf}. 
+
+
+%E'\ stata, infatti, analizzata la possibilità che i fondi raccolti non fossero utilizzati per i fini dichiarati dall'Ente promotore.  Nel sistema proposto, tale rischio viene mitigato attraverso un meccanismo di custodia decentralizzata dei fondi, implementato mediante uno \textit{Smart Contract} che sblocca le risorse raccolte esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori.  Un ulteriore rischio di progetto è rappresentato dalla volatilità delle criptovalute utilizzate per le donazioni.
+
+%che può determinare una variazione del controvalore economico dei fondi raccolti rispetto al \textit{budget} inizialmente previsto. Questo rischio viene mitigato attraverso l'utilizzo di \textit{Stable Coin}. 
+
+
 
 
 
