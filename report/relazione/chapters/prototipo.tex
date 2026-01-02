@@ -41,11 +41,14 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 \subsection{Inserimento e valutazione spesa}
 A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
 Per poter accedere a tali risorse, il beneficiario deve formalizzare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) attraverso l'inserimento dei seguenti parametri: nome della spesa, importo richiesto, finalità dell'esborso e preventivo. \\
-La sottomissione di una nuova richiesta di spesa, tuttavia, è vincolata al caricamento della prova di acquisto relativa all'ultima richiesta approvata dalla comunità di votanti (insieme degli individui che finanzia un'iniziativa di \gls{cf}).
-Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate.\\
+Una volta sottomessa, la richiesta viene sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto. Durante un intervallo temporale prefissato, tali utenti possono esprimere un parere favorevole o contrario allo sblocco dei fondi, contribuendo così al processo decisionale relativo all’utilizzo delle risorse raccolte.E'\ importante sottolineare che il meccanismo di voto adottato assegna lo stesso peso a ciascun votante, indipendentemente dall’importo donato, al fine di garantire un processo decisionale equo e non dipendente dalla capacità economica dei singoli partecipanti, in coerenza con la natura della piattaforma. \\
+La sottomissione di una nuova richiesta di spesa è inoltre vincolata al caricamento della prova di acquisto relativa all'ultima richiesta approvata dalla comunità di votanti (insieme degli individui che finanzia un'iniziativa di \gls{cf}).
+Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
 
 
-\begin{figure}[!h]
+
+\medskip
+\begin{figure}[h]
 	\centering
 	\begin{minipage}{0.37\textwidth}
 		\centering
@@ -60,15 +63,14 @@ Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fo
 	\label{fig:inserimento progetto}
 \end{figure}
 
-Il sistema adotta un meccanismo di voto non ponderato, in cui ciascun partecipante dispone di un singolo voto, indipendentemente dall'importo donato, in coerenza con la natura benefica della piattaforma.
 
 
 \subsubsection{Meccanismo di validazione}
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per agire secondo le seguenti regole:
 \begin{itemize}
-	\item La richiesta di spesa è approvata se la maggioranza dei votanti ($\ge 50\%$) esprime un parere favorevole;
-	\item In presenza di una partecipazione parziale, la soglia di maggioranza viene ricalcolata in funzione dei soli voti espressi;
-	\item Qualora non venga registrata alcuna attività di voto il sistema approva automaticamente la richiesta a seguito della scadenza dei 3 giorni;
+	\item la richiesta di spesa è approvata se la maggioranza dei votanti ($\ge 50\%$) esprime un parere favorevole;
+	\item in presenza di una partecipazione parziale, la soglia di maggioranza viene ricalcolata esclusivamente in funzione dei soli voti espressi;
+	\item qualora non venga registrata alcuna attività di voto entro il periodo di valutazione (pari a tre giorni), il sistema approva automaticamente la richiesta;
 \end{itemize}
 
 Al soddisfacimento dei requisiti di approvazione, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma raccolta verso il \textit{wallet} del beneficiario. 
