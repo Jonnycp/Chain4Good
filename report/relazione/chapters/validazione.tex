@@ -4,7 +4,7 @@
 
 
 % ********************************************************************
-\section{Validazione e discussione dei risultati}
+\section{Validazione e discussione}
 \label{sec:validazione}
 % ********************************************************************
 
@@ -13,9 +13,9 @@ Gli obiettivi di progetto sono stati raggiunti con successo. L'applicazione web 
 Durante lo sviluppo dell’applicazione è stata posta particolare attenzione agli aspetti di sicurezza, qualità del codice e robustezza complessiva del sistema. In particolare, sono state adottate misure preventive per ridurre il rischio di attacchi comuni nelle applicazioni web, quali \gls{xss}, \textit{\textit{SQL injection}} e \textit{\textit{replay attack}}, con un’attenzione specifica ai meccanismi di autenticazione e gestione delle sessioni.
 
 Data la natura prototipale della piattaforma non è stata condotta una fase di \textit{testing} estensiva sull’intera applicazione. L’attività di validazione è stata infatti effettuata progressivamente durante lo sviluppo, testando le singole funzionalità non appena completate. 
-A tal fine, sono stati utilizzati strumenti di sviluppo come \textit{Postman} e chiamate \textit{HTTP} da riga di comando, al fine di validare il corretto comportamento delle API e la gestione delle richieste lato \textit{back-end}. \\
-Particolare attenzione è stata inoltre dedicata alla gestione della \textit{cache} dei dati, implementando meccanismi di invalidazione temporale per evitare l’utilizzo di informazioni obsolete e garantire una maggiore fluidità nell’esperienza utente. \\
-Ulteriori attenzioni sono state rivolte alla cura dell’applicazione come \gls{pwa}, garantendone l’installabilità e l’utilizzo in modalità \textit{standalone}. Sebbene la piattaforma sia accessibile esclusivamente ad utenti autenticati e non richieda ottimizzazioni specifiche in termini di \gls{seo}, la struttura dell’applicazione e l’utilizzo dei corretti metadati sono stati progettati in modo conforme alle buone pratiche.
+A tal fine, sono stati utilizzati strumenti di sviluppo come \textit{Postman} e chiamate \textit{HTTP} da riga di comando, al fine di validare il corretto comportamento delle API REST e la gestione delle richieste lato \textit{back-end}. \\
+Particolare attenzione è stata inoltre dedicata alla gestione della \textit{cache} dei dati, implementando meccanismi di invalidazione temporale per evitare l’utilizzo di informazioni obsolete e garantire una maggiore fluidità nell’esperienza utente. Ulteriori attenzioni sono state rivolte alla cura dell’applicazione come \gls{pwa}, garantendone l’installabilità e l’utilizzo in modalità \textit{standalone}. \\
+Sebbene la piattaforma sia accessibile esclusivamente ad utenti autenticati e non richieda ottimizzazioni specifiche in termini di \gls{seo}, la struttura dell’applicazione e l’utilizzo dei corretti metadati sono stati progettati in modo conforme alle buone pratiche.
 
 Dal punto di vista dell’interfaccia, invece, l’applicazione è stata progettata per garantire un \textit{rendering} coerente dei componenti, evitando effetti di \textit{flash} o ricaricamenti indesiderati delle pagine mediante un utilizzo corretto dei \textit{framework} con supporto al \textit{server-side rendering}. 
 Sono stati inoltre gestiti esplicitamente tutti gli stati dell’applicazione, inclusi caricamenti, errori e assenza di dati, fornendo sempre un riscontro chiaro all’utente al fine di evitare la percezione di blocchi o malfunzionamenti.
