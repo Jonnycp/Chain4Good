@@ -7,21 +7,21 @@ import { Link } from "react-router-dom";
 //Provider
 import { useApp } from "../context/AppProvider";
 
+export const categories = [
+  { id: "medical", label: "Spese mediche", icon: "icon-park-outline:like" },
+  { id: "education", label: "Istruzione", icon: "qlementine-icons:book-16" },
+  { id: "environment", label: "Ambiente", icon: "icon-park-outline:tree" },
+  {
+    id: "emergency",
+    label: "Emergenze",
+    icon: "material-symbols-light:e911-emergency",
+  },
+  { id: "sport", label: "Sport", icon: "fluent:sport-20-regular" },
+];
+
 export default function HomePage() {
   const { user, projects, setCategory, loading } = useApp();
   const { explore, byCategory, selectedCategory, myProjects } = projects;
-
-  const categories = [
-    { id: "medical", label: "Spese mediche", icon: "icon-park-outline:like" },
-    { id: "education", label: "Istruzione", icon: "qlementine-icons:book-16" },
-    { id: "environment", label: "Ambiente", icon: "icon-park-outline:tree" },
-    {
-      id: "emergency",
-      label: "Emergenze",
-      icon: "material-symbols-light:e911-emergency",
-    },
-    { id: "sport", label: "Sport", icon: "fluent:sport-20-regular" },
-  ];
 
   return (
     <div
@@ -52,7 +52,8 @@ export default function HomePage() {
 
         {user?.isEnte ? (
           // VISTA ENTE (RESPONSIVE)
-            <><ProjectsGrid
+          <>
+            <ProjectsGrid
               title="I tuoi progetti"
               titleRight={
                 <Link
@@ -62,7 +63,7 @@ export default function HomePage() {
                   <Icon icon="mdi:plus" className="w-5 h-5 mr-1" />
                   Nuovo Progetto
                 </Link>
-              } 
+              }
               isMyProjects={true}
               projects={myProjects}
               loading={loading.myProjects}
@@ -96,8 +97,8 @@ export default function HomePage() {
               >
                 <Icon icon="mdi:plus" className="w-8 h-8" />
               </Link>
-            </div></>
-   
+            </div>
+          </>
         ) : (
           // VISTA UTENTE (RESPONSIVE)
           <>
