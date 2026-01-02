@@ -52,11 +52,16 @@ Sebbene questo paradigma abbia dunque democratizzato l'accesso al capitale, l'ar
 
 \subsection{Crowdfunding e blockchain}
 
-\subsubsection{Il ruolo della blockchain nel \textit{crowdfunding}}
 La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. L'efficacia di tale tecnologia risiede nelle proprietà native di decentralizzazione, trasparenza, immutabilità e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}) che implementa. \\
-La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}.
+La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}. \\
+L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantaggi:
+\begin{itemize}
+	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
+	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain} \cite{salido2021mapping}, come le transazioni di donazione o i dettagli sulle campagne di raccolta fondi;
+	\item la trasparenza intrinseca del \textit{ledger}, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
+\end{itemize}
 
-\medskip
+
 \begin{table}[h]
 \centering
 \small
@@ -80,12 +85,6 @@ La \textit{blockchain}, infatti, si configura come un registro distribuito, cond
 \label{tab:blockchain_vantaggi}
 \end{table}
 
-L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantaggi:
-\begin{itemize}
-	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
-	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain} \cite{salido2021mapping}, come le transazioni di donazione o i dettagli sulle campagne di raccolta fondi;
-	\item la trasparenza intrinseca del \textit{ledger}, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
-\end{itemize}
 
 
 \subsubsection{Soluzioni esistenti}
