@@ -63,23 +63,7 @@ export function CardHomeSkeleton() {
   );
 }
 
-const CardHome = ({
-  _id,
-  ente,
-  titolo,
-  cover,
-  stato,
-  luogo,
-  endDate,
-  targetAmount,
-  currentAmount,
-  currency,
-  numeroDonatori,
-  lastDonors,
-  isMyProject = false,
-}: Project & { isMyProject?: boolean }) => {
-  // GIORNI MANCANTI
-  const getTimeLeftLabel = () => {
+export const getTimeLeftLabel = (endDate: string  ) => {
     const now = new Date();
     const end = new Date(endDate);
     const diffTime = end.getTime() - now.getTime();
@@ -96,6 +80,22 @@ const CardHome = ({
     return `${Math.floor(diffDays / 365)} anni mancanti`;
   };
 
+
+const CardHome = ({
+  _id,
+  ente,
+  titolo,
+  cover,
+  stato,
+  luogo,
+  endDate,
+  targetAmount,
+  currentAmount,
+  currency,
+  numeroDonatori,
+  lastDonors,
+  isMyProject = false,
+}: Project & { isMyProject?: boolean }) => {
   // LOGICA BADGE STATO
   const getBadgeConfig = () => {
     switch (stato) {
@@ -207,7 +207,7 @@ const CardHome = ({
                   className="w-5 h-5 opacity-80"
                 />
                 <span className="text-xs font-medium">
-                  {getTimeLeftLabel()}
+                  {getTimeLeftLabel(endDate)}
                 </span>
               </div>
               <DonorsAvatars donors={lastDonors} total={numeroDonatori} />
