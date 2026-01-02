@@ -474,7 +474,7 @@ export default function ProgettoSingolo() {
         <div className="mb-12">
           <div
             className="flex justify-between items-center mb-6 cursor-pointer hover:opacity-70 transition"
-            onClick={() => navigate("/storico-donazioni")}
+            onClick={() => navigate("/project/" + project._id + "/donazioni")}
           >
             <h2 className="text-base font-extrabold text-secondary">
               Donazioni ricevute
