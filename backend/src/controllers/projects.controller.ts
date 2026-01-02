@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { ProjectModel } from "../models/Project.ts";
+import type { Progetto } from "../models/Project.ts";
 import { DonationModel } from "../models/Donation.ts";
 import { UserModel } from "../models/User.ts";
 import { CATEGORY_ENUM } from "../models/Project.ts";
@@ -371,5 +372,102 @@ export const getProjectDonations = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ error: "Errore nel caricamento delle donazioni", code: 500 });
+  }
+};
+
+/**
+ * Endpoint POST /projects/new
+ * Crea un nuovo progetto, con questi parametri nel body:
+ * title
+ * category
+ * budget
+ * currency
+ * scadenza
+ * descrizione
+ * utilizzoFondi
+ * luogo
+ * banner (immagine)
+ */
+export const createProject = async (req: Request, res: Response) => {
+  try {
+    const {
+      title,
+      category,
+      targetAmount,
+      currency,
+      endDate,
+      descrizione,
+      usoFondi,
+      location,
+    } = req.body;
+    const coverImage = req.file ? req.file.path : null;
+    
+    const errors: Record<string, string> = {};
+
+    if (!title || typeof title !== "string" || title.length < 3)
+      errors.title = "Nome progetto non valido";
+    if (!category || typeof category !== "string" || !CATEGORY_ENUM.includes(category as any))
+      errors.category = "Categoria non valida";
+    if (!targetAmount || isNaN(Number(targetAmount)) || Number(targetAmount) <= 100 || Number(targetAmount) >= 1000000)
+      errors.targetAmount = "Budget non valido";
+    if (!currency || typeof currency !== "string" || !["EURC", "USDC"].includes(currency))
+      errors.currency = "Valuta non valida";
+    if (!endDate || isNaN(Date.parse(endDate)) || new Date(endDate) <= new Date() || new Date(endDate) > new Date(Date.now() + 365*24*60*60*1000))
+      errors.endDate = "Data scadenza non valida";
+    if (!descrizione || typeof descrizione !== "string" || descrizione.length < 10)
+      errors.descrizione = "Descrizione troppo corta";
+    if (!Array.isArray(usoFondi) || usoFondi.length === 0 || usoFondi.some(f => typeof f !== "string" || !f.trim()))
+      errors.usoFondi = "Specifica almeno un uso dei fondi";
+    if (!location || typeof location !== "string" || location.length < 2)
+      errors.location = "Luogo non valido";
+    if (!coverImage) {
+      errors.coverImage = "Immagine non valida";
+    } else {
+      // Controllo estensione
+      const allowedExtensions = [".png", ".jpg", ".jpeg", ".webp"];
+      const ext = coverImage.substring(coverImage.lastIndexOf(".")).toLowerCase();
+      if (!allowedExtensions.includes(ext)) {
+      errors.coverImage = "Formato immagine non supportato (solo PNG, JPG, JPEG, WEBP)";
+      }
+      // Controllo dimensione file (max 10MB)
+      if (req.file && req.file.size > 10 * 1024 * 1024) {
+      errors.coverImage = "L'immagine non deve superare i 10MB";
+      }
+      // Controllo mimetype
+      const allowedMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+      if (req.file && !allowedMimeTypes.includes(req.file.mimetype)) {
+        errors.coverImage = "Tipo di file immagine non valido";
+      }
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({ error: errors, code: 400 });
+    }
+
+    const sanitizedProject = {
+      title: title.trim(),
+      category: category.trim(),
+      location: location.trim(),
+      descrizione: descrizione.trim(),
+      usoFondi: usoFondi.map((f: string) => f.trim()),
+      endDate: new Date(endDate),
+      targetAmount: Number(targetAmount),
+      currency: currency.trim(),
+      coverImage: coverImage,
+      blockchainId: req.body.blockchainId ? Number(req.body.blockchainId) : undefined,
+    } as Progetto;
+
+    const enteId = req.session.address ? (await UserModel.findOne({ address: req.session.address }))?._id : null;
+    if (!enteId) {
+      return res.status(401).json({ error: "Utente non autenticato" });
+    }
+    sanitizedProject["ente"] = new Types.ObjectId(enteId);
+
+    
+    const newProject = await ProjectModel.create(sanitizedProject);
+
+    res.status(201).json({ success: true, project: newProject });
+  } catch (error) {
+    res.status(500).json({ error: "Errore nella creazione del progetto", details: error });
   }
 };
