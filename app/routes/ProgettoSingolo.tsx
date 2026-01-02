@@ -38,6 +38,7 @@ export type PROJECT_BIG = {
   currentAmount: number;
   status: "raccolta" | "attivo" | "completato" | "annullato";
   isMy: boolean;
+  blockchainId: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -266,7 +267,11 @@ export default function ProgettoSingolo() {
       {/* HEADER */}
       <HeaderCover
         type={project.isMy ? "ente" : "utente"}
-        coverImage={project.coverImage}
+        coverImage={
+          project.coverImage.startsWith("https://")
+            ? project.coverImage
+            : `${import.meta.env.VITE_BACKEND_URL}/${project.coverImage}`
+        }
         location={project.location}
       />
 
@@ -482,65 +487,79 @@ export default function ProgettoSingolo() {
             <Icon icon="mdi:arrow-right" className="text-secondary text-2xl" />
           </div>
           <div className="flex flex-col gap-1">
-            {projectDonations.donors.slice(0, 20).map((donatore) => (
-              <div
-                key={donatore.id}
-                className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"
-              >
-                <div className="flex items-start gap-3">
-                  <img
-                    src={donatore.profilePicture}
-                    alt={donatore.username}
-                    className="w-10 h-10 rounded-full object-cover border border-slate-100"
-                  />
-                  <div className="flex flex-col">
-                    <p className="text-sm font-bold text-secondary">
-                      {donatore.username}{" "}
-                      <span className="font-normal text-slate-500">
-                        donated
-                      </span>{" "}
-                      {donatore.amount}
-                      <span className="text-xs font-bold text-slate-400">
-                        {" "}
-                        {donatore.symbol}{" "}
-                      </span>
-                    </p>
-                    <p className="text-xs text-slate-400 italic mt-1">
-                      {donatore.messaggio && `"${donatore.messaggio}" - `}
-                      <b
-                        className="font-bold underline italic cursor-pointer"
-                        onClick={(e) => {
-                          navigator.clipboard.writeText(
-                            donatore.hashTransaction
-                          );
-                          alert(`Hash copiato!`);
-                        }}
-                      >
-                        {donatore.hashTransaction.slice(0, 6) +
-                          "..." +
-                          donatore.hashTransaction.slice(-4)}
-                      </b>
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">
-                  <button
-                    onClick={(e) => {
-                      navigator.clipboard.writeText(donatore.hashTransaction);
-                      alert(`Hash copiato!`);
-                    }}
-                    className="text-white text-md hover:text-primary p-1 mr-5 bg-primary rounded-full hover:bg-secondary transition active:scale-90"
-                    title="Copia Hash Transazione"
-                  >
-                    <Icon
-                      icon="mdi:link-variant"
-                      className="text-xl rotate-[-45deg]"
+            {projectDonations.donors.length > 0 ? (
+              projectDonations.donors.slice(0, 20).map((donatore) => (
+                <div
+                  key={donatore.id}
+                  className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"
+                >
+                  <div className="flex items-start gap-3">
+                    <img
+                      src={donatore.profilePicture}
+                      alt={donatore.username}
+                      className="w-10 h-10 rounded-full object-cover border border-slate-100"
                     />
-                  </button>
-                  {new Date(donatore.createdAt).toLocaleDateString()}
-                </span>
+                    <div className="flex flex-col">
+                      <p className="text-sm font-bold text-secondary">
+                        {donatore.username}{" "}
+                        <span className="font-normal text-slate-500">
+                          donated
+                        </span>{" "}
+                        {donatore.amount}
+                        <span className="text-xs font-bold text-slate-400">
+                          {" "}
+                          {donatore.symbol}{" "}
+                        </span>
+                      </p>
+                      <p className="text-xs text-slate-400 italic mt-1">
+                        {donatore.messaggio && `"${donatore.messaggio}" - `}
+                        <b
+                          className="font-bold underline italic cursor-pointer"
+                          onClick={(e) => {
+                            navigator.clipboard.writeText(
+                              donatore.hashTransaction
+                            );
+                            alert(`Hash copiato!`);
+                          }}
+                        >
+                          {donatore.hashTransaction.slice(0, 6) +
+                            "..." +
+                            donatore.hashTransaction.slice(-4)}
+                        </b>
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">
+                    <button
+                      onClick={(e) => {
+                        navigator.clipboard.writeText(donatore.hashTransaction);
+                        alert(`Hash copiato!`);
+                      }}
+                      className="text-white text-md hover:text-primary p-1 mr-5 bg-primary rounded-full hover:bg-secondary transition active:scale-90"
+                      title="Copia Hash Transazione"
+                    >
+                      <Icon
+                        icon="mdi:link-variant"
+                        className="text-xl rotate-[-45deg]"
+                      />
+                    </button>
+                    {new Date(donatore.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div className="px-6 py-12 text-center md:bg-white rounded-3xl border-secondary/20 border-2">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Icon
+                    icon="solar:box-minimalistic-linear"
+                    className="text-3xl text-slate-400"
+                  />
+                </div>
+                <p className="text-slate-500 text-sm font-medium">
+                  Nessuna donazione registrata.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -637,6 +656,17 @@ export default function ProgettoSingolo() {
             Pubblicato il {new Date(project.createdAt).toLocaleDateString()}
             <br />
             Qualcosa non va con questo progetto?
+            <br />
+            {project.blockchainId && <>Hash progetto:{" "}
+            <b
+              className="underline italic cursor-pointer"
+              onClick={(e) => {
+                navigator.clipboard.writeText(project.blockchainId);
+                alert(`Hash copiato!`);
+              }}
+            >
+              {project.blockchainId}
+            </b><br /></>}
             <br />
             <button className="underline decoration-slate-400 hover:text-secondary mt-1">
               Segnalalo a Chain4Good
