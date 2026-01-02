@@ -85,9 +85,13 @@ Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non �
 
 \clearpage
 
+
 % Per fornire una base quantitativa alla stima, si è fatto riferimento al modello algoritmico \gls{cocomo}. Tuttavia, la stima non è stata espressa in termini di \textit{person-month}, come previsto dal modello originale, bensì riformulata in termini di ore/persona, risultando più adeguata al contesto accademico e alla natura non industriale del progetto. Per queste ragioni, la stima dei costi non è stata tradotta in un valore economico monetario, ma utilizzata come strumento di pianificazione e controllo dell’impegno richiesto, al fine di verificare la sostenibilità del progetto rispetto ai vincoli temporali prefissati.
 
 % In particolare, la pianificazione dei \textit{task} riportata in Tabella~\ref{table:pianificazione}, ha consentito di stimare in modo puntuale l’impegno complessivo richiesto per lo sviluppo del progetto.
+
+
+
 
 \subsection{Analisi dei rischi}
 L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. \\
@@ -98,9 +102,10 @@ Per mitigare il rischio legato all’organizzazione temporale delle attività, l
 Al fine di ridurre le criticità connesse all’evoluzione dei requisiti nel corso del progetto, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione.
 
 Oltre ai rischi di progetto, sono stati analizzati quelli legati al dominio applicativo del \gls{cf}. In particolare, sulla base di quanto emerso dall'analisi in letteratura, è stata considerata la possibilità che l'Ente promotore non utilizzasse i fondi raccolti per le finalità dichiarate.
-Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, affinché le risorse raccolte fossero sbloccate esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori. Per rafforzare ulteriormente la trasparenza del processo, inoltre, si è deciso di vincolare la presentazione di una nuova richiesta al caricamento del preventivo della precedente. 
+Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, affinché le risorse raccolte fossero sbloccate esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori. 
+Al fine di rafforzare ulteriormente la trasparenza del processo, si è deciso di vincolare la presentazione di nuove richieste di spesa al caricamento del preventivo relativo alla richiesta precedente.
 
-Un’ulteriore fonte di rischio è rappresentata dalla volatilità delle criptovalute utilizzate per effettuare le donazioni. Per mitigare tale rischio, il sistema è stato progettato per utilizzare \textit{stablecoin}, ossia criprovalute progettate per mantenere un valore stabile rispetto a un \textit{asset} di riferimento (garantendo un rapporto 1:1 con valute fiat come il dollaro statunitense o l'euro).
+Un’ulteriore fonte di rischio è rappresentata dalla volatilità delle criptovalute utilizzate per effettuare le donazioni. Per mitigare tale rischio, il sistema è stato progettato per utilizzare \textit{stablecoin}, ossia criptovalute progettate per mantenere un valore stabile rispetto a una valuta reale di riferimento (ad esempio, 1 USDC = 1 Dollaro USA), eliminando le oscillazioni di prezzo tipiche di criptovalute come Bitcoin.
 
 
 
