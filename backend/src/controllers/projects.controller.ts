@@ -3,6 +3,7 @@ import { ProjectModel } from "../models/Project.ts";
 import { DonationModel } from "../models/Donation.ts";
 import { UserModel } from "../models/User.ts";
 import { CATEGORY_ENUM } from "../models/Project.ts";
+import { Types } from "mongoose";
 
 /**
  * Endpoint GET /projects
@@ -82,10 +83,12 @@ export const getProjects = async (req: Request, res: Response) => {
         },
       },
       {
-        //join con utenti donatori
+        // Join con utenti donatori
         $lookup: {
           from: "users",
-          let: { donorIds: { $slice: ["$donazioni.donor", 5] } },
+          let: {
+            donorIds: { $slice: ["$donazioni.donor", 5] },
+          },
           pipeline: [
             { $match: { $expr: { $in: ["$_id", "$$donorIds"] } } },
             { $project: { _id: 1, profilePicture: 1 } },
@@ -279,5 +282,94 @@ export const getProjectById = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ error: "Errore nel caricamento del progetto", code: 500 });
+  }
+};
+
+/**
+ * Endpoint GET /projects/:id/donations
+ * Restituisce lista donazioni, filtrata con parametri opzionali:
+ * limit= numero > 0
+ * order= asc | desc
+ * donor=idUtente
+ */
+export const getProjectDonations = async (req: Request, res: Response) => {
+  try {
+    const allowedOrders = ["asc", "desc"];
+
+    const { id } = req.params;
+    let { order, limit, donor } = req.query;
+
+    // Validazione id progetto
+    if (!id || typeof id !== "string" || id.length !== 24) {
+      return res
+        .status(400)
+        .json({ error: "ID progetto non valido", code: 400 });
+    }
+
+    // Validazione order
+    if (order && !allowedOrders.includes(order as string)) {
+      return res.status(400).json({ error: "Ordine non valido", code: 400 });
+    }
+
+    // Validazione limit
+    if (limit && (isNaN(Number(limit)) || Number(limit) <= 0)) {
+      return res.status(400).json({ error: "Limite non valido", code: 400 });
+    }
+
+    // Validazione donor
+    if (donor && (typeof donor !== "string" || donor.length !== 24)) {
+      return res
+        .status(400)
+        .json({ error: "ID donatore non valido", code: 400 });
+    }
+
+    const filter: any = { project: id };
+    if (donor) filter.donor = donor;
+
+    const donationsQuery = DonationModel.find(filter)
+      .select("donor messaggio amount symbol createdAt hashTransaction")
+      .populate<{
+        donation: {
+          _id: Types.ObjectId;
+          project: Types.ObjectId;
+          donor: Types.ObjectId;
+          messaggio?: string;
+          amount: number;
+          symbol: string;
+          hashTransaction: string;
+          createdAt: Date;
+          updatedAt: Date;
+        };
+      }>({ path: "donor", select: "_id username profilePicture" });
+
+    if (limit) donationsQuery.limit(Number(limit));
+
+    const donations = await donationsQuery.exec();
+
+    const donors = donations.map((d) => {
+      let donorObj: any = d.donor;
+      return {
+        id: donorObj?._id ? donorObj._id.toString() : donorObj?.toString(),
+        profilePicture: donorObj?.profilePicture || null,
+        username: donorObj?.username || "Anonimo",
+        messaggio: d.messaggio,
+        amount: d.amount,
+        symbol: d.symbol,
+        createdAt: d.createdAt,
+        hashTransaction: d.hashTransaction,
+      };
+    });
+
+    const allDonors = await DonationModel.distinct("donor", { project: id });
+    const totDonors = allDonors.length;
+
+    res.json({
+      totDonors,
+      donors,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Errore nel caricamento delle donazioni", code: 500 });
   }
 };

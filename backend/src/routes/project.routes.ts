@@ -12,6 +12,8 @@ router.get("/me", isAuth, isEnte, ProjectController.getMyProjects);
 
 router.get('/:id', isAuth, ProjectController.getProjectById);
 
+router.get('/:id/donations', isAuth, ProjectController.getProjectDonations);
+
 // router.get("/donated", isAuth, ProjectController.getMyDonations);
 
 export default router;
