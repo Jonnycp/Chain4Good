@@ -127,7 +127,11 @@ const CardHome = ({
       {/* HEADER IMMAGINE */}
       <div className="relative h-48 w-full">
         <Link to={"/progetto/" + _id}>
-          <img src={cover} alt={titolo} className="w-full h-full object-cover" />
+          <img
+            src={cover.startsWith("https://") ? cover : `${import.meta.env.VITE_BACKEND_URL}/${cover}`}
+            alt={titolo}
+            className="w-full h-full object-cover"
+          />
         </Link>
 
         {/* BADGE STATO DINAMICO */}
