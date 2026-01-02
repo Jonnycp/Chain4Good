@@ -78,8 +78,7 @@ Tale approccio ha consentito di organizzare il lavoro in modo strutturato e di d
 \end{table}
 
 \subsubsection{Stima dei costi}
-La stima dei costi di progetto è stata effettuata sulla base della durata stimata delle attività definite in fase di pianificazione, come riportato nella Tabella~\ref{table:pianificazione}. \\
-In particolare, l’impegno richiesto è stato valutato operando una scomposizione delle principali fasi progettuali in \textit{task} elementari, associando a ciascuno di essi una stima temporale. Operando in questo modo, il costo complessivo stimato risulta pari a \textbf{228 ore}. \\
+La stima dei costi di progetto è stata effettuata sulla base della durata stimata delle attività definite in fase di pianificazione, come riportato nella Tabella~\ref{table:pianificazione}. In particolare, l’impegno richiesto è stato valutato operando una scomposizione delle principali fasi progettuali in \textit{task} elementari, associando a ciascuno di essi una stima temporale. Operando in questo modo, il costo complessivo stimato risulta pari a \textbf{228 ore}. \\
 Tale valore rappresenta l’\textit{effort} espresso in ore/persona, ottenuto come somma delle ore dedicate da ciascun membro del gruppo alle attività previste.\\
 La valutazione ha tenuto conto della natura prototipale del progetto, della dimensione del sistema, delle tecnologie adottate e del livello di esperienza dei membri del gruppo di lavoro.
 Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non è stata tradotta in un valore economico monetario, ma è stata utilizzata come strumento di supporto alla pianificazione e alla verifica della fattibilità del progetto entro i vincoli temporali prestabiliti.
@@ -94,34 +93,14 @@ Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non �
 L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. \\
 In primo luogo, sono stati presi in considerazione i rischi di progetto, quali la possibile sottostima dei tempi di sviluppo e la variabilità dei requisiti individuati in fase di pianificazione.
 
-Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riallocazione delle risorse in presenza di ritardi imprevisti.
+Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riallocazione delle risorse in presenza di ritardi non previsti.
 
 Al fine di ridurre le criticità connesse all’evoluzione dei requisiti nel corso del progetto, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione.
 
-% Oltre ai rischi di progetto, sono stati poi presi in esame quelli legati al dominio applicativo del \gls{cf}. 
+Oltre ai rischi di progetto, sono stati analizzati quelli legati al dominio applicativo del \gls{cf}. In particolare, sulla base di quanto emerso dall'analisi in letteratura, è stata considerata la possibilità che l'Ente promotore non utilizzasse i fondi raccolti per le finalità dichiarate.
+Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, affinché le risorse raccolte fossero sbloccate esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori. Per rafforzare ulteriormente la trasparenza del processo, inoltre, si è deciso di vincolare la presentazione di una nuova richiesta al caricamento del preventivo della richiesta precedente. 
 
-
-%E'\ stata, infatti, analizzata la possibilità che i fondi raccolti non fossero utilizzati per i fini dichiarati dall'Ente promotore.  Nel sistema proposto, tale rischio viene mitigato attraverso un meccanismo di custodia decentralizzata dei fondi, implementato mediante uno \textit{Smart Contract} che sblocca le risorse raccolte esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori.  Un ulteriore rischio di progetto è rappresentato dalla volatilità delle criptovalute utilizzate per le donazioni.
-
-%che può determinare una variazione del controvalore economico dei fondi raccolti rispetto al \textit{budget} inizialmente previsto. Questo rischio viene mitigato attraverso l'utilizzo di \textit{Stable Coin}. 
-
-
-
-
-
-% nell'analisi dei rischi di progetto potremmo anche aggiungere il fatto che c'è il rischio che i soldi non vengano utilizzati per i fini dichiarati -> \item Vincolo di sequenzialità sulle richieste di spesa: l'Ente non deve poter sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
-
-
-%Rischi di progetto: relativi alla gestione delle attività e dei tempi di sviluppo. In particolare, la variabilità dei requisiti e la limitata esperienza iniziale con alcune tecnologie utilizzate rappresentano potenziali fonti di ritardo.
-
-%Rischio di dominio: Un ulteriore rischio individuato riguarda la volatilità del valore delle criptovalute utilizzate per le donazioni. L’adozione di criptovalute ad alta volatilità potrebbe infatti generare una discrepanza significativa tra il valore atteso delle donazioni e il valore effettivamente disponibile al momento dell’utilizzo dei fondi. 
-%Per mitigare tale rischio, il sistema è stato eprogettato per utilizzare stableco. Questa scelta contribuisce a migliorare la prevedibilità economica delle donazioni e a rafforzare la fiducia degli utenti nel corretto utilizzo delle risorse.
-% La soluzione più citata per mitigare l'incertezza finanziaria è l'uso di stablecoin (come USDT o USDC), ovvero criptovalute ancorate a una valuta fiat.
-
-%altri rischi sono connessi alle caratteristiche del sistema sviluppato, come la scalabilità, l’usabilità dell’interfaccia e l’affidabilità complessiva del prototipo.
-
-%Per ciascun rischio sono state individuate possibili azioni di mitigazione, quali lo studio preliminare delle tecnologie, l’adozione di soluzioni architetturali consolidate e l’incremento graduale delle funzionalità del sistema.
-
+Un’ulteriore fonte di rischio è rappresentata dalla volatilità delle criptovalute utilizzate per effettuare le donazioni. Per mitigare tale rischio, il sistema è stato progettato per utilizzare \textit{stablecoin}.
 
 
 
