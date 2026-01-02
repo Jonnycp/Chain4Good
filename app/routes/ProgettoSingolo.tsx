@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import {
-  redirect,
-  useLoaderData,
-  useNavigate,
-} from "react-router-dom";
+import { redirect, useLoaderData, useNavigate } from "react-router-dom";
 
 // Componenti Condivisi
 import HeaderCover from "~/components/HeaderCover";
@@ -19,7 +15,7 @@ import ModalSuccessoSpesa from "~/components/ModalSuccessoSpesa";
 import ModalGestioneSpesa from "~/components/ModalGestioneSpesa";
 import PopoverDona from "~/components/PopoverDona";
 import ModalGrazie from "~/components/ModalGrazie";
-import { API_BASE_URL } from "~/context/AppProvider";
+import { API_BASE_URL, useApp } from "~/context/AppProvider";
 import { DonorsAvatars, getTimeLeftLabel } from "~/components/CardHome";
 
 export type PROJECT_BIG = {
@@ -71,12 +67,17 @@ export async function loader({
 export default function ProgettoSingolo() {
   const navigate = useNavigate();
   const project = useLoaderData() as PROJECT_BIG;
+  const { projectDonations, setCurrentProjectId } = useApp();
   const progressPercent = Math.min(
     (project.currentAmount / project.targetAmount) * 100,
     100
   );
-
   const [shareUrl, setShareUrl] = useState<string>("");
+
+  useEffect(() => {
+    setCurrentProjectId(project._id);
+    return () => setCurrentProjectId(null); // Pulizia quando si esce dalla pagina
+  }, [project._id]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -138,26 +139,6 @@ export default function ProgettoSingolo() {
       votiNegativi: 120,
     },
   ]);
-  const donatori = [
-    {
-      id: 1,
-      name: "Bayy",
-      amount: "25.34",
-      currency: "ETH",
-      time: "12 min fa",
-      msg: "Hope help",
-      avatar: "avatarPlaceholder",
-    },
-    {
-      id: 2,
-      name: "Rose",
-      amount: "5.52",
-      currency: "ETH",
-      time: "1 ora fa",
-      msg: "Blockchain",
-      avatar: "avatarPlaceholder",
-    },
-  ];
 
   //Conferma donazione
   const handleConfirmDonation = (amount: number, msg: string) => {
@@ -278,7 +259,7 @@ export default function ProgettoSingolo() {
           projectName={project.title}
           entityName={project.ente.nome}
           onClose={() => setIsGrazieOpen(false)}
-          onHistory={() => navigate("/donazioni")}
+          onHistory={() => navigate("/donazioni-utente")}
         />
       )}
 
@@ -358,8 +339,11 @@ export default function ProgettoSingolo() {
             </div>
             <div className="flex items-center gap-2">
               <DonorsAvatars
-                donors={[]}
-                total={0}
+                donors={projectDonations.donors.slice(0, 5).map((d: any) => ({
+                  id: "mini-donation" + d.username,
+                  profilePicture: d.profilePicture,
+                }))}
+                total={projectDonations.totDonors}
                 textClass="text-xs font-medium text-slate-500 pl-3 self-center font-bold"
               />
             </div>
@@ -498,35 +482,62 @@ export default function ProgettoSingolo() {
             <Icon icon="mdi:arrow-right" className="text-secondary text-2xl" />
           </div>
           <div className="flex flex-col gap-1">
-            {donatori.map((donatore) => (
+            {projectDonations.donors.slice(0, 20).map((donatore) => (
               <div
                 key={donatore.id}
                 className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"
               >
                 <div className="flex items-start gap-3">
                   <img
-                    src={donatore.avatar}
-                    alt={donatore.name}
+                    src={donatore.profilePicture}
+                    alt={donatore.username}
                     className="w-10 h-10 rounded-full object-cover border border-slate-100"
                   />
                   <div className="flex flex-col">
                     <p className="text-sm font-bold text-secondary">
-                      {donatore.name}{" "}
+                      {donatore.username}{" "}
                       <span className="font-normal text-slate-500">
                         donated
                       </span>{" "}
-                      {donatore.amount}{" "}
+                      {donatore.amount}
                       <span className="text-xs font-bold text-slate-400">
-                        {donatore.currency}
+                        {" "}
+                        {donatore.symbol}{" "}
                       </span>
                     </p>
                     <p className="text-xs text-slate-400 italic mt-1">
-                      "{donatore.msg}"
+                      {donatore.messaggio && `"${donatore.messaggio}" - `}
+                      <b
+                        className="font-bold underline italic cursor-pointer"
+                        onClick={(e) => {
+                          navigator.clipboard.writeText(
+                            donatore.hashTransaction
+                          );
+                          alert(`Hash copiato!`);
+                        }}
+                      >
+                        {donatore.hashTransaction.slice(0, 6) +
+                          "..." +
+                          donatore.hashTransaction.slice(-4)}
+                      </b>
                     </p>
                   </div>
                 </div>
                 <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">
-                  {donatore.time}
+                  <button
+                    onClick={(e) => {
+                      navigator.clipboard.writeText(donatore.hashTransaction);
+                      alert(`Hash copiato!`);
+                    }}
+                    className="text-white text-md hover:text-primary p-1 mr-5 bg-primary rounded-full hover:bg-secondary transition active:scale-90"
+                    title="Copia Hash Transazione"
+                  >
+                    <Icon
+                      icon="mdi:link-variant"
+                      className="text-xl rotate-[-45deg]"
+                    />
+                  </button>
+                  {new Date(donatore.createdAt).toLocaleDateString()}
                 </span>
               </div>
             ))}

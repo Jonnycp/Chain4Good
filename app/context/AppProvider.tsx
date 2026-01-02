@@ -12,7 +12,7 @@ export type Project = {
     id: string;
     nome: string;
     profilePicture: string;
-  },
+  };
   titolo: string;
   cover: string;
   stato: "raccolta" | "attivo" | "completato" | "annullato";
@@ -54,11 +54,26 @@ interface AppContextType {
     myProjects: Project[];
     selectedCategory: string | null;
   };
+  projectDonations: {
+    totDonors: number;
+    donors: Array<{
+      id: string;
+      profilePicture: string;
+      username: string;
+      messaggio?: string;
+      amount: number;
+      symbol: string;
+      hashTransaction: string;
+      createdAt: Date;
+    }>;
+  };
+  setCurrentProjectId: (id: string | null) => void;
   loading: {
     user: boolean;
     projectsExplore: boolean;
     projectsByCategory: boolean;
     myProjects: boolean;
+    projectDonations: boolean;
   };
   refetchAll: () => void;
   setCategory: (cat: string) => void;
@@ -73,7 +88,6 @@ export default function AppProvider({
   children: ReactNode;
   initialUser?: AppContextType["user"];
 }) {
-  
   const queryClient = useQueryClient();
   useEffect(() => {
     if (initialUser) {
@@ -110,12 +124,14 @@ export default function AppProvider({
   } = useQuery({
     queryKey: ["projects", "explore"],
     queryFn: async () => {
-     const res = await fetch(`${API_BASE_URL}/projects?limit=6&sort=endDate&order=asc`, {
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${API_BASE_URL}/projects?limit=6&sort=endDate&order=asc`,
+        {
+          credentials: "include",
+        }
+      );
       if (res.status === 401) return [];
-      if (!res.ok)
-        throw new Error("Errore durante il fetch dei progetti");
+      if (!res.ok) throw new Error("Errore durante il fetch dei progetti");
       return res.json();
     },
     staleTime: 1000 * 60 * 5,
@@ -133,9 +149,10 @@ export default function AppProvider({
     queryKey: ["projects", "category", selectedCategory],
     queryFn: () =>
       fetch(
-        `${API_BASE_URL}/projects?category=${selectedCategory}&limit=6&order=asc`, {
-        credentials: "include",
-      }
+        `${API_BASE_URL}/projects?category=${selectedCategory}&limit=6&order=asc`,
+        {
+          credentials: "include",
+        }
       ).then((res) => res.json()),
     staleTime: 1000 * 60 * 5,
     enabled: user !== null && !userLoading && !user.isEnte,
@@ -149,12 +166,11 @@ export default function AppProvider({
   } = useQuery({
     queryKey: ["projects", "myProjects"],
     queryFn: async () => {
-     const res = await fetch(`${API_BASE_URL}/projects/me`, {
+      const res = await fetch(`${API_BASE_URL}/projects/me`, {
         credentials: "include",
       });
       if (res.status === 401) return [];
-      if (!res.ok)
-        throw new Error("Errore durante il fetch dei progetti");
+      if (!res.ok) throw new Error("Errore durante il fetch dei progetti");
       return res.json();
     },
     retry: false,
@@ -162,6 +178,27 @@ export default function AppProvider({
     enabled: user !== null && !userLoading && user.isEnte,
   });
 
+  // Query per le donazioni del progetto corrente
+  const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
+  const {
+    data: projectDonationsData,
+    isLoading: projectDonationsLoading,
+    refetch: refetchProjectDonations,
+  } = useQuery({
+    queryKey: ["project-donations", currentProjectId],
+    queryFn: async () => {
+      if (!currentProjectId) return { donors: [], totDonors: 0 };
+      const res = await fetch(
+        `${API_BASE_URL}/projects/${currentProjectId}/donations`,
+        {
+          credentials: "include",
+        }
+      );
+      return res.json();
+    },
+    enabled: user !== null && !userLoading && !!currentProjectId,
+    staleTime: 1000 * 30, // 30 secondi
+  });
 
   const value = {
     user: user || null,
@@ -170,6 +207,7 @@ export default function AppProvider({
       projectsExplore: isLoadingExplore,
       projectsByCategory: isLoadingCategory,
       myProjects: isLoadingMyProjects,
+      projectDonations: projectDonationsLoading,
     },
     projects: {
       explore: projectsExplore || [],
@@ -177,6 +215,8 @@ export default function AppProvider({
       selectedCategory,
       myProjects: myProjects || [],
     },
+    projectDonations: projectDonationsData || { donors: [], totDonors: 0 },
+    setCurrentProjectId,
     setCategory: (cat: string) => {
       setSelectedCategory(cat);
     },
@@ -185,6 +225,7 @@ export default function AppProvider({
       refetchProjectsExplore();
       refetchProjectsByCategory();
       refetchMyProjects();
+      refetchProjectDonations();
     },
   };
 
