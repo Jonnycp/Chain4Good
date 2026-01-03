@@ -12,7 +12,7 @@
 \subsection{Login e autenticazione}
 Il sistema di autenticazione della piattaforma è stato progettato seguendo un approccio \textit{wallet-based}, volto a eliminare l’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}, coerentemente con il paradigma Web3. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet} blockchain. \\
 Il processo di \textit{login} ha inizio con la connessione del \textit{wallet} dell’utente, dal quale viene ricavato l’indirizzo pubblico. A partire da tale indirizzo, il \textit{back-end} genera un \textit{nonce}, ovvero un valore casuale e univoco, il quale viene associato all’indirizzo del \textit{wallet} e successivamente restituito al \textit{front-end}. \\
-A sua volta, Il \textit{front-end} costruisce quindi un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio \textit{wallet}. La firma crittografica prodotta dimostra il possesso della chiave privata associata all’indirizzo e viene inviata al \textit{back-end} insieme al messaggio firmato. Il \textit{back-end} verifica la validità della firma ricostruendo il messaggio e accertando che: 
+A sua volta, Il \textit{front-end} costruisce un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio \textit{wallet}. La firma crittografica prodotta dimostra il possesso della chiave privata associata all’indirizzo e viene inviata al \textit{back-end} insieme al messaggio firmato. Il \textit{back-end} verifica la validità della firma ricostruendo il messaggio e accertando che: 
 \begin{enumerate}
 	\item l’indirizzo estratto crittograficamente dalla firma coincida con quello dichiarato;
 	\item il \textit{nonce} contenuto nel messaggio corrisponda a quello precedentemente generato e memorizzato.
@@ -27,12 +27,19 @@ Una volta selezionata l’iniziativa di interesse, l’utente ha la possibilità
 Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati alla creazione delle iniziative sulla piattaforma, individuati esclusivamente negli Enti del Terzo Settore, per i quali anche contributi parziali possono risultare funzionali al perseguimento delle finalità sociali.
 
 
+% l'utente non può sovraeccedere il target, quindi non può effettuare donazioni che siano più grandi della quota da donare 
+% se un utente paga tutto e raggiunge il target per coerenza non può donare altri soldi  può donare altri soldi 
+
+
+
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.37\textwidth]{images/Home_nuova.pdf}
+	\includegraphics[width=0.40\textwidth]{images/Home_nuova.pdf}
 	\caption{Dashboard del donatore}
 	\label{fig:dashboard-donatore}
  \end{figure}
+\clearpage
+
 
 \subsection{Creazione progetto}
 	La creazione di un progetto costituisce l’atto attraverso il quale il beneficiario formalizza la propria proposta sulla piattaforma. Tale procedura si articola in due step (\ref{fig:inserimento progetto}):
@@ -49,8 +56,9 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 
 \subsection{Inserimento e valutazione spesa}
 A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
-Per poter accedere a tali risorse, il beneficiario deve formalizzare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) attraverso l'inserimento dei seguenti parametri: nome della spesa, importo richiesto, finalità dell'esborso e preventivo. \\
-A seguito della sottomissione, la richiesta viene sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto.
+Per poter accedere a tali risorse, il beneficiario deve presentare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) specificando il nome della spesa, l'importo richiesto, la finalità dell'esborso e il relativo preventivo. 
+La sottomissione della richiesta è consentita esclusivamente quando il progetto si trova in uno stato attivo, ossia a seguito del raggiungimento del \textit{target} di raccolta oppure al termine della scadenza temporale prevista per la campagna. \\
+A seguito della sottomissione, la richiesta viene poi sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto.
 Coerentemente con la natura della piattaforma, il sistema di voto è stato implementato in modo da attribuire lo stesso peso a ciascun utente, indipendentemente dall'importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.\\
 Al fine di assicurare un utilizzo progressivo e verificabile delle risorse raccolte, inoltre, la presentazione di una nuova richiesta di spesa è subordinata al caricamento della prova di acquisto relativa all’ultima richiesta precedentemente approvata. 
 Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
@@ -71,18 +79,30 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 \end{figure}
 
 
+
 \subsubsection{Meccanismo di validazione}
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per agire secondo le seguenti regole:
+
 \begin{itemize}
-	\item la richiesta di spesa è approvata se la maggioranza dei votanti esprime un parere favorevole;
-	\item in caso di parità tra voti favorevoli e contrari, la richiesta è considerata approvata;
-	\item in presenza di una partecipazione parziale, la soglia di maggioranza viene ricalcolata esclusivamente in funzione dei soli voti espressi;
-	\item qualora non venga registrata alcuna attività di voto entro il periodo di valutazione (pari a tre giorni), il sistema approva automaticamente la richiesta;
+	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se al termine della finestra temporale di votazione, il numero di voti favorevoli raggiunge almeno il 50\% dei voti espressi;
+	
+	\item \textbf{Approvazione per quorum matematico}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero voto contrario;
+	
+	\item \textbf{Parità dei voti}: in caso di parità tra voti favorevoli e contrari al termine del periodo di votazione, la richiesta è considerata approvata;
+
+	\item \textbf{Mancata partecipazione}: in assenza di attività di voto entro l'intero periodo di valutazione (pari a tre giorni), il sistema applica il principio del silenzio-assenso, approvando automaticamente la richiesta per non pregiudicare l'avanzamento dei lavori dell'Ente;
+	
+	
 \end{itemize}
 
-Al soddisfacimento dei requisiti di approvazione, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma raccolta verso il \textit{wallet} del beneficiario. 
+Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
 
 
+
+% la richiesta passa non solo se raggiungo la maggioranza semplice ma anche se il numero di persone che mancano non mi permettono di far cambiare l'esito della votazione
+
+
+\medskip
 \begin{figure} [h]
 	\centering
 	\begin{minipage}{0.37\textwidth}
