@@ -10,9 +10,9 @@
 
 
 \subsection{Login e autenticazione}
-Il sistema di autenticazione della piattaforma è stato progettato seguendo un approccio \textit{wallet-based}, coerente con il paradigma Web3 e volto a eliminare l’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet} blockchain. \\
-Il processo di \textit{login} ha inizio con la connessione del \textit{wallet} dell’utente, dal quale viene ricavato l’indirizzo pubblico. A partire da tale indirizzo, il \textit{backend} genera un \textit{nonce}, ovvero un valore casuale e univoco, il quale viene associato all’indirizzo del \textit{wallet} e successivamente restituito al \textit{front-end}. \\
-Il \textit{front-end} costruisce quindi un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio wallet. La firma crittografica prodotta dimostra il possesso della chiave privata associata all’indirizzo e viene inviata al backend insieme al messaggio firmato. Il \textit{back-end} verifica la validità della firma ricostruendo il messaggio e accertando che: 
+Il sistema di autenticazione della piattaforma è stato progettato seguendo un approccio \textit{wallet-based}, volto a eliminare l’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}, coerentemente con il paradigma Web3. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet} blockchain. \\
+Il processo di \textit{login} ha inizio con la connessione del \textit{wallet} dell’utente, dal quale viene ricavato l’indirizzo pubblico. A partire da tale indirizzo, il \textit{back-end} genera un \textit{nonce}, ovvero un valore casuale e univoco, il quale viene associato all’indirizzo del \textit{wallet} e successivamente restituito al \textit{front-end}. \\
+A sua volta, Il \textit{front-end} costruisce quindi un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio \textit{wallet}. La firma crittografica prodotta dimostra il possesso della chiave privata associata all’indirizzo e viene inviata al \textit{back-end} insieme al messaggio firmato. Il \textit{back-end} verifica la validità della firma ricostruendo il messaggio e accertando che: 
 \begin{enumerate}
 	\item l’indirizzo estratto crittograficamente dalla firma coincida con quello dichiarato;
 	\item il \textit{nonce} contenuto nel messaggio corrisponda a quello precedentemente generato e memorizzato.
@@ -40,7 +40,7 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 \begin{itemize}
 	
 	\item Step 1: l'Ente è tenuto a specificare le informazioni fondamentali del progetto, quali il nome, la categoria di appartenenza, l’obiettivo economico e il termine temporale della raccolta fondi. \\ 
-	Gli ultimi due parametri permettono di automatizzare la gestione delle risorse in modalità \textit{trustless}, in quanto vengono utilizzati dallo \textit{Smart Contract} per determinare l’esito della campagna di \gls{cf};
+	Gli ultimi due parametri permettono di automatizzare la gestione delle risorse in modalità \textit{trustless}, in quanto vengono utilizzati dallo \textit{Smart Contract} per determinare l’esito della raccolta fondi;
 	
 	\item Step 2: prevede l’inserimento di un piano dettagliato delle spese, oltre ad una descrizione approfondita del progetto e un’immagine di copertina. Tale prospetto non assolve solo finalità informative, ma contribuisce ad incrementare la credibilità dell'iniziativa e a consolidare il rapporto di fiducia con i donatori. 
 	
@@ -50,10 +50,10 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 \subsection{Inserimento e valutazione spesa}
 A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
 Per poter accedere a tali risorse, il beneficiario deve formalizzare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) attraverso l'inserimento dei seguenti parametri: nome della spesa, importo richiesto, finalità dell'esborso e preventivo. \\
-A seguito della sottomissione, la richiesta viene sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto, i quali sono tenuti a esprimere un parere favorevole o contrario.
-Coerentemente con la natura della piattaforma, il sistema di voto attribuisce lo stesso peso a ciascun partecipante, indipendentemente dall’importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.\\
+A seguito della sottomissione, la richiesta viene sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto.
+Coerentemente con la natura della piattaforma, il sistema di voto è stato implementato in modo da attribuire lo stesso peso a ciascun utente, indipendentemente dall'importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.\\
 Al fine di assicurare un utilizzo progressivo e verificabile delle risorse raccolte, inoltre, la presentazione di una nuova richiesta di spesa è subordinata al caricamento della prova di acquisto relativa all’ultima richiesta precedentemente approvata. 
-Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
+Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
 
 \begin{figure}[t]
 	\centering
@@ -74,9 +74,8 @@ Tale approccio serve per garantire un utilizzo progressivo e verificabile dei fo
 \subsubsection{Meccanismo di validazione}
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per agire secondo le seguenti regole:
 \begin{itemize}
-	\item la richiesta di spesa è approvata se la maggioranza dei votanti ($\ge 50\%$) esprime un parere favorevole;
-
-	\item In caso di parità tra voti favorevoli e contrari, la richiesta è considerata approvata;
+	\item la richiesta di spesa è approvata se la maggioranza dei votanti esprime un parere favorevole;
+	\item in caso di parità tra voti favorevoli e contrari, la richiesta è considerata approvata;
 	\item in presenza di una partecipazione parziale, la soglia di maggioranza viene ricalcolata esclusivamente in funzione dei soli voti espressi;
 	\item qualora non venga registrata alcuna attività di voto entro il periodo di valutazione (pari a tre giorni), il sistema approva automaticamente la richiesta;
 \end{itemize}
