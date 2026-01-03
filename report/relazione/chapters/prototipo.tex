@@ -72,16 +72,16 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 
 
 \subsubsection{Meccanismo di validazione}
-Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per agire secondo le seguenti regole:
+Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa attraverso un periodo di votazione di durata prefissata pari a tre giorni, al termine del quale l’esito viene determinato secondo le seguenti regole:
 
 \begin{itemize}
-	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, i voti favorevoli rappresentano almeno il 50\% del totale dei voti espressi;
+	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, i voti favorevoli rappresentano almeno il 50\% del totale dei voti totali espressi;
 	
 	\item \textbf{Approvazione anticipata per maggioranza matematica}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero voto contrario;
 	
 	\item \textbf{Parità dei voti}: qualora, allo scadere del periodo di votazione, si verifichi una situazione di parità tra voti favorevoli e contrari, la richiesta viene considerata approvata;
 
-	\item \textbf{Mancata partecipazione}: nel caso in cui non venga espresso alcun voto entro l’intera finestra temporale di valutazione (pari a tre giorni), il sistema applica il principio del silenzio-assenso, approvando automaticamente la richiesta al fine di non ostacolare l’avanzamento del progetto.
+	\item \textbf{Mancata partecipazione}: nel caso in cui non venga espresso alcun voto entro la scadenza, il sistema approva automaticamente la richiesta al fine di non ostacolare l’avanzamento del progetto.
 	
 \end{itemize}
 
@@ -102,11 +102,6 @@ Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \t
 	\caption{Valutazione di una richiesta di spesa}
 	\label{fig:valutazione-spesa}
 \end{figure}
-
-
-
-
-
 
 
 
