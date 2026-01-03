@@ -10,6 +10,15 @@
 
 
 \subsection{Login e autenticazione}
+Il sistema di autenticazione della piattaforma è stato progettato seguendo un approccio \textit{wallet-based}, coerente con il paradigma Web3 e volto a eliminare l’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet} blockchain. \\
+Il processo di \textit{login} ha inizio con la connessione del \textit{wallet} dell’utente, dal quale viene ricavato l’indirizzo pubblico. A partire da tale indirizzo, il \textit{backend} genera un \textit{nonce}, ovvero un valore casuale e univoco, il quale viene associato all’indirizzo del \textit{wallet} e successivamente restituito al \textit{front-end}. \\
+Il \textit{front-end} costruisce quindi un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio wallet. La firma crittografica prodotta dimostra il possesso della chiave privata associata all’indirizzo e viene inviata al backend insieme al messaggio firmato. Il \textit{back-end} verifica la validità della firma ricostruendo il messaggio e accertando che: 
+\begin{enumerate}
+	\item l’indirizzo estratto crittograficamente dalla firma coincida con quello dichiarato;
+	\item il \textit{nonce} contenuto nel messaggio corrisponda a quello precedentemente generato e memorizzato.
+\end{enumerate}
+Solo nel caso in cui entrambi i controlli diano esito positivo, l’autenticazione viene considerata valida e la sessione dell’utente viene inizializzata.\\
+In fase di primo accesso, l’utente viene registrato automaticamente nel sistema, mentre per accessi successivi vengono aggiornate le informazioni di sessione. Al termine del processo, il nonce viene rigenerato, invalidando quello precedente e garantendo la sicurezza delle autenticazioni future.
 
 
 \subsection{Dashboard donatore}
