@@ -10,15 +10,6 @@
 
 
 \subsection{Login e autenticazione}
-Il sistema di autenticazione della piattaforma è stato progettato seguendo un approccio \textit{wallet-based}, volto a eliminare l’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}, coerentemente con il paradigma Web3. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet} blockchain. \\
-Il processo di \textit{login} ha inizio con la connessione del \textit{wallet} dell’utente, dal quale viene ricavato l’indirizzo pubblico. A partire da tale indirizzo, il \textit{back-end} genera un \textit{nonce}, ovvero un valore casuale e univoco, il quale viene associato all’indirizzo del \textit{wallet} e successivamente restituito al \textit{front-end}. \\
-A sua volta, Il \textit{front-end} costruisce un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio \textit{wallet}. La firma crittografica prodotta dimostra il possesso della chiave privata associata all’indirizzo e viene inviata al \textit{back-end} insieme al messaggio firmato. Il \textit{back-end} verifica la validità della firma ricostruendo il messaggio e accertando che: 
-\begin{enumerate}
-	\item l’indirizzo estratto crittograficamente dalla firma coincida con quello dichiarato;
-	\item il \textit{nonce} contenuto nel messaggio corrisponda a quello precedentemente generato e memorizzato.
-\end{enumerate}
-Solo nel caso in cui entrambi i controlli diano esito positivo, l’autenticazione viene considerata valida e la sessione dell’utente viene inizializzata.\\
-In fase di primo accesso, l’utente viene registrato automaticamente nel sistema, mentre per accessi successivi vengono aggiornate le informazioni di sessione. Al termine del processo, il nonce viene rigenerato, invalidando quello precedente e garantendo la sicurezza delle autenticazioni future.
 
 
 \subsection{Dashboard donatore}
@@ -84,23 +75,17 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per agire secondo le seguenti regole:
 
 \begin{itemize}
-	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se al termine della finestra temporale di votazione, il numero di voti favorevoli raggiunge almeno il 50\% dei voti espressi;
+	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, i voti favorevoli rappresentano almeno il 50\% del totale dei voti espressi;
 	
-	\item \textbf{Approvazione per quorum matematico}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero voto contrario;
+	\item \textbf{Approvazione anticipata per maggioranza matematica}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero voto contrario;
 	
-	\item \textbf{Parità dei voti}: in caso di parità tra voti favorevoli e contrari al termine del periodo di votazione, la richiesta è considerata approvata;
+	\item \textbf{Parità dei voti}: qualora, allo scadere del periodo di votazione, si verifichi una situazione di parità tra voti favorevoli e contrari, la richiesta viene considerata approvata;
 
-	\item \textbf{Mancata partecipazione}: in assenza di attività di voto entro l'intero periodo di valutazione (pari a tre giorni), il sistema applica il principio del silenzio-assenso, approvando automaticamente la richiesta per non pregiudicare l'avanzamento dei lavori dell'Ente;
-	
+	\item \textbf{Mancata partecipazione}: nel caso in cui non venga espresso alcun voto entro l’intera finestra temporale di valutazione (pari a tre giorni), il sistema applica il principio del silenzio-assenso, approvando automaticamente la richiesta al fine di non ostacolare l’avanzamento del progetto.
 	
 \end{itemize}
 
 Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
-
-
-
-% la richiesta passa non solo se raggiungo la maggioranza semplice ma anche se il numero di persone che mancano non mi permettono di far cambiare l'esito della votazione
-
 
 \medskip
 \begin{figure} [h]
