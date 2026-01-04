@@ -26,6 +26,11 @@ const giveCash = task("giveCash", "Assegna EURC ad un account")
     description: "L'importo di EURC da assegnare (default 5000)",
     defaultValue: "5000",
   })
+  .addPositionalArgument({
+    name: "token",
+    description: "Il tipo di token da assegnare: 'eurc' o 'eth' (default 'eurc')",
+    defaultValue: "eurc",
+  })
   .build();
 
 export default defineConfig({
