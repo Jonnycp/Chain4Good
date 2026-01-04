@@ -27,8 +27,8 @@ Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il conc
 
 \subsection{Analisi dei requisiti}
 In questa sezione sono riportati i requisiti richiesti per il corretto funzionamento della piattaforma. \\
-In particolare, i requisiti funzionali definiscono le funzionalità che la piattaforma deve implementare. Essi sono riportati nella Tabella~\ref{tab:requisiti_funzionali}.\\
-I requisiti non funzionali rappresentano, invece, tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. Tali requisiti sono descritti nella Tabella \ref{tab:requisiti_non_funzionali}.
+In particolare, nella Tabella~\ref{tab:requisiti_funzionali} sono riportati i requisiti funzionali, ossia funzionalità che la piattaforma deve implementare. \\
+Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requisiti non funzionali i quali rappresentano tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. 
 
 \begin{table}
 	\centering
@@ -116,7 +116,7 @@ I requisiti non funzionali rappresentano, invece, tutte le caratteristiche che, 
 
 \subsection{Stack tecnologico}
 In questa sezione viene fornita una panoramica delle tecnologie impiegate per lo sviluppo della piattaforma. \\
-In particolare, le tabelle \ref{tab:frontend_stack} e \ref{tab:backend_stack} riportano rispettivamente gli strumenti utilizzati per l’implementazione della componente \textit{front-end} e \textit{back-end} della piattaforma, con una breve descrizione del loro impiego durante le fasi di sviluppo. Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.
+In particolare, le tabelle \ref{tab:frontend_stack} e \ref{tab:backend_stack} riportano gli strumenti utilizzati rispettivamente per l’implementazione della componente \textit{front-end} e \textit{back-end} del \textit{software}, con una breve descrizione del loro impiego durante le fasi di sviluppo. Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.
 Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti impiegati per supportare l'organizzazione del lavoro tra i membri del gruppo e per garantire la portabilità del sistema \textit{software}.\\
 
 
@@ -218,17 +218,17 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti i
 			\hline
 			Chai & Libreria di asserzione utilizzata per verificare che l'\textit{output} degli \textit{Smart Contract} corrisponda ai requisiti attesi.\\
 			\hline
-			% Mocha e Chai (libreria asse) utilizzate come librerie di test utilizzate per testare le funzioni del contratto prima di fare il deploy -
-			% Mocha è un test runner.
-			% Si occupa di eseguire i test, gestire le suite (describe, it), il setup/teardown, e mostrare i risultati. Non si occupa delle asserzioni (cioè dei controlli vero/falso).
-			%Chai - è  una libreria di asserzioni; fornisce funzioni come expect, assert, should per verificare che i risultati siano quelli attesi. Si integra facilmente con Mocha.
-			
-			
 		\end{tabular}
 	}
 	\caption{Tecnologie utilizzate per la componente \textit{blockchain}.}
 	\label{tab:blockchain_stack}
 \end{table}
+
+
+% Mocha e Chai (libreria asse) utilizzate come librerie di test utilizzate per testare le funzioni del contratto prima di fare il deploy 
+% Mocha è un test runner.
+% Si occupa di eseguire i test, gestire le suite (describe, it), il setup/teardown, e mostrare i risultati. Non si occupa delle asserzioni (cioè dei controlli vero/falso).
+%Chai - è  una libreria di asserzioni; fornisce funzioni come expect, assert, should per verificare che i risultati siano quelli attesi. Si integra facilmente con Mocha.
 
 
 
@@ -257,9 +257,7 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti i
 
 
 %docker compose: 1 container per frontend 1 per backend 1 per blockchain 
-% da capire 
 
-% è stata adottata la containerizzazione tramite \textit{Docker}, che ha permesso di standardizzare l’ambiente di esecuzione dell’applicazione, riducendo le dipendenze dall’infrastruttura sottostante e facilitando le fasi di distribuzione e avvio del sistema.
 
 
 
