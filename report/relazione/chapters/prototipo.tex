@@ -31,6 +31,10 @@ Infine, il \textit{front-end} utilizza il \textit{cookie} di sessione per recupe
 \end{figure}
 \clearpage
 
+\subsubsection{Ente}
+
+%diagramma classi
+
 
 
 \subsection{Dashboard donatore}
@@ -44,7 +48,7 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 
 
 
-\begin{figure}[!h]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.40\textwidth]{images/Home_nuova.pdf}
 	\caption{Dashboard del donatore}
@@ -92,11 +96,11 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 
 
 
-\subsubsection{Meccanismo di validazione}
+\subsubsection{Meccanismo di votazione}
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa attraverso un periodo di votazione di durata prefissata pari a tre giorni, al termine del quale l’esito viene determinato secondo le seguenti regole:
 
 \begin{itemize}
-	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, i voti favorevoli sono maggiori; % voti favorevoli maggiori dei negati - togli maggiore uguale 
+	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, il numero di voti favorevoli è almeno pari ai voti contrari;
 	
 	\item \textbf{Approvazione anticipata per maggioranza matematica}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero un voto contrario;
 	
