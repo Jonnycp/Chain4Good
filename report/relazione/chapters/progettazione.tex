@@ -120,20 +120,25 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 			TypeScript & Linguaggio utilizzato per lo sviluppo del \textit{front-end}. \\
 			\hline
 			React JS & Libreria utilizzata per la realizzazione dell’interfaccia utente secondo un’architettura a componenti. \\
+			%verifica framework o libreria
 			\hline
-			React Router & Libreria impiegata per la gestione della navigazione \textit{client-side}. \\
+			React Router & Libreria in modalità \textit{framework} impiegata per la gestione della navigazione \textit{client-side}. \\
 			\hline
-			@tanstack/react-query & Libreria utilizzata per la gestione delle chiamate asincrone al \textit{backend}, con supporto a \textit{caching}, sincronizzazione dei dati e gestione automatica degli stati di caricamento ed errore. \\
+			% v8 framework
+			@tanstack/react-query & Libreria utilizzata per la gestione delle chiamate asincrone al \textit{back-end}, con supporto a \textit{caching}, sincronizzazione dei dati e gestione automatica degli stati di caricamento ed errore. \\
 			\hline
-			Tailwind CSS & \textit{Framework} CSS utilizzato per la definizione dello stile grafico e la realizzazione di \textit{layout} responsivi e coerenti. \\
+			Tailwind CSS & \textit{Framework} CSS utilizzato per la definizione dello stile grafico e la realizzazione di \textit{layout} responsivi e coerenti. \\ %controlla framework o libreria
+			% +configurazione personalizzata
 			\hline
-			Vite & Strumento di \textit{build} e sviluppo utilizzato per la compilazione del codice TypeScript e l’esecuzione dell’applicazione durante la fase di sviluppo. \\
+			Vite & Strumento di \textit{bundler} e di \textit{build} e sviluppo utilizzato per la compilazione del codice TypeScript e l’esecuzione dell’applicazione durante la fase di sviluppo. \\
+			% migliora
 			\hline
-			Wagmi & Libreria utilizzata per l’integrazione Web3 e l’interazione con \textit{wallet} Ethereum e \textit{Smart Contract} tramite \textit{hook React}. \\
+			Wagmi & Libreria utilizzata per l’interazione con i \textit{wallet} e la \textit{blockchain} (Web3) attraverso \textit{hooks} in React. \\
 			\hline
-			viem & \textit{Client} RPC a basso livello, utilizzato internamente per la comunicazione con i nodi \textit{blockchain} e il recupero dei dati \textit{on-chain}. \\
+			viem & \textit{Client} RPC a basso livello, utilizzato internamente da Wagmi per il recupero dei dati \textit{on-chain}. \\
 			\hline
-			SIWE & Protocollo di autenticazione adottato per verificare l’identità dell’utente tramite firma crittografica del \textit{wallet}. \\
+			SIWE & \gls{siwe}: protocollo EIP-4361 di autenticazione adottato per verificare l’identità dell’utente tramite firma crittografica del \textit{wallet}. \\
+			%verifica se protocollo o libreria
 			\hline
 		\end{tabular}
 	}
@@ -158,17 +163,20 @@ La Tabella~\ref{tab:backend_stack} riassume le principali tecnologie e librerie 
 			\hline
 			TypeScript & Linguaggio utilizzato per lo sviluppo del \textit{back-end}, al fine di garantire tipizzazione statica e maggiore robustezza del codice. \\
 			\hline
-			Express.js & \textit{Framework} per Node.js utilizzato per la realizzazione delle API REST e per la gestione delle richieste provenienti dal \textit{front-end.} \\
+			Express.js & \textit{Framework} per Node.js utilizzato per la realizzazione delle API REST e per la gestione delle richieste provenienti dal \textit{front-end}. \\
 			\hline
 			MongoDB & Database NoSQL utilizzato per la memorizzazione dei dati \textit{off-chain}, quali metadati dei progetti, informazioni sugli utenti e dati di sessione. \\
 			\hline
 			Mongoose & \textit{\gls{odm}} utilizzato per la definizione dei modelli di dati e l’interazione con il database MongoDB. \\
 			\hline
-			express-session & \textit{Middleware} utilizzato per la gestione delle sessioni lato \textit{server}, impiegato nel processo di autenticazione degli utenti. \\
+			express-session & \textit{Middleware} utilizzato per la gestione delle sessioni lato \textit{server}, impiegato nel processo di autenticazione. \\
 			\hline
-			SIWE & Libreria utilizzata per l’implementazione del protocollo \textit{Sign-In with Ethereum}, basato sulla verifica di messaggi firmati tramite \textit{wallet} Ethereum. \\
+			SIWE & Libreria utilizzata per l’implementazione del protocollo \textit{Sign-In with Ethereum}, basato sulla verifica di messaggi firmati tramite \textit{wallet}. \\
 			\hline
 			ethers.js & Libreria JavaScript utilizzata per l’interazione con la \textit{blockchain} Ethereum, in particolare per il recupero di informazioni \textit{on-chain}. \\
+			\hline
+			multer & Libreria di Express.js per gestire l'\textit{upload} dei file tramite form HTML di tipo multipart/form-data. \\
+			% migliora
 			\hline
 		\end{tabular}
 	}
@@ -195,8 +203,20 @@ La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adott
 			\hline
 			Hardhat & Ambiente di sviluppo utilizzato per la compilazione, il \textit{testing} e il \textit{deployment} degli \textit{Smart Contract}, nonché per la simulazione di una \textit{blockchain} locale. \\
 			\hline
-			@openzeppelin/contracts & Libreria di \textit{Smart Contract} riutilizzabili, utilizzata per integrare componenti standard e meccanismi di sicurezza, come il controllo degli accessi. \\
+			@openzeppelin/contracts & Libreria di \textit{Smart Contract} riutilizzabili, utilizzata per integrare componenti standard e meccanismi di sicurezza.\\
 			\hline
+			% Mocha e Chai aggiungi
+			% Mocha e Chai (libreria asse) utilizzate come librerie di test utilizzate per testare le funzioni del contratto prima di fare il deploy -
+			% Mocha
+			% È un test runner.
+			% Si occupa di eseguire i test, gestire le suite (describe, it), il setup/teardown, e mostrare i risultati.
+			%Non si occupa delle asserzioni (cioè dei controlli vero/falso).
+			%Chai
+			%È una libreria di asserzioni.
+			%Fornisce funzioni come expect, assert, should per verificare che i risultati siano quelli attesi.
+			%Si integra facilmente con Mocha.
+			
+			
 		\end{tabular}
 	}
 	\caption{Tecnologie utilizzate per la componente \textit{blockchain}.}
@@ -204,7 +224,7 @@ La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adott
 \end{table}
 \smallskip
 
-
+% 
 
 
 % Oltre all’impiego di linguaggi, librerie e ambienti di sviluppo per la realizzazione degli smart contract, il progetto prevede la definizione di specifiche componenti applicative on-chain che implementano la logica funzionale del sistema di crowdfunding. Tali componenti non costituiscono tecnologie a sé stanti, ma rappresentano strutture e meccanismi progettati per rispondere ai requisiti applicativi del dominio.
@@ -247,7 +267,15 @@ Per favorire lo sviluppo parallelo e la portabilità del sistema \textit{softwar
 	\label{tab:development_tools}
 \end{table}
 
-
+%docker compose: 1 container per frontend 1 per backend 1 per blockchain 
+% da capire 
 
 % è stata adottata la containerizzazione tramite \textit{Docker}, che ha permesso di standardizzare l’ambiente di esecuzione dell’applicazione, riducendo le dipendenze dall’infrastruttura sottostante e facilitando le fasi di distribuzione e avvio del sistema.
+
+
+
+
+
+
+
 

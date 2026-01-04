@@ -10,6 +10,17 @@
 
 
 \subsection{Login e autenticazione}
+L'autenticazione all'interno della piattaforma adotta il protocollo \gls{siwe} sostituendo il modello tradizionale basato sull’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}, coerentemente con il paradigma Web3. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet} blockchain. 
+
+Il flusso di \textit{login} ha inizio con la connessione del \textit{wallet} da parte dell’utente, dalla quale il \textit{front-end} ottiene l’indirizzo pubblico associato. Tale indirizzo viene inviato al \textit{back-end}, che a sua volta, genera un \textit{nonce}, ovvero un valore casuale e univoco utilizzato per prevenire attacchi di tipo \textit{replay}. 
+Il \textit{nonce} viene associato temporaneamente all’utente, tramite sessione o persistenza nel database,, e restituito al \textit{front-end}.
+
+Successivamente, il \textit{front-end} costruisce un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio \textit{wallet}. Il messaggio firmato e la relativa firma vengono quindi inviati al \textit{back-end}, che procede alla verifica dell’autenticazione. In particolare, il server controlla sia che l’indirizzo estratto crittograficamente dalla firma coincida con quello dichiarato sia che il \textit{nonce} contenuto nel messaggio corrisponda a quello attualmente valido, impedendo il riutilizzo di firme precedenti.
+
+Solo se entrambi i controlli vanno a buon fine, l’autenticazione viene considerata valida e viene avviata una sessione applicativa. In fase di primo accesso, l’utente viene registrato automaticamente nel sistema, mentre per accessi successivi vengono aggiornate le informazioni di sessione. Al termine del processo, il \textit{nonce} viene rigenerato e quello precedente invalidato, garantendo la sicurezza delle autenticazioni future.
+
+Infine, il \textit{front-end} utilizza il \textit{cookie} di sessione per recuperare le informazioni dell’utente autenticato e completare il processo di accesso all’applicazione.
+
 
 
 \subsection{Dashboard donatore}
@@ -75,9 +86,9 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa attraverso un periodo di votazione di durata prefissata pari a tre giorni, al termine del quale l’esito viene determinato secondo le seguenti regole:
 
 \begin{itemize}
-	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, i voti favorevoli rappresentano almeno il 50\% del totale dei voti totali espressi;
+	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, i voti favorevoli sono maggiori; % voti favorevoli maggiori dei negati - togli maggiore uguale 
 	
-	\item \textbf{Approvazione anticipata per maggioranza matematica}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero voto contrario;
+	\item \textbf{Approvazione anticipata per maggioranza matematica}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero un voto contrario;
 	
 	\item \textbf{Parità dei voti}: qualora, allo scadere del periodo di votazione, si verifichi una situazione di parità tra voti favorevoli e contrari, la richiesta viene considerata approvata;
 
@@ -86,6 +97,9 @@ Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programma
 \end{itemize}
 
 Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
+
+% funzione per donare - funzione per aggiungere la spesa - funzione per il voto
+
 
 \medskip
 \begin{figure} [h]
