@@ -28,7 +28,7 @@ La pianificazione delle attività di progetto è stata condotta mediante la defi
 Successivamente, al fine di gestire la sequenzialità e il parallelismo tra i \textit{task} individuati, è stato elaborato un Diagramma di Gantt. \\
 Tale approccio ha consentito di organizzare il lavoro in modo strutturato e di definire un riferimento temporale complessivo per l’esecuzione del progetto.
 
-\medskip
+
 \begin{table}
 	\centering
 	\small
@@ -92,16 +92,9 @@ Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non �
 
 
 \subsection{Analisi dei rischi}
-L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma.
-
-
-\subsubsection{Rischi di progetto}
-In primo luogo, sono stati presi in considerazione i rischi di progetto, quali la possibile sottostima dei tempi di sviluppo e la variabilità dei requisiti individuati in fase di pianificazione.
-
-\begin{itemize}
-	\item per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riorganizzazione;
-	\item al fine di ridurre le criticità connesse all’evoluzione dei requisiti, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione.
-\end{itemize}
+L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. \\
+In primo luogo, sono stati presi in considerazione i rischi di progetto, quali la possibile sottostima dei tempi di sviluppo e la variabilità dei requisiti individuati in fase di pianificazione. Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riorganizzazione;
+Al fine di ridurre le criticità connesse all’evoluzione dei requisiti, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione.
 
 \subsubsection{Rischi di dominio}
 Oltre ai rischi di progetto, sono stati analizzati quelli legati al dominio applicativo del \gls{cf}. In particolare:
@@ -111,6 +104,8 @@ Oltre ai rischi di progetto, sono stati analizzati quelli legati al dominio appl
 	\item \textbf{Inerzia dei votanti}: poiché l’espressione del voto comporta il sostenimento di un costo di transazione, è stata considerata la possibilità che gli utenti non partecipassero attivamente al processo decisionale. Per evitare condizioni di stallo del sistema, si è deciso di adottare una logica di \textit{silenzio-assenso}, progettando la piattaforma in modo tale da approvare automaticamente la richiesta di spesa anche in assenza di voti entro i termini prefissati;
 	
 	\item \textbf{Volatilità finanziaria}: l'impiego di criptovalute per effettuare donazioni espone i fondi raccolti alle elevate fluttuazioni di mercato. Per neutralizzare tale rischio, la piattaforma è stata progettata per operare esclusivamente tramite \textit{stablecoin} (es. USDC),  criptovalute progettate per mantenere un valore stabile rispetto a una valuta reale di riferimento (ad esempio, 1 USDC = 1 Dollaro USA);
+	
+	\item \textbf{Costo delle transazioni}:
 	
 \end{itemize}
 

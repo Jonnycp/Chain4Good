@@ -26,87 +26,82 @@ Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il conc
 
 
 \subsection{Analisi dei requisiti}
-In questa sezione sono riportati per punti i requisiti richiesti per il corretto funzionamento della piattaforma.
+In questa sezione sono riportati i requisiti richiesti per il corretto funzionamento della piattaforma. \\
+In particolare, i requisiti funzionali definiscono le funzionalità che la piattaforma deve implementare. Essi sono riportati nella Tabella~\ref{tab:requisiti_funzionali}.\\
+I requisiti non funzionali rappresentano, invece, tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. Tali requisiti sono descritti nella Tabella \ref{tab:requisiti_non_funzionali}.
 
-\subsubsection{Requisiti funzionali}
-I requisiti funzionali definiscono le funzionalità che la piattaforma deve implementare. Essi vengono di seguito categorizzati in base agli attori che interagiscono con il sistema. 
-\clearpage
-\begin{enumerate}
-	\item l'Ente Beneficiario:
-	\begin{itemize} % [start=1,label={RF\arabic*:}] ed enumerate
-		\item \textbf{Creazione progetto}: l'Ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, \textit{budget target} e data di scadenza.
-		\item \textbf{Inserimento di una richiesta di spesa}: l'Ente deve poter richiedere il rilascio di una parte dei fondi raccolti avanzando una richiesta di spesa e allegando il relativo preventivo;
-		\item \textbf{Caricamento della prova di acquisto}: l'Ente deve poter caricare la fattura che attesti l'impiego dei fondi precedentemente sbloccati;
-		\item \textbf{Vincolo di sequenzialità sulle richieste di spesa}: l'Ente non deve poter sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
-	\end{itemize}
-	
-	
-	\item per i Donatori:
-	\begin{itemize} %[start=5,label={RF\arabic*:}]
-		\item \textbf{Visualizzazione dei progetti:} il donatore deve poter visualizzare l'elenco delle iniziative di \gls{cf} attive e i relativi dettagli;
-		\item \textbf{Donazione ad un progetto}: il donatore deve poter selezionare un progetto e scegliere arbitrariamente l'importo da donare;
-		\item \textbf{Votazione delle richieste di spesa}: il donatore deve poter visualizzare il preventivo di spesa allegato dall'Ente ed esprimere una preferenza (se favorevole o contrario);
-		\item \textbf{Visualizzazione del portafoglio}: il donatore deve poter visualizzare il saldo disponibile;
-	\end{itemize}
-	
-	
-	\item per il Sistema (logica implementata tramite \textit{Smart Contract}):
-	\begin{itemize}%[start=10,label={RF\arabic*:}]
-		\item \textbf{Registrazione delle donazioni}: il sistema deve registrare \textit{on-chain} ogni donazione effettuata;
-		\item \textbf{Blocco dei fondi}: il sistema deve impedire il trasferimento dei fondi, previo consenso dei donatori;
-		\item \textbf{Gestione del processo di votazione}: il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa;
-		\item \textbf{Erogazione automatica dei fondi}: il sistema deve trasferire automaticamente i fondi al \textit{wallet} dell'Ente, qualora la richiesta di spesa venga approvata dai donatori;
-		\item \textbf{Registrazione delle operazioni}: il sistema deve registrare \textit{on-chain} le richieste di spesa, gli esiti delle votazioni e il trasferimento dei fondi sbloccati;
+\begin{table}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{\textwidth}{l p{4cm} X}
+		\hline
+		\textbf{ID} & \textbf{Requisito} & \textbf{Descrizione} \\
+		\hline
+		\multicolumn{3}{l}{\textbf{Ente}} \\
+		\hline
+		RF1 & Creazione progetto & L'Ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, \textit{budget target} e data di scadenza. \\ \hline
+		RF2 & Richiesta di spesa & L'Ente deve poter richiedere il rilascio di una parte dei fondi avanzando una richiesta di spesa e allegando il relativo preventivo. \\ \hline
+		RF3 & Prova di acquisto & L'Ente deve poter caricare la fattura che attesti l'impiego dei fondi precedentemente sbloccati. \\ \hline
+		RF4 & Vincolo di sequenzialità & L'Ente non deve poter sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata. \\ \hline
 		
-	\end{itemize}
-	
-\end{enumerate}
-
-%il sistema deve consentire esclusivamente agli Enti autorizzati di avviare nuove iniziative di raccolta fondi.
-
-% Descrizione dei requisiti funzionali mediante diagramma UML dei casi d'uso
-
-
-\subsubsection{Requisiti non funzionali}
-Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le caratteristiche che pur non essendo funzionalità, il sistema deve garantire. 
-
-\begin{enumerate}
-	
-	\item \textbf{Immutabilità}: ogni transazione relativa a donazioni, votazioni e rilascio di fondi deve essere registrata su un registro distribuito in modo permanente e non modificabile;
-	
-	\item \textbf{Integrità dei dati}: i file pesanti, come preventivi e prove d'acquisto, devono essere memorizzati \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione;
-	
-	\item \textbf{Usabilità}: la \textit{Webapp} deve consentire agli utenti di consultare i dati \textit{on-chain}, come lo storico delle donazioni effettuate, attraverso interfacce intuitive;
-	
-	\item \textbf{Sicurezza}: l'accesso alle funzionalità della piattaforma e alla consultazione dettagliata dei dati deve essere limitato ai soli utenti autenticati;
-	
-	\item \textbf{Portabilità}: la \textit{Webapp} deve essere fruibile sia da dispositivi \textit{desktop} che \textit{mobile};
-\end{enumerate}
+		\multicolumn{3}{l}{\textbf{Donatore}} \\
+		\hline
+		RF5 & Visualizzazione progetti & Il donatore deve poter visualizzare l'elenco delle iniziative di \gls{cf} attive e i relativi dettagli. \\ \hline
+		RF6 & Donazione & Il donatore deve poter selezionare un progetto e scegliere arbitrariamente l'importo da donare. \\ \hline
+		RF7 & Votazione richieste & Il donatore deve poter visualizzare il preventivo di spesa allegato dall'Ente ed votare se approvare o meno la richiesta. \\ \hline
+		RF8 & Saldo portafoglio & Il donatore deve poter visualizzare il saldo disponibile. \\ \hline
+		
+		\multicolumn{3}{l}{\textbf{Sistema}} \\
+		\hline
+		RF9 & Registrazione donazioni & Il sistema deve registrare \textit{on-chain} ogni donazione effettuata. \\ \hline
+		RF10 & Blocco dei fondi & Il sistema deve impedire il trasferimento dei fondi, previo consenso dei donatori. \\ \hline
+		RF11 & Gestione votazione & Il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa. \\ \hline
+		RF12 & Erogazione automatica & Il sistema deve trasferire automaticamente i fondi al \textit{wallet} dell'Ente, qualora la richiesta di spesa venga approvata dai donatori. \\ \hline
+		RF13 & Registro operazioni & Il sistema deve registrare \textit{on-chain} le richieste di spesa, gli esiti delle votazioni e il trasferimento dei fondi sbloccati. \\ \hline
+	\end{tabularx}
+	\caption{Tabella dei requisiti funzionali.}
+	\label{tab:requisiti_funzionali}
+\end{table}
 
 
 
+\begin{table}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{\textwidth}{l p{3cm} X}
+		\hline
+		\textbf{ID} & \textbf{Requisito} & \textbf{Descrizione} \\
+		\hline
+		RNF1 & Immutabilità & Ogni transazione relativa a donazioni, votazioni e rilascio di fondi deve essere registrata su un registro distribuito in modo permanente e non modificabile. \\ \hline
+		RNF2 & Integrità dei dati & I file pesanti, come preventivi e fatture, devono essere memorizzati \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione. \\ \hline
+		RNF3 & Usabilità & La \textit{Webapp} deve consentire agli utenti di consultare i dati \textit{on-chain}, come lo storico delle donazioni effettuate, attraverso interfacce intuitive. \\ \hline
+		RNF4 & Sicurezza & L'accesso alle funzionalità della piattaforma e alla consultazione dettagliata dei dati deve essere limitato ai soli utenti autenticati. \\ \hline
+		RNF5 & Portabilità & La \textit{Webapp} deve essere fruibile sia da dispositivi \textit{desktop} che \textit{mobile}. \\ \hline
+	\end{tabularx}
+	\caption{Tabella dei requisiti non funzionali.}
+	\label{tab:requisiti_non_funzionali}
+\end{table}
 
-%il sistema deve garantire la sicurezza: deve essre accessibile sia da computer che da telefono
+
+
 % sicurezza: i dati devono rimanere all'interno dll'applicazione, protetti, deve essere sicuro replayact
-%forse sicurezza: i dati stanno nell'applicazione e non sono accessibili a chi non è loggato; per vedere i dati devi essere autenticato 
-%
-
-% \item \textbf{Architettura decentralizzata}: il sistema non deve presentare \gls{spof}, per cui anche in caso di down della \textit{Webapp}, i fondi devono rimanere accessibili e gestibili;
-
-
-
 
 \subsection{Architettura del Sistema}
-La piattaforma proposta si basa sull’adozione del \textit{design pattern} architetturale \gls{mvc} caratterizzato da tre tipi di componenti:
+\begin{comment}
+	La piattaforma proposta si basa sull’adozione del \textit{design pattern} architetturale \gls{mvc} caratterizzato da tre tipi di componenti:
+	
+	\begin{itemize}
+		\item \textit{Model}: incapsula la \textit{business logic} e i dati utili all’applicazione fornendo attraverso la sua interfaccia dei metodi per accedervi e manipolarli;
+		
+		\item \textit{View}: realizza l’interfaccia grafica, quindi visualizza i dati ottenuti dal Model e si occupa dell’interazione con l’utente;
+		
+		\item \textit{Controller}: funge da intermediario tra \textit{View} e \textit{Model}, quindi raccoglie i comandi dell’utente provenienti dalla \textit{View} e li attua modificando lo stato degli altri due componenti.
+	\end{itemize}
+\end{comment}
+	
 
-\begin{itemize}
-	\item \textit{Model}: incapsula la \textit{business logic} e i dati utili all’applicazione fornendo attraverso la sua interfaccia dei metodi per accedervi e manipolarli;
-	
-	\item \textit{View}: realizza l’interfaccia grafica, quindi visualizza i dati ottenuti dal Model e si occupa dell’interazione con l’utente;
-	
-	\item \textit{Controller}: funge da intermediario tra \textit{View} e \textit{Model}, quindi raccoglie i comandi dell’utente provenienti dalla \textit{View} e li attua modificando lo stato degli altri due componenti.
-	
-\end{itemize}
 
 % Nel modello proposto, il \textit{Model} è costituito sia dalla componente \textit{on-chain}, rappresentata dagli \textit{Smart Contract} sviluppati in Solidity e distribuiti sulla blockchain, sia dalla componente \textit{off-chain}, gestita tramite il database MongoDB, utilizzato per l’archiviazione di metadati e informazioni non critiche.\\
 % Il livello di \textit{Controller} è implementato dal \textit{back-end} Express, che funge da API Gateway e si occupa della gestione della logica applicativa \textit{off-chain}, dell’autenticazione degli utenti tramite protocollo \gls{siwe} e delle interazioni tra \textit{front-end}, database e blockchain. \\
@@ -120,11 +115,9 @@ La piattaforma proposta si basa sull’adozione del \textit{design pattern} arch
 
 
 \subsection{Stack tecnologico}
-La presente sezione fornisce una panoramica delle tecnologie impiegate per lo sviluppo della piattaforma, organizzate in base alle principali componenti architetturali del sistema. \\
-In particolare, la Tabella~\ref{tab:frontend_stack} riporta le tecnologie utilizzate per l’implementazione della componente \textit{front-end}, mentre la Tabella~\ref{tab:backend_stack} elenca quelle adottate per lo sviluppo della componente \textit{back-end}. 
-Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.\\
-Visual Studio Code è stato inoltre utilizzato come \gls{ide} principale. \\
-Al fine di supportare l'organizzazione del lavoro e garantire la portabilità del sistema \textit{software}, invece sono stati inoltre impiegati gli strumenti riportati in Tabella~\ref{tab:development_tools}.i 
+In questa sezione viene fornita una panoramica delle tecnologie impiegate per lo sviluppo della piattaforma. \\
+In particolare, le tabelle \ref{tab:frontend_stack} e \ref{tab:backend_stack} riportano rispettivamente gli strumenti utilizzati per l’implementazione della componente \textit{front-end} e \textit{back-end} della piattaforma, con una breve descrizione del loro impiego durante le fasi di sviluppo. Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.
+Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti impiegati per supportare l'organizzazione del lavoro tra i membri del gruppo e per garantire la portabilità del sistema \textit{software}.\\
 
 
 %--------------------FRONTEND---------------------
@@ -161,7 +154,7 @@ Al fine di supportare l'organizzazione del lavoro e garantire la portabilità de
 			\hline
 		\end{tabular}
 	}
-	\caption{Tecnologie e librerie utilizzate per lo sviluppo del \textit{front-end}}.
+	\caption{Tecnologie e librerie utilizzate per lo sviluppo del \textit{front-end}.}
 	\label{tab:frontend_stack}
 \end{table}
 \clearpage
@@ -258,7 +251,7 @@ Al fine di supportare l'organizzazione del lavoro e garantire la portabilità de
 			\hline
 		\end{tabular}
 	}
-	\caption{Strumenti utilizzati per lo sviluppo del progetto}
+	\caption{Strumenti utilizzati per lo sviluppo.}
 	\label{tab:development_tools}
 \end{table}
 
