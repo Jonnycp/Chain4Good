@@ -21,7 +21,7 @@ export interface Progetto extends Document {
   endDate: Date;
   targetAmount: number;
   currentAmount: number;
-  blockchainId?: number;
+  vaultAddress: string;
   currency: string;
   status: "raccolta" | "attivo" | "completato" | "annullato";
   createdAt: Date;
@@ -43,7 +43,7 @@ const ProjectSchema = new Schema<Progetto>({
   endDate: { type: Date, required: true },
   targetAmount: { type: Number, required: true },
   currentAmount: { type: Number, default: 0, required: true },
-  blockchainId: { type: Number, required: false },
+  vaultAddress: { type: String, required: true, unique: true, index: true },
   currency: {type: String, required: true, default: "EURC"},
   status: {
     type: String,

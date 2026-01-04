@@ -387,6 +387,7 @@ export const getProjectDonations = async (req: Request, res: Response) => {
  * utilizzoFondi
  * luogo
  * banner (immagine)
+ * vaultAddress
  */
 export const createProject = async (req: Request, res: Response) => {
   try {
@@ -399,6 +400,7 @@ export const createProject = async (req: Request, res: Response) => {
       descrizione,
       usoFondi,
       location,
+      vaultAddress
     } = req.body;
     const coverImage = req.file ? req.file.path : null;
     
@@ -420,6 +422,8 @@ export const createProject = async (req: Request, res: Response) => {
       errors.usoFondi = "Specifica almeno un uso dei fondi";
     if (!location || typeof location !== "string" || location.length < 2)
       errors.location = "Luogo non valido";
+    if (!vaultAddress || typeof vaultAddress !== "string" || !/^0x[a-fA-F0-9]{40}$/.test(vaultAddress))
+      errors.vaultAddress = "Indirizzo vault non valido";
     if (!coverImage) {
       errors.coverImage = "Immagine non valida";
     } else {
@@ -454,7 +458,7 @@ export const createProject = async (req: Request, res: Response) => {
       targetAmount: Number(targetAmount),
       currency: currency.trim(),
       coverImage: coverImage,
-      blockchainId: req.body.blockchainId ? Number(req.body.blockchainId) : undefined,
+      vaultAddress: vaultAddress.trim(),
     } as Progetto;
 
     const enteId = req.session.address ? (await UserModel.findOne({ address: req.session.address }))?._id : null;
