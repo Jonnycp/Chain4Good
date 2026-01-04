@@ -34,7 +34,7 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 	\begin{itemize}
 		\item \textbf{Creazione progetto}: l'Ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, \textit{budget target} e data di scadenza.
 		\item \textbf{Inserimento di una richiesta di spesa}: l'Ente deve poter richiedere il rilascio di una parte dei fondi raccolti avanzando una richiesta di spesa e allegando il relativo preventivo;
-		\item \textbf{Caricamento della prova di acquisto}: l'Ente deve poter caricare la fattura che attesti l'effettivo impiego dell'importo richiesto per lo scopo dichiarato;
+		\item \textbf{Caricamento della prova di acquisto}: l'Ente deve poter caricare la fattura che attesti l'impiego dei fondi precedentemente sbloccati;
 		\item \textbf{Vincolo di sequenzialità sulle richieste di spesa}: l'Ente non deve poter sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
 	\end{itemize}
 	
@@ -226,10 +226,12 @@ La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adott
 			\hline
 			@openzeppelin/contracts & Libreria di \textit{Smart Contract} riutilizzabili, utilizzata per integrare componenti standard e meccanismi di sicurezza.\\
 			\hline
-			Mocha e Chai & \textit{Framework} di \textit{testing} (Mocha) e libreria di asserzione (Chai) utilizzati per la validazione automatizzata della logica degli \textit{Smart Contract}.\\
+			Mocha & \textit{Framework} di \textit{testing} utilizzato come motore per l'esecuzione dei \textit{test} automatizzati degli \textit{Smart Contract}. \\
+			\hline
+			Chai & Libreria di asserzione utilizzata per verificare che l'\textit{output} degli \textit{Smart Contract} corrisponda ai requisiti attesi.\\
 			\hline
 			% Mocha e Chai (libreria asse) utilizzate come librerie di test utilizzate per testare le funzioni del contratto prima di fare il deploy -
-			% Mocha- è un test runner.
+			% Mocha è un test runner.
 			% Si occupa di eseguire i test, gestire le suite (describe, it), il setup/teardown, e mostrare i risultati. Non si occupa delle asserzioni (cioè dei controlli vero/falso).
 			%Chai - è  una libreria di asserzioni; fornisce funzioni come expect, assert, should per verificare che i risultati siano quelli attesi. Si integra facilmente con Mocha.
 			
