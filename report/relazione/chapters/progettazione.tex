@@ -96,16 +96,28 @@ Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le cara
 \clearpage
 
 \subsection{Architettura del Sistema}
-Tale strutturazione rispecchia quella del noto \textit{design pattern} architetturale \gls{mvc} caratterizzato da tre tipi di componenti:
+La piattaforma proposta si basa sull’adozione del \textit{design pattern} architetturale \gls{mvc} caratterizzato da tre tipi di componenti:
 
 \begin{itemize}
-	\item \textbf{Model}: incapsula la \textit{business logic} e i dati utili all’applicazione fornendo attraverso la sua interfaccia dei metodi per accedervi e manipolarli;
-	\item \textbf{Controller}: funge da intermediario tra \textit{View} e \textit{Model}, raccoglie quindi i comandi dell’utente provenienti dalla View e li attua modificando lo stato degli altri due componenti.
-	\item \textbf{View}: realizza l’interfaccia grafica, quindi visualizza i dati ottenuti dal Model e si occupa dell’interazione con l’utente;
-
+	\item \textit{Model}: incapsula la \textit{business logic} e i dati utili all’applicazione fornendo attraverso la sua interfaccia dei metodi per accedervi e manipolarli;
+	
+	\item \textit{View}: realizza l’interfaccia grafica, quindi visualizza i dati ottenuti dal Model e si occupa dell’interazione con l’utente;
+	
+	\item \textit{Controller}: funge da intermediario tra \textit{View} e \textit{Model}, quindi raccoglie i comandi dell’utente provenienti dalla \textit{View} e li attua modificando lo stato degli altri due componenti.
+	
 \end{itemize}
 
-La potenza di questo pattern risiede nel fatto che riesce a disaccoppiare l’interazione fra View e Model, aspetto particolarmente importante in applicazioni di questo tipo dal momento che tutte le interazioni con il model avvengono in modo asincrono.
+% Nel modello proposto, il \textit{Model} è costituito sia dalla componente \textit{on-chain}, rappresentata dagli \textit{Smart Contract} sviluppati in Solidity e distribuiti sulla blockchain, sia dalla componente \textit{off-chain}, gestita tramite il database MongoDB, utilizzato per l’archiviazione di metadati e informazioni non critiche.\\
+% Il livello di \textit{Controller} è implementato dal \textit{back-end} Express, che funge da API Gateway e si occupa della gestione della logica applicativa \textit{off-chain}, dell’autenticazione degli utenti tramite protocollo \gls{siwe} e delle interazioni tra \textit{front-end}, database e blockchain. \\
+% Infine, il livello di \textit{View} è rappresentato dal \textit{front-end} sviluppato con React e Tailwind CSS, responsabile della presentazione dei dati e dell’interazione con l’utente finale. 
+
+% Tale architettura consente di combinare i vantaggi della decentralizzazione e dell’immutabilità della blockchain (Web3) con la flessibilità, l’efficienza e la scalabilità delle infrastrutture web tradizionali (Web2).
+
+
+
+
+
+% La potenza di questo pattern risiede nel fatto che riesce a disaccoppiare l’interazione fra View e Model, aspetto particolarmente importante in applicazioni di questo tipo dal momento che tutte le interazioni con il model avvengono in modo asincrono.
 
 
 
@@ -130,19 +142,16 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 			\hline
 			TypeScript & Linguaggio utilizzato per lo sviluppo del \textit{front-end}. \\
 			\hline
-			React JS & Libreria utilizzata per la realizzazione dell’interfaccia utente secondo un’architettura a componenti. \\
-			%verifica framework o libreria
+			React.js & Libreria utilizzata per la realizzazione dell’interfaccia utente secondo un’architettura a componenti. \\
 			\hline
-			React Router & Libreria in modalità \textit{framework} impiegata per la gestione della navigazione \textit{client-side}. \\
+			React Router & Libreria di \textit{routing} (v. 7.11.0) configurata in modalità \textit{framework} per la gestione della navigazione \textit{client-side}. \\
 			\hline
-			% v8 framework
 			@tanstack/react-query & Libreria utilizzata per la gestione delle chiamate asincrone al \textit{back-end}, con supporto a \textit{caching}, sincronizzazione dei dati e gestione automatica degli stati di caricamento ed errore. \\
 			\hline
-			Tailwind CSS & \textit{Framework} CSS utilizzato per la definizione dello stile grafico e la realizzazione di \textit{layout} responsivi e coerenti. \\ %controlla framework o libreria
-			% +configurazione personalizzata
+			Tailwind CSS & \textit{Framework} CSS utilizzato per la definizione dello stile grafico e la realizzazione di \textit{layout} responsivi e coerenti, integrando una configurazione personalizzata. \\ 
 			\hline
-			Vite & Strumento di \textit{bundler} e di \textit{build} e sviluppo utilizzato per la compilazione del codice TypeScript e l’esecuzione dell’applicazione durante la fase di sviluppo. \\
-			% migliora
+			Vite & Strumento di \textit{build} utilizzato per la compilazione del codice TypeScript e l’esecuzione dell’applicazione durante la fase di sviluppo. \\
+			% il bundler è un componente specifico del processo di build-la sua funzione è analizzare l'albero delle dipendenze del progetto, quindi tutti gli import ed export, e unire centinaia di piccoli file in pochi file JavaScript
 			\hline
 			Wagmi & Libreria utilizzata per l’interazione con i \textit{wallet} e la \textit{blockchain} (Web3) attraverso \textit{hooks} in React. \\
 			\hline
