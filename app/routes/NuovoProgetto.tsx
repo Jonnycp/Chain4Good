@@ -1,27 +1,41 @@
 import { useEffect, useState } from "react";
-import { useNavigate, type ActionFunctionArgs } from "react-router";
+import { useNavigate } from "react-router";
 import { Icon } from "@iconify/react";
 import CategoryButton from "../components/CategoryButton";
 import Header from "~/components/Header";
 
 import logoImg from "../assets/logo.png";
-import imgUser from "../assets/img_user.png";
 import { categories } from "./HomePageComune";
+import { useApp } from "~/context/AppProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const CURRENCYS = ["EURC", "USDC"];
+import { useWriteContract, useConfig } from "wagmi";
+import { parseUnits } from "viem";
+import { waitForTransactionReceipt, switchChain } from "@wagmi/core";
+import factoryAbi from "@abi/ProjectFactory.sol/ProjectFactory.json";
+import { hardhat } from "viem/chains";
+
+
+export const CURRENCYS = ["EURC"];
 
 //TODO: No action perchè nel frontend manca <form method="multipart" ...
 
 export default function NuovoProgetto() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
   const [newId, setNewId] = useState<string | null>(null);
+  const [button, setButton] = useState("Pubblica Progetto");
   const [posizione, setPosizione] = useState<{
     lat: number;
     lng: number;
     citta: string;
   } | null>(null);
+
+  const { contracts, user } = useApp();
+  const writeContract = useWriteContract();
+  const config = useConfig();
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -197,22 +211,70 @@ export default function NuovoProgetto() {
 
   const handleSubmit = async () => {
     if (validateStep2()) {
-      const form = new FormData();
-      form.append("title", formData.projectName);
-      form.append("category", formData.category);
-      form.append("location", formData.location);
-      form.append("descrizione", formData.description);
-      form.append("endDate", formData.deadline);
-      form.append("targetAmount", formData.budget);
-      form.append("currency", formData.currency);
-      formData.fundsUsage.forEach((usage, idx) => {
-        form.append(`usoFondi[]`, usage);
-      });
-      if (formData.coverImage) {
-        form.append("coverImage", formData.coverImage);
-      }
-
       try {
+        setButton("Cambio rete...");
+        await switchChain(config, { chainId: hardhat.id });
+        
+        setButton("Contatto blockchain...");
+        //? --- FASE 1: BLOCKCHAIN (Creazione Vault) ---
+        // Parametri per lo Smart Contract
+        const deadlineTimestamp = Math.floor(
+          new Date(formData.deadline).getTime() / 1000
+        );
+        const targetUnits = parseUnits(formData.budget, 18);
+
+        // Token corrispondente
+        let tokenAddress;
+        if (formData.currency === "EURC") {
+          tokenAddress = contracts?.eurc;
+        } else {
+          setErrors({ coverImage: "Valuta non supportata" });
+          throw new Error("Valuta non supportata");
+        }
+
+        if (!tokenAddress || !contracts?.factory) {
+          setErrors({ coverImage: "Configurazione contratti non trovata" });
+          throw new Error("Configurazione contratti non trovata");
+        }
+
+        setButton("Eseguo transazione...");
+        // Eseguiamo la transazione
+        const hash = await writeContract.mutateAsync({
+          address: contracts.factory as `0x${string}`,
+          abi: factoryAbi.abi,
+          functionName: "createProject",
+          args: [tokenAddress, targetUnits, BigInt(deadlineTimestamp)],
+        });
+
+        setButton("Ottengo address del vault...");
+        // Aspettiamo i log della transazione
+        const receipt = await waitForTransactionReceipt(config, { hash });
+        const vaultAddress = receipt.logs[0].address; //[0] perchè è il primo evento emesso in teoria
+        //TODO: in prod migliorare...
+
+        //? --- FASE 2: BACKEND (Salvataggio Metadati) ---
+        if (!vaultAddress) {
+          setErrors({ coverImage: "Indirizzo vault non trovato nei log" });
+          throw new Error("Indirizzo vault non trovato nei log");
+        }
+
+        setButton("Salvo il progetto...");
+        const form = new FormData();
+        form.append("title", formData.projectName);
+        form.append("category", formData.category);
+        form.append("location", formData.location);
+        form.append("descrizione", formData.description);
+        form.append("endDate", formData.deadline);
+        form.append("targetAmount", formData.budget);
+        form.append("currency", formData.currency);
+        form.append("vaultAddress", vaultAddress);
+        formData.fundsUsage.forEach((usage, idx) => {
+          form.append(`usoFondi[]`, usage);
+        });
+        if (formData.coverImage) {
+          form.append("coverImage", formData.coverImage);
+        }
+
         const res = await fetch(
           import.meta.env.VITE_BACKEND_URL + "/projects/new",
           {
@@ -225,22 +287,31 @@ export default function NuovoProgetto() {
         const data = await res.json();
 
         if (res.ok && data.success) {
-          setNewId(data.projectId);
+          setNewId(data._id);
           setIsSuccess(true);
+          queryClient.invalidateQueries({ queryKey: ["projects"] });
         } else {
-          setErrors(
-            {
-              coverImage: "Errore creazione: " + data.error || "Errore creazione progetto",
-            }
-          );
+          setErrors({
+            coverImage:
+              "Errore creazione: " + data.error || "Errore creazione progetto",
+          });
         }
-      } catch (err) {
-        setErrors({ coverImage: "Errore di connessione al server" });
+      } catch (err: any) {
+        setButton("Pubblica Progetto");
+        let errorMsg = "Errore durante la transazione o connessione al server";
+        if (err?.message) {
+          if (
+            err.message.includes("User denied transaction signature") ||
+            err.message.includes("User rejected the request")
+          ) {
+            errorMsg = "Transazione annullata dall'utente.";
+          } else {
+            errorMsg = err.message;
+          }
+        }
+        setErrors({ coverImage: errorMsg });
       }
     }
-  };
-  const handleCancel = () => {
-    navigate("/");
   };
 
   const getInputClass = (fieldName: string) => `
@@ -256,8 +327,8 @@ export default function NuovoProgetto() {
     <div className="min-h-screen bg-gray-50 font-sans pb-10 relative flex flex-col">
       {/* HEADER */}
       <Header
-        type="utente"
-        profileImage={imgUser}
+        type={user?.isEnte ? "ente" : "utente"}
+        profileImage={user?.profilePicture || ""}
         activePage="home"
         showNav={false}
       />
@@ -462,7 +533,7 @@ export default function NuovoProgetto() {
                   </button>
 
                   <button
-                    onClick={handleCancel}
+                    onClick={() => navigate("/")}
                     className="w-full md:w-auto md:px-6 flex items-center justify-center gap-2 text-red-500 font-semibold hover:bg-red-50 py-2 rounded-lg transition"
                   >
                     <Icon icon="mdi:trash-can-outline" className="w-5 h-5" />
@@ -601,9 +672,10 @@ export default function NuovoProgetto() {
 
                   <button
                     onClick={handleSubmit}
-                    className="flex-1 py-3 rounded-xl text-white font-bold text-lg shadow-md hover:opacity-90 transition bg-primary"
+                    disabled={button !== "Pubblica Progetto"}
+                    className="flex-1 py-3 rounded-xl text-white font-bold text-lg shadow-md hover:opacity-90 transition bg-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
-                    Pubblica Progetto
+                    {button}
                   </button>
                 </div>
               </div>
