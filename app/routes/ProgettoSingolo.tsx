@@ -38,7 +38,7 @@ export type PROJECT_BIG = {
   currentAmount: number;
   status: "raccolta" | "attivo" | "completato" | "annullato";
   isMy: boolean;
-  blockchainId: string;
+  vaultAddress: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -657,15 +657,15 @@ export default function ProgettoSingolo() {
             <br />
             Qualcosa non va con questo progetto?
             <br />
-            {project.blockchainId && <>Hash progetto:{" "}
+            {project.vaultAddress && <>Hash progetto:{" "}
             <b
               className="underline italic cursor-pointer"
               onClick={(e) => {
-                navigator.clipboard.writeText(project.blockchainId);
+                navigator.clipboard.writeText(project.vaultAddress);
                 alert(`Hash copiato!`);
               }}
             >
-              {project.blockchainId}
+              {project.vaultAddress}
             </b><br /></>}
             <br />
             <button className="underline decoration-slate-400 hover:text-secondary mt-1">
@@ -678,7 +678,7 @@ export default function ProgettoSingolo() {
         </div>
       </main>
       {/* DONA ORA BUTTON */}
-      {project.status === "raccolta" && (
+      {project.status === "raccolta" && !project.isMy && (
         <div className="fixed bottom-6 left-0 w-full px-6 z-50 pointer-events-none">
           <div className="max-w-md mx-auto pointer-events-auto">
             <button
