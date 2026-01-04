@@ -17,7 +17,7 @@ export default async function (
   );
 
   if (!fs.existsSync(deploymentPath)) {
-    console.error("❌ Errore: File dei deploy non trovato. Esegui prima: npx hardhat ignition deploy ./ignition/modules/EnteNFT.ts --network localhost");
+    console.error("❌ Errore: File dei deploy non trovato. Esegui prima: npx hardhat ignition deploy ./ignition/modules/Chain4Good.ts --network localhost");
     return;
   }
 
