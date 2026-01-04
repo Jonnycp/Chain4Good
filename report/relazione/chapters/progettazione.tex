@@ -96,9 +96,20 @@ Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le cara
 \clearpage
 
 \subsection{Architettura del Sistema}
+Tale strutturazione rispecchia quella del noto \textit{design pattern} architetturale \gls{mvc} caratterizzato da tre tipi di componenti:
+
+\begin{itemize}
+	\item \textbf{Model}: incapsula la \textit{business logic} e i dati utili all’applicazione fornendo attraverso la sua interfaccia dei metodi per accedervi e manipolarli;
+	\item \textbf{Controller}: funge da intermediario tra \textit{View} e \textit{Model}, raccoglie quindi i comandi dell’utente provenienti dalla View e li attua modificando lo stato degli altri due componenti.
+	\item \textbf{View}: realizza l’interfaccia grafica, quindi visualizza i dati ottenuti dal Model e si occupa dell’interazione con l’utente;
+
+\end{itemize}
+
+La potenza di questo pattern risiede nel fatto che riesce a disaccoppiare l’interazione fra View e Model, aspetto particolarmente importante in applicazioni di questo tipo dal momento che tutte le interazioni con il model avvengono in modo asincrono.
+
+
 
 \clearpage
-
 
 \subsection{Stack tecnologico}
 Prima di poter procedere alla progettazione dell’architettura del sistema da realizzare si è resa necessaria l’individuazione delle tecnologie da utilizzare in fase di sviluppo per poter comprendere come queste potessero interagire tra loro e soddisfare tutti i requisiti funzionali e non funzionali emersi dalla precedente fase di analisi.
