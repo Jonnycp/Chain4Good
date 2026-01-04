@@ -6,8 +6,8 @@ import Navbar from '../components/Navbar';
 import { useNavigate, redirect, type ActionFunctionArgs, useSubmit } from "react-router";
 
 import { useApp } from "../context/AppProvider";
-import { useBalance } from "wagmi";
-import { getAddress, formatEther } from "viem";
+import { useBalance, useReadContract } from "wagmi";
+import { getAddress, formatEther, formatUnits, erc20Abi } from "viem";
 
 export async function action({ request }: ActionFunctionArgs) {
   try {
@@ -35,11 +35,31 @@ export default function Profilo() {
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  const { user, loading } = useApp();
-  const { data: balance } = useBalance({
+  const { user, contracts } = useApp();
+
+  // Bilancio ETH (per gas)
+  const { data: ethBalance } = useBalance({
     address: user?.address ? getAddress(user.address) : undefined,
   });
-  //TODO: Gestire stable coin...
+  
+  // Bilancio EURC
+  const { data: eurcRawBalance } = useReadContract({
+    address: contracts?.eurc ? getAddress(contracts.eurc) : undefined,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: user?.address ? [getAddress(user.address)] : undefined,
+    query: {
+      enabled: !!user?.address && !!contracts?.eurc,
+      refetchInterval: 3000,
+    }
+  });
+  // Formattazione manuale (i MockERC20 hanno 18 decimali)
+  const eurcFormatted = eurcRawBalance 
+  ? parseFloat(formatUnits(eurcRawBalance as bigint, 18)).toLocaleString('it-IT', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  : "0,00";
 
   return (
     <div className={`min-h-screen bg-white font-sans text-secondary ${user?.isEnte ? 'pb-10' : 'pb-28'} relative`}>
@@ -83,7 +103,10 @@ export default function Profilo() {
         <div className="border border-slate-200 rounded-2xl py-6 px-4 text-center shadow-sm mb-10 bg-white">
           <p className="text-slate-600 font-bold text-sm mb-1">Nel wallet hai disponibili</p>
           <div className="text-4xl font-bold text-primary flex justify-center items-baseline gap-1">
-            {balance ? parseFloat(formatEther(balance.value)).toFixed(4) : "0.0000"} <span className="text-lg text-primary font-semibold">{balance ? balance.symbol : "ETH"}</span>
+            {eurcFormatted ? eurcFormatted : "0.00"} <span className="text-lg font-semibold">EURC</span>
+          </div>
+          <div className="text-2xl font-bold text-secondary flex justify-center items-baseline gap-1">
+            {ethBalance ? formatUnits(ethBalance.value, ethBalance.decimals).substring(0, 6) : "0.00"} <span className="text-lg font-semibold">ETH</span>
           </div>
         </div>
         <div className="space-y-6">
