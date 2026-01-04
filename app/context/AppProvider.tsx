@@ -77,6 +77,11 @@ interface AppContextType {
   };
   refetchAll: () => void;
   setCategory: (cat: string) => void;
+  contracts: {
+    enteNft: string;
+    eurc: string;
+    factory: string;
+  } | null;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -200,6 +205,16 @@ export default function AppProvider({
     staleTime: 1000 * 30, // 30 secondi
   });
 
+  // Indirizzi contratti blockchain
+  const { data: contractConfig } = useQuery({
+    queryKey: ["contractAddresses"],
+    queryFn: async () => {
+      const res = await fetch(`${API_BASE_URL}/auth/contracts`);
+      return res.json();
+    },
+    staleTime: Infinity, // Non cambiano mai... in sessione
+  });
+
   const value = {
     user: user || null,
     loading: {
@@ -227,6 +242,7 @@ export default function AppProvider({
       refetchMyProjects();
       refetchProjectDonations();
     },
+    contracts: contractConfig,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

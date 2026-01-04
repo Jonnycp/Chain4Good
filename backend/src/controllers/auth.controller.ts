@@ -1,7 +1,10 @@
 import type { Request, Response } from "express";
 import { generateNonce, SiweMessage } from "siwe";
 import { UserModel } from "../models/User.ts";
-import { checkIfIsEnte } from "../services/blockchain.service.ts";
+import {
+  checkIfIsEnte,
+  getContractAddress,
+} from "../services/blockchain.service.ts";
 
 /**
  * Endpoint POST /auth/nonce
@@ -29,7 +32,7 @@ export const getNonce = async (req: Request, res: Response) => {
       await existingUser.save();
     }
 
-    res.status(200).json({nonce: newNonce});
+    res.status(200).json({ nonce: newNonce });
   } catch (error) {
     console.error("Errore nella generazione del nonce:", error);
     res
@@ -77,7 +80,9 @@ export const verifySignature = async (req: Request, res: Response) => {
             address: data.address.toLowerCase(),
             nonce: generateNonce(),
             username: `user-${data.address.toLowerCase().substring(0, 6)}`,
-            profilePicture: "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=" + data.address.toLowerCase(),
+            profilePicture:
+              "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=" +
+              data.address.toLowerCase(),
             isEnte: isVerifiedEnte,
           });
         }
@@ -141,9 +146,26 @@ export const getUser = async (req: Request, res: Response) => {
 
   try {
     const user = await UserModel.findOne({ address: req.session.address });
-    if (!user) return res.status(404).json({ error: "Utente non trovato", code: 404 });
+    if (!user)
+      return res.status(404).json({ error: "Utente non trovato", code: 404 });
 
     res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Errore server", code: 500 });
+  }
+};
+
+export const getContracts = async (req: Request, res: Response) => {
+  try {
+    const addresses = getContractAddress();
+    if (!addresses)
+      return res.status(500).json({ error: "Config non trovata" });
+
+    res.json({
+      eurc: addresses.eurc,
+      factory: addresses.factory,
+      enteNft: addresses.enteNft,
+    });
   } catch (error) {
     res.status(500).json({ error: "Errore server", code: 500 });
   }

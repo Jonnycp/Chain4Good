@@ -15,4 +15,6 @@ router.post('/logout', AuthController.logout);
 
 router.get('/me', isAuth, AuthController.getUser);
 
+router.get("/contracts", AuthController.getContracts);
+
 export default router;
