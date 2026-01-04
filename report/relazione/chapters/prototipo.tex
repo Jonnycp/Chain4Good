@@ -37,7 +37,7 @@ L’Ente beneficiario rappresenta l’attore abilitato alla creazione delle iniz
 Il suo riconoscimento avviene durante la fase di autenticazione, contestualmente alla verifica della firma crittografica dell’utente. \\
 In particolare, durante la procedura di \textit{login}, il \textit{back-end} accerta l’identità dell’utente e interroga la blockchain per verificare se l’indirizzo del \textit{wallet} risulti associato a un NFT non trasferibile (\textit{Soulbound Token}) denominato \textit{ETS}.
 Tale \textit{token} funge dunque da attestazione crittografica dello stato di ente autorizzato all'interno del sistema e viene rilasciato esclusivamente a seguito di un processo di registrazione e verifica \textit{off-chain}.\\
-Una volta autenticato, il sistema abilita le funzionalità riservate a questa tipologia di utente, il quale può avviare nuove raccolte o contribuire ai progetti di altri enti, mentre gli è preclusa, per motivi di integrità del sistema, la possibilità di effettuare donazioni verso le proprie iniziative.
+Una volta autenticato, il sistema abilita le funzionalità riservate a questa tipologia di utente, il quale può avviare nuove raccolte o contribuire ai progetti di altri enti, mentre gli è preclusa la possibilità di effettuare donazioni verso le proprie iniziative.
 
 
 \subsection{Dashboard donatore}
@@ -45,19 +45,26 @@ La \textit{dashboard} del donatore è l'interfaccia attraverso la quale gli uten
 Una volta selezionata l’iniziativa di interesse, l’utente ha la possibilità di procedere con l’operazione di donazione. In particolare, il sistema adotta il meccanismo di raccolta \textit{keep-it-all}, in base al quale l’Ente beneficiario conserva i fondi raccolti anche qualora l’obiettivo economico prefissato non venga raggiunto entro i termini prestabiliti.
 Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati alla creazione delle iniziative sulla piattaforma, individuati esclusivamente negli Enti del Terzo Settore, per i quali anche contributi parziali possono risultare funzionali al perseguimento delle finalità sociali.
 
-
 % l'utente non può sovraeccedere il target, quindi non può effettuare donazioni che siano più grandi della quota da donare 
 % se un utente paga tutto e raggiunge il target per coerenza non può donare altri soldi  può donare altri soldi 
 
 
-
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.40\textwidth]{images/Home_nuova.pdf}
-	\caption{Dashboard del donatore}
-	\label{fig:dashboard-donatore}
- \end{figure}
-\clearpage
+	\makebox[\textwidth][c]{%
+		\begin{minipage}{1.7\textwidth}
+			\centering
+			\includegraphics[
+			trim=170pt 60pt 140pt 200pt,
+			clip,
+			width=\linewidth
+			]{images/home_2.pdf}
+			
+			\captionsetup{width=\linewidth, justification=centering}
+			\caption{Dashboard del donatore}
+			\label{fig:dashboard-donatore}
+		\end{minipage}
+	}
+\end{figure}
 
 
 \subsection{Creazione progetto}
