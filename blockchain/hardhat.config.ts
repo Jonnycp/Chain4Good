@@ -15,8 +15,21 @@ const manageEnte = task("manage-ente", "Gestisce gli NFT degli Enti")
   })
   .build();
 
+const giveCash = task("giveCash", "Assegna EURC ad un account")
+  .setAction(() => import("./tasks/giveCash.js") as Promise<{ default: NewTaskActionFunction<TaskArguments> }>)
+  .addPositionalArgument({
+    name: "account",
+    description: "L'indirizzo dell'account a cui assegnare gli EURC",
+  })
+  .addPositionalArgument({
+    name: "amount",
+    description: "L'importo di EURC da assegnare (default 5000)",
+    defaultValue: "5000",
+  })
+  .build();
+
 export default defineConfig({
-  tasks: [manageEnte],
+  tasks: [manageEnte, giveCash],
   plugins: [hardhatToolboxMochaEthersPlugin],
   solidity: {
     profiles: {
