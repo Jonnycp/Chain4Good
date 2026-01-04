@@ -4,7 +4,7 @@
 
 
 % ********************************************************************
-\section{Progettazione e implementazione}
+\section{Progettazione}
 \label{sec:progettazione}
 % ********************************************************************
 
@@ -23,15 +23,17 @@ Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il conc
 % Ogni operazione di donazione, infatti, viene registrata in modo permanente sulla \textit{blockchain} e può essere verificata pubblicamente, assicurando l'integrità delle informazioni e aumentando il livello di trasparenza. \\
 % In tal senso, Chain4Good si distingue dallo stato dell’arte proponendosi come piattaforma orientata non solo alla raccolta fondi per fini prettamente filantropici, ma anche alla partecipazione e fiducia verificabile.
 
+
+
 \subsection{Analisi dei requisiti}
 In questa sezione sono riportati per punti i requisiti richiesti per il corretto funzionamento della piattaforma.
 
 \subsubsection{Requisiti funzionali}
-I requisiti funzionali definiscono le funzionalità che la piattaforma deve implementare. Essi vengono di seguito categorizzati in base agli attori che interagiscono con il sistema. \\
-
+I requisiti funzionali definiscono le funzionalità che la piattaforma deve implementare. Essi vengono di seguito categorizzati in base agli attori che interagiscono con il sistema. 
+\clearpage
 \begin{enumerate}
 	\item l'Ente Beneficiario:
-	\begin{itemize}
+	\begin{itemize} % [start=1,label={RF\arabic*:}] ed enumerate
 		\item \textbf{Creazione progetto}: l'Ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, \textit{budget target} e data di scadenza.
 		\item \textbf{Inserimento di una richiesta di spesa}: l'Ente deve poter richiedere il rilascio di una parte dei fondi raccolti avanzando una richiesta di spesa e allegando il relativo preventivo;
 		\item \textbf{Caricamento della prova di acquisto}: l'Ente deve poter caricare la fattura che attesti l'impiego dei fondi precedentemente sbloccati;
@@ -40,7 +42,7 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 	
 	
 	\item per i Donatori:
-	\begin{itemize}
+	\begin{itemize} %[start=5,label={RF\arabic*:}]
 		\item \textbf{Visualizzazione dei progetti:} il donatore deve poter visualizzare l'elenco delle iniziative di \gls{cf} attive e i relativi dettagli;
 		\item \textbf{Donazione ad un progetto}: il donatore deve poter selezionare un progetto e scegliere arbitrariamente l'importo da donare;
 		\item \textbf{Votazione delle richieste di spesa}: il donatore deve poter visualizzare il preventivo di spesa allegato dall'Ente ed esprimere una preferenza (se favorevole o contrario);
@@ -49,7 +51,7 @@ I requisiti funzionali definiscono le funzionalità che la piattaforma deve impl
 	
 	
 	\item per il Sistema (logica implementata tramite \textit{Smart Contract}):
-	\begin{itemize}
+	\begin{itemize}%[start=10,label={RF\arabic*:}]
 		\item \textbf{Registrazione delle donazioni}: il sistema deve registrare \textit{on-chain} ogni donazione effettuata;
 		\item \textbf{Blocco dei fondi}: il sistema deve impedire il trasferimento dei fondi, previo consenso dei donatori;
 		\item \textbf{Gestione del processo di votazione}: il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa;
@@ -93,7 +95,6 @@ Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le cara
 
 
 
-\clearpage
 
 \subsection{Architettura del Sistema}
 La piattaforma proposta si basa sull’adozione del \textit{design pattern} architetturale \gls{mvc} caratterizzato da tre tipi di componenti:
@@ -115,22 +116,19 @@ La piattaforma proposta si basa sull’adozione del \textit{design pattern} arch
 
 
 
-
-
 % La potenza di questo pattern risiede nel fatto che riesce a disaccoppiare l’interazione fra View e Model, aspetto particolarmente importante in applicazioni di questo tipo dal momento che tutte le interazioni con il model avvengono in modo asincrono.
 
 
-
-\clearpage
-
 \subsection{Stack tecnologico}
-Prima di poter procedere alla progettazione dell’architettura del sistema da realizzare si è resa necessaria l’individuazione delle tecnologie da utilizzare in fase di sviluppo per poter comprendere come queste potessero interagire tra loro e soddisfare tutti i requisiti funzionali e non funzionali emersi dalla precedente fase di analisi.
+La presente sezione fornisce una panoramica delle tecnologie impiegate per lo sviluppo della piattaforma, organizzate in base alle principali componenti architetturali del sistema. \\
+In particolare, la Tabella~\ref{tab:frontend_stack} riporta le tecnologie utilizzate per l’implementazione della componente \textit{front-end}, mentre la Tabella~\ref{tab:backend_stack} elenca quelle adottate per lo sviluppo della componente \textit{back-end}. 
+Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.\\
+Visual Studio Code è stato inoltre utilizzato come \gls{ide} principale. \\
+Al fine di supportare l'organizzazione del lavoro e garantire la portabilità del sistema \textit{software}, invece sono stati inoltre impiegati gli strumenti riportati in Tabella~\ref{tab:development_tools}.i 
 
-\subsubsection{Front-end}
-La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate per lo sviluppo del front-end della piattaforma.
 
-\smallskip
-\begin{table}[h]
+%--------------------FRONTEND---------------------
+\begin{table}
 	\centering
 	\small
 	\renewcommand{\arraystretch}{1.3}
@@ -144,7 +142,7 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 			\hline
 			React.js & Libreria utilizzata per la realizzazione dell’interfaccia utente secondo un’architettura a componenti. \\
 			\hline
-			React Router & Libreria di \textit{routing} (v. 7.11.0) configurata in modalità \textit{framework} per la gestione della navigazione \textit{client-side}. \\
+			React Router (7.11.0) & Libreria di \textit{routing} configurata in modalità \textit{framework} per la gestione della navigazione \textit{client-side}. \\
 			\hline
 			@tanstack/react-query & Libreria utilizzata per la gestione delle chiamate asincrone al \textit{back-end}, con supporto a \textit{caching}, sincronizzazione dei dati e gestione automatica degli stati di caricamento ed errore. \\
 			\hline
@@ -163,22 +161,21 @@ La Tabella~\ref{tab:frontend_stack} riassume le principali tecnologie adottate p
 			\hline
 		\end{tabular}
 	}
-	\caption{Tecnologie e librerie utilizzate per lo sviluppo del front-end.}
+	\caption{Tecnologie e librerie utilizzate per lo sviluppo del \textit{front-end}}.
 	\label{tab:frontend_stack}
 \end{table}
 \clearpage
 
-\subsubsection{Back-end}
-La Tabella~\ref{tab:backend_stack} riassume le principali tecnologie e librerie adottate per lo sviluppo del \textit{back-end} della piattaforma.
 
-\smallskip
-\begin{table}[h]
+
+%--------------------BACKEND---------------------
+\begin{table}
 	\centering
 	\small
 	\renewcommand{\arraystretch}{1.3}
 	\setlength{\tabcolsep}{12pt}
 	\resizebox{\textwidth}{!}{
-		\begin{tabular}{p{4cm} p{9cm}}
+		\begin{tabular}{lp{9cm}}
 			\hline
 			\textbf{Tecnologia} & \textbf{Descrizione} \\
 			\hline
@@ -206,17 +203,15 @@ La Tabella~\ref{tab:backend_stack} riassume le principali tecnologie e librerie 
 \end{table}
 \clearpage
 
-\subsubsection{Blockchain}
-La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adottate per l'implementazione della componente \textit{blockchain} del sistema.
 
-\smallskip
-\begin{table}[h]
+%--------------------BLOCKCHAIN---------------------
+\begin{table}
 	\centering
 	\small
 	\renewcommand{\arraystretch}{1.3}
 	\setlength{\tabcolsep}{12pt}
 	\resizebox{\textwidth}{!}{
-		\begin{tabular}{p{4cm} p{9cm}}
+		\begin{tabular}{lp{9cm}}
 			\hline
 			\textbf{Tecnologia} & \textbf{Descrizione} \\
 			\hline
@@ -241,23 +236,17 @@ La Tabella~\ref{tab:blockchain_stack} riassume le tecnologie e le librerie adott
 	\caption{Tecnologie utilizzate per la componente \textit{blockchain}.}
 	\label{tab:blockchain_stack}
 \end{table}
-\smallskip
-
-\clearpage
 
 
-\subsubsection{Strumenti di sviluppo}
-Visual Studio Code è stato utilizzato come \gls{ide} principale. \\
-Per favorire lo sviluppo parallelo e la portabilità del sistema \textit{software}, invece, sono stati utilizzati strumenti riportati in Tabella~\ref{tab:development_tools}.
 
-\smallskip
-\begin{table}[h]
+%--------------------SVILUPPO---------------------
+\begin{table}
 	\centering
 	\small
 	\renewcommand{\arraystretch}{1.3}
 	\setlength{\tabcolsep}{12pt}
 	\resizebox{\textwidth}{!}{
-		\begin{tabular}{p{4cm} p{9cm}}
+		\begin{tabular}{p{4cm}p{9cm}}
 			\hline
 			\textbf{Strumento} & \textbf{Descrizione} \\
 			\hline

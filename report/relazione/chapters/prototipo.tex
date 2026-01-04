@@ -48,27 +48,26 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 % l'utente non può sovraeccedere il target, quindi non può effettuare donazioni che siano più grandi della quota da donare 
 % se un utente paga tutto e raggiunge il target per coerenza non può donare altri soldi  può donare altri soldi 
 
+\clearpage
 
 \begin{figure}[h]
-	\makebox[\textwidth][c]{%
-		\begin{minipage}{1.7\textwidth}
-			\centering
-			\includegraphics[
-			trim=170pt 60pt 140pt 200pt,
-			clip,
-			width=\linewidth
-			]{images/home_2.pdf}
-			
-			\captionsetup{width=\linewidth, justification=centering}
-			\caption{Dashboard del donatore}
-			\label{fig:dashboard-donatore}
-		\end{minipage}
+	\centering
+	{
+		\includegraphics[
+			height = 8cm
+		]{images/home_22.png}
 	}
+	\caption{Dashboard del donatore}
+	\label{fig:dashboard-donatore}
 \end{figure}
 
 
+
+
+
+
 \subsection{Creazione progetto}
-	La creazione di un progetto costituisce l’atto attraverso il quale il beneficiario formalizza la propria proposta sulla piattaforma. Tale procedura si articola in due step (\ref{fig:inserimento progetto}):
+	La creazione di un progetto costituisce l’atto attraverso il quale il beneficiario formalizza la propria proposta sulla piattaforma. Tale procedura si articola in due step (\ref{fig:nuovo_progetto}):
 
 \begin{itemize}
 	
@@ -80,67 +79,73 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 \end{itemize}
 
 
+\begin{figure}[h]
+	\centering
+	% \subfloat[]
+	{
+		\includegraphics[
+		height = 8cm
+		]{images/crea1.png}
+	}
+	\hspace{2cm}
+	{
+		\includegraphics[
+		height = 8cm
+		]{images/crea2.png}
+	}
+	\caption{Inserimento di un nuovo progetto.}
+	\label{fig:nuovo_progetto}
+\end{figure}
+
+
+
 \subsection{Inserimento e valutazione spesa}
 A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
-Per poter accedere a tali risorse, il beneficiario deve presentare una "Richiesta di Spesa" (\ref{fig:valutazione-spesa}) specificando il nome della spesa, l'importo richiesto, la finalità dell'esborso e il relativo preventivo. 
+Per poter accedere a tali risorse, il beneficiario deve presentare una "Richiesta di Spesa" (\ref{fig:nuova_spesa}) specificando il nome della spesa, l'importo richiesto, la finalità dell'esborso e il relativo preventivo. 
 La sottomissione della richiesta è consentita esclusivamente quando il progetto si trova in uno stato attivo, ossia a seguito del raggiungimento del \textit{target} di raccolta oppure al termine della scadenza temporale prevista per la campagna. \\
 A seguito della sottomissione, la richiesta viene poi sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto.
 Coerentemente con la natura della piattaforma, il sistema di voto è stato implementato in modo da attribuire lo stesso peso a ciascun utente, indipendentemente dall'importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.\\
 Al fine di assicurare un utilizzo progressivo e verificabile delle risorse raccolte, inoltre, la presentazione di una nuova richiesta di spesa è subordinata al caricamento della prova di acquisto relativa all’ultima richiesta precedentemente approvata. 
 Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
 
-\begin{figure}[t]
-	\centering
-	\begin{minipage}{0.37\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/nuovo_progetto1.pdf}
-	\end{minipage}
-	\hspace{1.5cm}
-	\begin{minipage}{0.37\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/NuovoProgetto 2.pdf}
-	\end{minipage}
-	\caption{Inserimento di un nuovo progetto}
-	\label{fig:inserimento progetto}
-\end{figure}
-
-
-\clearpage
 
 \subsubsection{Meccanismo di votazione}
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa attraverso un periodo di votazione di durata prefissata pari a tre giorni, al termine del quale l’esito viene determinato secondo le seguenti regole:
 
 \begin{itemize}
-	\item \textbf{Approvazione per maggioranza alla scadenza}: la richiesta è approvata se, al termine del periodo di votazione, il numero di voti favorevoli è almeno pari ai voti contrari;
+	\item la richiesta è approvata se, al termine del periodo di votazione, il numero di voti favorevoli è almeno pari ai voti contrari;
 	
-	\item \textbf{Approvazione anticipata per maggioranza matematica}: il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero un voto contrario;
+	\item il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero un voto contrario;
 	
-	\item \textbf{Parità dei voti}: qualora, allo scadere del periodo di votazione, si verifichi una situazione di parità tra voti favorevoli e contrari, la richiesta viene considerata approvata;
+	\item qualora, allo scadere del periodo di votazione, si verifichi una situazione di parità tra voti favorevoli e contrari, la richiesta viene considerata approvata;
 
-	\item \textbf{Mancata partecipazione}: nel caso in cui non venga espresso alcun voto entro la scadenza, il sistema approva automaticamente la richiesta al fine di non ostacolare l’avanzamento del progetto.
+	\item nel caso in cui non venga espresso alcun voto entro la scadenza, il sistema approva automaticamente la richiesta al fine di non ostacolare l’avanzamento del progetto.
 	
 \end{itemize}
 
 Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
 
+
+\begin{figure}
+	\centering
+	{
+		\includegraphics[
+		height = 8cm
+		]{images/spesa.png}
+	}
+	\hspace{2cm}
+	{
+		\includegraphics[
+		height = 8cm
+		]{images/spesa2.png}
+	}
+	\caption{Inserimento di una nuova richiesta di spesa.}
+	\label{fig:nuova_spesa}
+\end{figure}
+
+
 % funzione per donare - funzione per aggiungere la spesa - funzione per il voto
 
-
-
-\begin{figure} [h]
-	\centering
-	\begin{minipage}{0.37\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/nuova_spesa.pdf}
-	\end{minipage}
-	\hspace{1.5cm}
-	\begin{minipage}{0.37\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/valutazione_spesa.pdf}
-	\end{minipage}
-	\caption{Valutazione di una richiesta di spesa}
-	\label{fig:valutazione-spesa}
-\end{figure}
 
 
 
