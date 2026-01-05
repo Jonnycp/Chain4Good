@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import { redirect, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  redirect,
+  useLoaderData,
+  useNavigate,
+  type ActionFunctionArgs,
+} from "react-router-dom";
 
 // Componenti Condivisi
 import HeaderCover from "~/components/HeaderCover";
@@ -17,6 +22,11 @@ import PopoverDona from "~/components/PopoverDona";
 import ModalGrazie from "~/components/ModalGrazie";
 import { API_BASE_URL, useApp } from "~/context/AppProvider";
 import { DonorsAvatars, getTimeLeftLabel } from "~/components/CardHome";
+
+// Web3
+import { useWriteContract, useConfig, useReadContract } from "wagmi";
+import { erc20Abi, parseUnits } from "viem";
+import { waitForTransactionReceipt } from "@wagmi/core";
 
 export type PROJECT_BIG = {
   _id: string;
@@ -42,6 +52,7 @@ export type PROJECT_BIG = {
   createdAt: string;
   updatedAt: string;
 };
+
 export async function loader({
   params,
   request,
@@ -67,13 +78,46 @@ export async function loader({
 
 export default function ProgettoSingolo() {
   const navigate = useNavigate();
+
   const project = useLoaderData() as PROJECT_BIG;
-  const { projectDonations, setCurrentProjectId } = useApp();
+  const { projectDonations, setCurrentProjectId, contracts, user } = useApp();
   const progressPercent = Math.min(
     (project.currentAmount / project.targetAmount) * 100,
     100
   );
   const [shareUrl, setShareUrl] = useState<string>("");
+
+  const isExpired = new Date(project.endDate) < new Date();
+  const isFull = project.currentAmount >= project.targetAmount;
+
+  const { data: allowance } = useReadContract({
+    address: contracts?.eurc as `0x${string}`,
+    abi: erc20Abi,
+    functionName: "allowance",
+    args:
+      user!.address && project.vaultAddress
+        ? [
+            user!.address as `0x${string}`,
+            project.vaultAddress as `0x${string}`,
+          ]
+        : undefined,
+    query: { enabled: !!user!.address && !!project.vaultAddress },
+  });
+
+  // Verifica se serve l'approvazione
+  const needsApproval =
+    allowance !== undefined
+      ? allowance <
+        parseUnits(
+          (project.targetAmount - project.currentAmount).toString() || "0",
+          18
+        )
+      : true;
+
+  const [isApproved, setIsApproved] = useState(!needsApproval);
+  const [isApproving, setIsApproving] = useState(false);
+  const writeContract = useWriteContract();
+  const config = useConfig();
 
   useEffect(() => {
     setCurrentProjectId(project._id);
@@ -141,13 +185,27 @@ export default function ProgettoSingolo() {
     },
   ]);
 
-  //Conferma donazione
-  const handleConfirmDonation = (amount: number, msg: string) => {
-    setDonatedAmount(amount);
-    setIsDonaOpen(false);
-    setTimeout(() => {
-      setIsGrazieOpen(true);
-    }, 300);
+  // Approva uso currency
+  const handleApprove = async () => {
+    setIsApproving(true);
+    try {
+      const maxAmount = parseUnits(project.targetAmount.toString(), 18);
+
+      const hash = await writeContract.mutateAsync({
+        address: contracts?.eurc as `0x${string}`,
+        abi: erc20Abi,
+        functionName: "approve",
+        args: [project.vaultAddress as `0x${string}`, maxAmount],
+      });
+
+      await waitForTransactionReceipt(config, { hash });
+      setIsApproved(true);
+    } catch (err) {
+      console.error("Approvazione fallita", err);
+    } finally {
+      setIsApproving(false);
+      setIsDonaOpen(true);
+    }
   };
 
   //Creazione nuova spesa
@@ -250,7 +308,11 @@ export default function ProgettoSingolo() {
       {isDonaOpen && (
         <PopoverDona
           onClose={() => setIsDonaOpen(false)}
-          onConfirm={handleConfirmDonation}
+          currentAmount={project.currentAmount}
+          targetAmount={project.targetAmount}
+          currency={project.currency}
+          vaultAddress={project.vaultAddress}
+          projectId={project._id}
         />
       )}
 
@@ -344,10 +406,16 @@ export default function ProgettoSingolo() {
             </div>
             <div className="flex items-center gap-2">
               <DonorsAvatars
-                donors={projectDonations.donors.slice(0, 5).map((d: any) => ({
-                  id: "mini-donation" + d.username,
-                  profilePicture: d.profilePicture,
-                }))}
+                donors={Array.from(
+                  new Map(
+                    projectDonations.donors.map((d: any) => [d.username, d])
+                  ).values()
+                )
+                  .slice(0, 5)
+                  .map((d: any) => ({
+                    id: "mini-donation" + d.username,
+                    profilePicture: d.profilePicture,
+                  }))}
                 total={projectDonations.totDonors}
                 textClass="text-xs font-medium text-slate-500 pl-3 self-center font-bold"
               />
@@ -657,16 +725,21 @@ export default function ProgettoSingolo() {
             <br />
             Qualcosa non va con questo progetto?
             <br />
-            {project.vaultAddress && <>Hash progetto:{" "}
-            <b
-              className="underline italic cursor-pointer"
-              onClick={(e) => {
-                navigator.clipboard.writeText(project.vaultAddress);
-                alert(`Hash copiato!`);
-              }}
-            >
-              {project.vaultAddress}
-            </b><br /></>}
+            {project.vaultAddress && (
+              <>
+                Hash progetto:{" "}
+                <b
+                  className="underline italic cursor-pointer"
+                  onClick={(e) => {
+                    navigator.clipboard.writeText(project.vaultAddress);
+                    alert(`Hash copiato!`);
+                  }}
+                >
+                  {project.vaultAddress}
+                </b>
+                <br />
+              </>
+            )}
             <br />
             <button className="underline decoration-slate-400 hover:text-secondary mt-1">
               Segnalalo a Chain4Good
@@ -678,18 +751,41 @@ export default function ProgettoSingolo() {
         </div>
       </main>
       {/* DONA ORA BUTTON */}
-      {project.status === "raccolta" && !project.isMy && (
-        <div className="fixed bottom-6 left-0 w-full px-6 z-50 pointer-events-none">
-          <div className="max-w-md mx-auto pointer-events-auto">
-            <button
-              onClick={() => setIsDonaOpen(true)}
-              className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all active:scale-[0.98]"
-            >
-              Dona ora
-            </button>
+      {project.status === "raccolta" &&
+        !project.isMy &&
+        !isExpired &&
+        !isFull && (
+          <div className="fixed bottom-6 left-0 w-full px-6 z-50 pointer-events-none">
+            <div className="max-w-md mx-auto pointer-events-auto">
+              {!isApproved ? (
+                <button
+                  onClick={handleApprove}
+                  disabled={isApproving}
+                  className="w-full bg-secondary text-white font-bold text-lg py-4 rounded-2xl shadow-xl flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+                >
+                  {isApproving ? (
+                    <Icon
+                      icon="mdi:loading"
+                      className="animate-spin text-2xl"
+                    />
+                  ) : (
+                    <Icon icon="mdi:lock-open-outline" className="text-2xl" />
+                  )}
+                  {isApproving
+                    ? "Approvazione in corso..."
+                    : `Abilita ${project.currency} per donare`}
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsDonaOpen(true)}
+                  className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-2xl shadow-xl animate-appearance-in"
+                >
+                  Dona ora ❤️
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
