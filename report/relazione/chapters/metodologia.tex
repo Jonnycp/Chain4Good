@@ -10,8 +10,7 @@
 
 \subsection{Modello di processo}
 Per lo sviluppo di questo sistema è stato adottato un modello di processo \textit{Agile} di tipo \textit{Incrementale}. Questa scelta è motivata dalla necessità di coniugare la flessibilità dei metodi agili, con la capacità del modello incrementale di gestire le fasi di sviluppo in maniera concorrente e sovrapposta. \\
-Il coordinamento del \textit{team}, invece, ha seguito la tecnica \textit{Scrum}. In particolare, le riunioni periodiche hanno permesso una gestione dinamica del \textit{product backlog} (elenco delle attività da svolgere) e un monitoraggio costante dello stato di avanzamento del progetto, garantendo un'integrazione continua dei risultati discussi. 
-
+Il coordinamento del \textit{team}, invece, ha seguito la tecnica \textit{Scrum}. In particolare, le riunioni periodiche hanno permesso una gestione dinamica del \textit{product backlog} (elenco delle attività da svolgere) e un monitoraggio costante dello stato di avanzamento del progetto, garantendo un'integrazione continua dei risultati discussi. \\
 L'orientamento Agile si è manifestato sin dalle fasi iniziali. Le sessioni di \textit{brainstorming} effettuate hanno permesso di proporre e analizzare diverse alternative progettuali. La decisione di abbandonare la proposta iniziale in favore di una più rispondente alle indicazioni dei referenti riflette i principi cardine del Manifesto Agile, quali: collaborazione con gli \textit{stakeholder} e risposta al cambiamento.\\
 L'adozione del modello incrementale, invece, ha permesso di ottimizzare i tempi di sviluppo. Il progetto, infatti, non è stato condotto secondo una sequenza rigida di fasi, ma ha previsto lo svolgimento in parallelo di più attività. 
 
@@ -77,11 +76,10 @@ Tale approccio ha consentito di organizzare il lavoro in modo strutturato e di d
 \end{table}
 
 \subsubsection{Stima dei costi}
-La stima dei costi di progetto è stata effettuata sulla base della durata stimata delle attività definite in fase di pianificazione, come riportato nella Tabella~\ref{table:pianificazione}. In particolare, l’impegno richiesto è stato valutato operando una scomposizione delle principali fasi progettuali in \textit{task} elementari, e associando a ciascuno di essi una stima temporale. Operando in questo modo, il costo complessivo stimato risulta pari a \textbf{250 ore}. \\
+La stima dei costi di progetto è stata effettuata sulla base della durata stimata delle attività definite in fase di pianificazione, come riportato nella Tabella~\ref{table:pianificazione}. In particolare, l’impegno richiesto è stato valutato operando una scomposizione delle principali fasi progettuali in \textit{task} elementari, e associando a ciascuno di essi una stima temporale. Operando in questo modo, il costo complessivo stimato risulta pari a \textbf{250 ore}.
 Tale valore rappresenta l’\textit{effort} espresso in termini di ore/persona, ottenuto come somma delle ore dedicate da ciascun membro del gruppo alle attività previste.\\
 La valutazione ha tenuto conto della natura prototipale del progetto, della dimensione del sistema, delle tecnologie adottate e del livello di esperienza dei membri del gruppo di lavoro.
-Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non è stata tradotta in un valore economico monetario, ma è stata utilizzata come strumento di supporto alla pianificazione e alla verifica della fattibilità del progetto entro i vincoli temporali prestabiliti. \\
-È infine opportuno precisare che la valutazione effettuata è riferita esclusivamente alla realizzazione del prototipo funzionale: un’eventuale evoluzione verso una piattaforma completa e pronta per l’utilizzo in un contesto reale richiederebbe una nuova analisi dei costi e un impegno temporale significativamente superiore.
+Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non è stata tradotta in un valore economico monetario, ma è stata utilizzata come strumento di supporto alla pianificazione e alla verifica della fattibilità del progetto entro i vincoli temporali prestabiliti. È infine opportuno precisare che la valutazione effettuata è riferita esclusivamente alla realizzazione del prototipo funzionale: un’eventuale evoluzione verso una piattaforma completa e pronta per l’utilizzo in un contesto reale richiederebbe una nuova analisi dei costi e un impegno temporale significativamente superiore.
 
 
 
@@ -89,18 +87,15 @@ Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non �
 
 % In particolare, la pianificazione dei \textit{task} riportata in Tabella~\ref{table:pianificazione}, ha consentito di stimare in modo puntuale l’impegno complessivo richiesto per lo sviluppo del progetto.
 
-
-
 \subsection{Analisi dei rischi}
 L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. \\
 In primo luogo, sono stati presi in considerazione i rischi di progetto, quali la possibile sottostima dei tempi di sviluppo e la variabilità dei requisiti individuati in fase di pianificazione. Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riorganizzazione;
 Al fine di ridurre le criticità connesse all’evoluzione dei requisiti, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione. \\
-Oltre ai rischi di progetto, sono state analizzate le potenziali criticità legate al dominio applicativo del \gls{cf}.\\
-Sulla base di quanto emerso dall'analisi in letteratura, è stata considerata la possibilità che l'Ente promotore non utilizzasse i fondi raccolti per le finalità dichiarate. Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, affinché le risorse raccolte fossero sbloccate esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori. Al fine di rafforzare ulteriormente la trasparenza del processo di donazione, si è deciso di vincolare la presentazione di nuove richieste di spesa al caricamento del preventivo relativo alla richiesta precedente.
 
-Poiché l’espressione del voto comporta il sostenimento di un costo di transazione, è stata considerata la possibilità che gli utenti non partecipassero attivamente al processo decisionale. Per evitare condizioni di stallo del sistema, si è deciso di adottare una logica di \textit{silenzio-assenso}, progettando la piattaforma in modo tale da approvare automaticamente la richiesta di spesa anche in assenza di voti entro i termini prefissati.
 
-L'impiego di criptovalute per effettuare donazioni espone i fondi raccolti alle elevate fluttuazioni di mercato. Per neutralizzare tale rischio, la piattaforma è stata progettata per operare esclusivamente tramite \textit{stablecoin} (es. USDC),  criptovalute progettate per mantenere un valore stabile rispetto a una valuta reale di riferimento (ad esempio, 1 USDC = 1 Dollaro USA).
+
+
+% L'impiego di criptovalute per effettuare donazioni espone i fondi raccolti alle elevate fluttuazioni di mercato. Per neutralizzare tale rischio, la piattaforma è stata progettata per operare esclusivamente tramite \textit{stablecoin} (es. USDC),  criptovalute progettate per mantenere un valore stabile rispetto a una valuta reale di riferimento (ad esempio, 1 USDC = 1 Dollaro USA).
 
 
 % perché?
