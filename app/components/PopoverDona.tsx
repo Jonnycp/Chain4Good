@@ -15,7 +15,7 @@ export default function PopoverDona({
   vaultAddress,
   projectId,
 }: {
-  onClose: () => void;
+  onClose: (amount?: number) => void;
   currentAmount: number;
   targetAmount: number;
   currency: string;
@@ -84,7 +84,7 @@ export default function PopoverDona({
       setIsPending(false);
       setStatusText("Donazione completata!");
       setShowSuccessBox(true);
-      onClose();
+      onClose(parseFloat(amountStr));
       console.log("Donazione completata", statusText, showSuccessBox);
     } catch (err) {
       console.error(err);
@@ -142,7 +142,7 @@ export default function PopoverDona({
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-appearance-in">
       {/* Overlay click to close */}
-      <div className="absolute inset-0" onClick={onClose}></div>
+      <div className="absolute inset-0" onClick={() => onClose()}></div>
 
       <div className="bg-white rounded-[32px] w-full max-w-sm p-6 relative shadow-2xl flex flex-col animate-slide-up sm:animate-none z-10">
         <h2 className="text-lg font-extrabold text-secondary text-center mb-6 mt-2">
@@ -255,7 +255,7 @@ export default function PopoverDona({
 
         {!isPending && (
           <button
-            onClick={onClose}
+            onClick={() => onClose()}
             className="mt-3 text-xs text-slate-400 font-bold hover:text-slate-600"
           >
             Annulla
