@@ -127,27 +127,56 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 	\label{fig:nuova_spesa}
 \end{figure}
 
-Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa attraverso un periodo di votazione di durata prefissata pari a tre giorni, al termine del quale l’esito viene determinato secondo le seguenti regole:
+Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa secondo le regole descritte dallo pseudocodice riportato di seguito (\ref{alg:logica_voto}). \\
+Al soddisfacimento di una delle condizioni di approvazione, il contratto esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
 
-\begin{itemize}
-	\item la richiesta è approvata se, al termine del periodo di votazione, il numero di voti favorevoli è almeno pari ai voti contrari;
+\begin{algorithm}
 	
-	\item il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero un voto contrario;
+	\floatname{algorithm}{Algoritmo}
+	\caption{Logica di approvazione o rifiuto delle richieste di spesa.}
 	
-	\item qualora, allo scadere del periodo di votazione, si verifichi una situazione di parità tra voti favorevoli e contrari, la richiesta viene considerata approvata;
+	\begin{algorithmic}[1]
+		\item[]
+		\Require vFor, vAgainst, nTot, tNow, tEnd, reqEndTime
+		\Ensure reqApproved
 
-	\item nel caso in cui non venga espresso alcun voto entro la scadenza, il sistema approva automaticamente la richiesta al fine di non ostacolare l’avanzamento del progetto.
+		\item[]
+		\State simpleMaj $\gets$ vFor $\ge$ vAgainst
+		\State mathMaj$\gets$ vFor > nTot - (vFor + vAgainst); 
+		\State  tEnd $\gets$ tNow $\geq$ reqEndTime
+		\State reqApproved $\gets$ false
+		\item[]
+		
+		\If{tEnd \textbf{and} simpleMaj} 
+			\State reqApproved $\gets$ true
+			\EndIf
+			
+		\item[]
+		
+		\If{\textbf{not} tEnd \textbf{and} mathMaj}
+			\State reqApproved $\gets$ true
+		\EndIf 
+		
+			
+	\end{algorithmic}
+	\label{alg:logica_voto} 
 	
-\end{itemize}
-
-Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
+\end{algorithm}
 
 
 
+	
+	
+	
+	
+	
+	
+% bool indica lo stato di approvazione della richiesta; true = richiesta approvata; f	
+% output booleano: true= richiesta approvata; false altrimenti
 
 
+	
 
-% funzione per donare - funzione per aggiungere la spesa - funzione per il voto
 
 
 
