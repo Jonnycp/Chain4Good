@@ -27,8 +27,8 @@ Chain4Good, dunque, si propone come una piattaforma capace di ridefinire il conc
 
 \subsection{Analisi dei requisiti}
 In questa sezione sono riportati i requisiti richiesti per il corretto funzionamento della piattaforma. \\
-In particolare, nella Tabella~\ref{tab:requisiti_funzionali} sono riportati i requisiti funzionali, ossia funzionalità che la piattaforma deve implementare. \\
-Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requisiti non funzionali i quali rappresentano tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. 
+In particolare, nella Tabella~\ref{tab:requisiti_funzionali} sono riportati i requisiti funzionali, ossia le funzionalità che la piattaforma deve implementare. \\
+Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requisiti non funzionali i ovvero tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. 
 
 \begin{table}
 	\centering
@@ -85,39 +85,32 @@ Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requi
 \end{table}
 
 
-
 % sicurezza: i dati devono rimanere all'interno dll'applicazione, protetti, deve essere sicuro replayact
 
 \subsection{Architettura del Sistema}
-\begin{comment}
-	La piattaforma proposta si basa sull’adozione del \textit{design pattern} architetturale \gls{mvc} caratterizzato da tre tipi di componenti:
-	
-	\begin{itemize}
-		\item \textit{Model}: incapsula la \textit{business logic} e i dati utili all’applicazione fornendo attraverso la sua interfaccia dei metodi per accedervi e manipolarli;
-		
-		\item \textit{View}: realizza l’interfaccia grafica, quindi visualizza i dati ottenuti dal Model e si occupa dell’interazione con l’utente;
-		
-		\item \textit{Controller}: funge da intermediario tra \textit{View} e \textit{Model}, quindi raccoglie i comandi dell’utente provenienti dalla \textit{View} e li attua modificando lo stato degli altri due componenti.
-	\end{itemize}
-\end{comment}
-	
+L'architettura proposta adotta un modello che integra lo \textit{stack} MERN (MongoDB, Express, React, Node.js) con le tecnologie Web3.\\
+In particolare, il \textit{front-end} è sviluppato in React integrato da Tailwind per la definizione di uno stile grafico resposivo, e da React Router per la gestione della navigazione \textit{client-side.}. \\
+React Query, invece, è stato utilizzato per l'implementazione di un meccanismo di \textit{caching} voto ad ottimizzare le prestazioni e l'esperienza utente. \\
+L'interazione con la blockchain è invece realizzata mediante le librerie Wagmi e Viem, attraverso le quali è stato possibile gestire l'interconnessione con il \textit{wallet} dell'utente (Metamask) e interagire direttamente con gli \textit{smart contract} per permettere l'esecuzione di transazioni e la lettura dei dati \textit{on-chain}.
+ 
+Il \textit{back-end} è basato su Express.js ed è sviluppato in TypeScript. Inoltre, esso è strutturato secondo il \textit{pattern} \gls{mvc}, adattato a un’architettura API-based. \\
+In particolare, il livello di \textit{Model} comprende i modelli Mongoose e l’accesso al database MongoDB, utilizzato per la persistenza dei dati \textit{off-chain}.
+Il livello di \textit{Controller} è costituito dalle funzioni associate ai singoli \textit{endpoint} REST, responsabili dell’implementazione della logica applicativa. \\
+Infine, il livello di \textit{View} è rappresentato dal sistema di \textit{routing} delle API, che espone le risorse verso il \textit{front-end}. \\
+Tra il livello di \textit{routing} delle API e i controller sono inseriti specifici \textit{middleware}, incaricati di effettuare controlli di autenticazione e autorizzazione prima dell’esecuzione della logica applicativa (ad esempio, il \textit{middleware} \texttt{isEnte} controlla che l’utente autenticato possieda i requisiti necessari per operare come ente promotore).
+
+Infine, per evidenti ragioni di efficienza e costi imposti dalla tecnologia blockchain è stata operata una chiara separazione tra i dati da memorizzare \textit{on-chain} e \textit{off-chain}. 
+Nello specifico, nella \textbf{blockchain} è stato scelto di memorizzare i dati essenziali e critici, come l'insieme delle donazioni effettuate o le richieste di spesa avanzate dall'ente. Il database MongoDB, invece, è stato utilizzato per memorizzare rispettivamente: i metadati dei progetti e delle spese (come la descrizione dettagliata delle richieste di spesa), la logica non critica, i dati dell'utente e i documenti (.pdf) relativi alle prove di acquisto. 
 
 
-% Nel modello proposto, il \textit{Model} è costituito sia dalla componente \textit{on-chain}, rappresentata dagli \textit{Smart Contract} sviluppati in Solidity e distribuiti sulla blockchain, sia dalla componente \textit{off-chain}, gestita tramite il database MongoDB, utilizzato per l’archiviazione di metadati e informazioni non critiche.\\
-% Il livello di \textit{Controller} è implementato dal \textit{back-end} Express, che funge da API Gateway e si occupa della gestione della logica applicativa \textit{off-chain}, dell’autenticazione degli utenti tramite protocollo \gls{siwe} e delle interazioni tra \textit{front-end}, database e blockchain. \\
-% Infine, il livello di \textit{View} è rappresentato dal \textit{front-end} sviluppato con React e Tailwind CSS, responsabile della presentazione dei dati e dell’interazione con l’utente finale. 
+Tale approccio ha consentito di combinare le garanzie di integrità e immutabilità offerte dalla blockchain con la flessibilità e l’efficienza delle infrastrutture web tradizionali.
 
-% Tale architettura consente di combinare i vantaggi della decentralizzazione e dell’immutabilità della blockchain (Web3) con la flessibilità, l’efficienza e la scalabilità delle infrastrutture web tradizionali (Web2).
-
-
-
-% La potenza di questo pattern risiede nel fatto che riesce a disaccoppiare l’interazione fra View e Model, aspetto particolarmente importante in applicazioni di questo tipo dal momento che tutte le interazioni con il model avvengono in modo asincrono.
 
 
 \subsection{Stack tecnologico}
 In questa sezione viene fornita una panoramica delle tecnologie impiegate per lo sviluppo della piattaforma. \\
-In particolare, le tabelle \ref{tab:frontend_stack} e \ref{tab:backend_stack} riportano gli strumenti utilizzati rispettivamente per l’implementazione della componente \textit{front-end} e \textit{back-end} del \textit{software}, con una breve descrizione del loro impiego durante le fasi di sviluppo. Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.
-Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti impiegati per supportare l'organizzazione del lavoro tra i membri del gruppo e per garantire la portabilità del sistema \textit{software}.\\
+In particolare, le tabelle \ref{tab:frontend_stack} e \ref{tab:backend_stack} riportano gli strumenti utilizzati rispettivamente per l’implementazione della componente \textit{front-end} e \textit{back-end} del \textit{software}, con una breve descrizione del loro impiego durante le fasi di sviluppo. Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.\\
+Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti utilizzati per supportare l'organizzazione del lavoro tra i membri del gruppo e per garantire la portabilità del sistema \textit{software}.\\
 
 
 %--------------------FRONTEND---------------------
@@ -187,7 +180,6 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti i
 			ethers.js & Libreria JavaScript utilizzata per l’interazione con la \textit{blockchain} Ethereum, in particolare per il recupero di informazioni \textit{on-chain}. \\
 			\hline
 			Multer & \textit{Middelware} per Node.js  utilizzato per la gestione di flussi \textit{multipart/form-data}, facilitando l'\textit{upload} e il salvataggio dei contenuti multimediali. \\
-			%Libreria di Express.js per gestire l'\textit{upload} dei file tramite form HTML di tipo multipart/form-data. \\
 			\hline
 		\end{tabular}
 	}
@@ -239,15 +231,17 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti i
 	\renewcommand{\arraystretch}{1.3}
 	\setlength{\tabcolsep}{12pt}
 	\resizebox{\textwidth}{!}{
-		\begin{tabular}{p{4cm}p{9cm}}
+		\begin{tabular}{lp{9cm}}
 			\hline
 			\textbf{Strumento} & \textbf{Descrizione} \\
 			\hline
-			Git & \textit{\gls{vcs}} impiegato per la gestione del codice sorgente secondo una strategia di \textit{branching} collaborativa per permettere lo sviluppo parallelo. \\
+			Visual Studio Code (1.107.1) & \gls{ide} principale, configurato con estensioni specifiche per lo sviluppo dello \textit{stack} tecnologico. \\
+			\hline
+			Git (2.52.0) & \textit{\gls{vcs}} impiegato per la gestione del codice sorgente secondo una strategia di \textit{branching} collaborativa per permettere lo sviluppo parallelo. \\
 			\hline
 			GitHub & Piattaforma di \textit{hosting} del \textit{repository} remoto, utilizzata per supportare la collaborazione tra i membri del gruppo. \\
 			\hline
-			Docker & Piattaforma di containerizzazione utilizzata per la standardizzazione e l’isolamento dell’ambiente di esecuzione. \\
+			Docker (29.1.3) & Piattaforma di containerizzazione utilizzata per la standardizzazione e l’isolamento dell’ambiente di esecuzione. \\
 			\hline
 		\end{tabular}
 	}

@@ -54,7 +54,7 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 	\centering
 	{
 		\includegraphics[
-			height = 8cm
+			height = 7.9cm
 		]{images/home_22.png}
 	}
 	\caption{Dashboard del donatore}
@@ -68,26 +68,27 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 
 \begin{itemize}
 	
-	\item Step 1: l'Ente è tenuto a specificare le informazioni fondamentali del progetto, quali il nome, la categoria di appartenenza, l’obiettivo economico e il termine temporale della raccolta fondi. \\ 
+	\item (a):  l'Ente è tenuto a specificare le informazioni fondamentali del progetto, quali il nome, la categoria di appartenenza, l’obiettivo economico e il termine temporale della raccolta fondi. \\ 
 	Gli ultimi due parametri permettono di automatizzare la gestione delle risorse in modalità \textit{trustless}, in quanto vengono utilizzati dallo \textit{Smart Contract} per determinare l’esito della raccolta fondi;
 	
-	\item Step 2: prevede l’inserimento di un piano dettagliato delle spese, oltre ad una descrizione approfondita del progetto e un’immagine di copertina. Tale prospetto non assolve solo finalità informative, ma contribuisce ad incrementare la credibilità dell'iniziativa e a consolidare il rapporto di fiducia con i donatori. 
+	\item (b): prevede l’inserimento di un piano dettagliato delle spese, oltre ad una descrizione approfondita del progetto e un’immagine di copertina. Tale prospetto non assolve solo finalità informative, ma contribuisce ad incrementare la credibilità dell'iniziativa e a consolidare il rapporto di fiducia con i donatori. 
 	
 \end{itemize}
 
 
 \begin{figure}
 	\centering
-	% \subfloat[]
+	\subfloat[]
 	{
 		\includegraphics[
-		height = 8cm
+		height = 7.9cm
 		]{images/crea1.png}
 	}
 	\hspace{2cm}
+	\subfloat[]
 	{
 		\includegraphics[
-		height = 8cm
+		height = 7.9cm
 		]{images/crea2.png}
 	}
 	\caption{Inserimento di un nuovo progetto.}
@@ -100,13 +101,32 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
 Per poter accedere a tali risorse, il beneficiario deve presentare una "Richiesta di Spesa" (\ref{fig:nuova_spesa}) specificando il nome della spesa, l'importo richiesto, la finalità dell'esborso e il relativo preventivo. 
 La sottomissione della richiesta è consentita esclusivamente quando il progetto si trova in uno stato attivo, ossia a seguito del raggiungimento del \textit{target} di raccolta oppure al termine della scadenza temporale prevista per la campagna. \\
-A seguito della sottomissione, la richiesta viene poi sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto.
-Coerentemente con la natura della piattaforma, il sistema di voto è stato implementato in modo da attribuire lo stesso peso a ciascun utente, indipendentemente dall'importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.\\
-Al fine di assicurare un utilizzo progressivo e verificabile delle risorse raccolte, inoltre, la presentazione di una nuova richiesta di spesa è subordinata al caricamento della prova di acquisto relativa all’ultima richiesta precedentemente approvata. 
+A seguito della sottomissione, la richiesta viene poi sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto. Coerentemente con la natura della piattaforma, il sistema di voto è stato implementato in modo da attribuire lo stesso peso a ciascun utente, indipendentemente dall'importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.Al fine di assicurare un utilizzo progressivo e verificabile delle risorse raccolte, inoltre, la presentazione di una nuova richiesta di spesa è subordinata al caricamento della prova di acquisto relativa all’ultima richiesta precedentemente approvata. 
 Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
 
 
+
 \subsubsection{Meccanismo di votazione}
+
+\begin{figure}
+	\centering
+	\subfloat[]
+	{
+		\includegraphics[
+		height = 7.9cm
+		]{images/spesa.png}
+	}
+	\hspace{2cm}
+	\subfloat[]
+	{
+		\includegraphics[
+		height = 7.9cm
+		]{images/spesa2.png}
+	}
+	\caption{Inserimento di una nuova richiesta di spesa.}
+	\label{fig:nuova_spesa}
+\end{figure}
+
 Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa attraverso un periodo di votazione di durata prefissata pari a tre giorni, al termine del quale l’esito viene determinato secondo le seguenti regole:
 
 \begin{itemize}
@@ -123,22 +143,8 @@ Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programma
 Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
 
 
-\begin{figure}
-	\centering
-	{
-		\includegraphics[
-		height = 8cm
-		]{images/spesa.png}
-	}
-	\hspace{2cm}
-	{
-		\includegraphics[
-		height = 8cm
-		]{images/spesa2.png}
-	}
-	\caption{Inserimento di una nuova richiesta di spesa.}
-	\label{fig:nuova_spesa}
-\end{figure}
+
+
 
 
 % funzione per donare - funzione per aggiungere la spesa - funzione per il voto
