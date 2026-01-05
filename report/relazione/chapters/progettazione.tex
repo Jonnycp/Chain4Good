@@ -18,13 +18,13 @@ Un altro rischio analizzato concerne la trasparenza nell'allocazione delle risor
 
 L'introduzione di un meccanismo di votazione ha richiesto necessariamente di valutare il rischio legato alla scarsa partecipazione dei donatori. In particolare, per evitare condizioni di stallo del sistema, si è deciso di adottare una logica di \textit{silenzio-assenso}, progettando la piattaforma in modo tale da approvare automaticamente la richiesta di spesa anche in assenza di voti entro i termini prefissati.
 
-Infine, un ulteriore rischio è rappresentato dall’esposizione dei fondi raccolti alla volatilità intrinseca delle criptovalute. Per ovviare a questo problema, la piattaforma Chain4Good opera esclusivamente tramite \textit{stablecoin} (nello specifico USDC e EURC), ossia criptovalute progettate per mantenere un valore stabile rispetto a una valuta fiat di riferimento. Tale scelta è motivata dal fatto che, a differenza delle criptovalute (es. ETH in Ethereum), le \textit{stablecoin} permettono di garantire che il potere d'acquisto delle risorse donate rimanga inalterato dal momento della donazione fino all'effettivo utilizzo da parte del beneficiario.
+Infine, un ulteriore rischio è rappresentato dall’esposizione dei fondi raccolti alla volatilità intrinseca delle criptovalute. Per ovviare a questo problema, la piattaforma Chain4Good opera esclusivamente tramite \textit{stablecoin} (nello specifico USDC e EURC), ossia criptovalute progettate per mantenere un valore stabile rispetto a una valuta fiat di riferimento. Tale scelta è motivata dal fatto che, a differenza delle criptovalute tradizionali, come Bitcoin o ETH, le \textit{stablecoin} permettono di garantire che il potere d'acquisto delle risorse donate rimanga inalterato dal momento della donazione fino all'effettivo utilizzo da parte del beneficiario.
 
 
 \subsection{Analisi dei requisiti}
 In questa sezione sono riportati i requisiti richiesti per il corretto funzionamento della piattaforma. \\
 In particolare, nella Tabella~\ref{tab:requisiti_funzionali} sono riportati i requisiti funzionali, ossia le funzionalità che la piattaforma deve implementare. \\
-Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requisiti non funzionali i ovvero tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. 
+Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requisiti non funzionali ovvero tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. 
 
 \begin{table}
 	\centering
@@ -85,16 +85,14 @@ Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requi
 
 \subsection{Architettura del Sistema}
 L'architettura proposta adotta un modello che integra lo \textit{stack} MERN (MongoDB, Express, React, Node.js) con le tecnologie Web3.\\
-In particolare, il \textit{front-end} è sviluppato in React integrato da Tailwind per la definizione di uno stile grafico resposivo, e da React Router per la gestione della navigazione \textit{client-side.} \\
+In particolare, il \textit{front-end} è sviluppato in React integrato da Tailwind CSS per la definizione di uno stile grafico resposivo, e da React Router per la gestione della navigazione \textit{client-side.} \\
 React Query, invece, è stato utilizzato per l'implementazione di un meccanismo di \textit{caching} volto ad ottimizzare le prestazioni e l'esperienza utente. \\
 L'interazione con la blockchain è invece realizzata mediante le librerie Wagmi e Viem, attraverso le quali è stato possibile gestire l'interconnessione con il \textit{wallet} dell'utente (Metamask) e interagire direttamente con gli \textit{smart contract} per permettere l'esecuzione di transazioni e la lettura dei dati \textit{on-chain}.
- 
 Il \textit{back-end} è basato su Express.js ed è sviluppato in TypeScript. L'architettura segue il \textit{pattern} \gls{mvc}, opportunamente adattato a un sistema basato su API REST.
 In particolare, il livello di \textit{Model} comprende i modelli Mongoose e l’accesso al database MongoDB, utilizzato per la persistenza dei dati \textit{off-chain}.
 Il livello di \textit{Controller} è costituito dalle funzioni associate ai singoli \textit{endpoint} REST, responsabili dell’implementazione della logica applicativa. \\
 Infine, il livello di \textit{View} è rappresentato dal sistema di \textit{routing} delle API, che espone le risorse verso il \textit{front-end}. \\
-Tra il livello di \textit{routing} delle API e i controller sono inseriti specifici \textit{middleware}, incaricati di effettuare controlli di autenticazione e autorizzazione prima dell’esecuzione della logica applicativa (ad esempio, il \textit{middleware} \texttt{isEnte} controlla che l’utente autenticato possieda i requisiti necessari per operare come ente promotore).
-
+Tra il livello di \textit{routing} delle API e i controller sono inseriti specifici \textit{middleware}, incaricati di effettuare controlli di autenticazione e autorizzazione prima dell’esecuzione della logica applicativa (ad esempio, il \textit{middleware} \texttt{isEnte} controlla che l’utente autenticato possieda i requisiti necessari per operare come ente promotore).\\
 Infine, per evidenti ragioni di efficienza e costi imposti dalla tecnologia blockchain è stata operata una chiara separazione tra i dati da memorizzare \textit{on-chain} e \textit{off-chain}. 
 In particolare, sulla blockchain sono stati memorizzati i dati essenziali e critici, come l'insieme delle donazioni effettuate o le richieste di spesa avanzate dall'ente. 
 Il database MongoDB invece è stato utilizzato per memorizzare rispettivamente: i metadati dei progetti e delle spese (come la descrizione dettagliata delle richieste di spesa), la logica non critica, i dati dell'utente e i documenti relativi alle prove di acquisto.

@@ -10,15 +10,11 @@
 
 
 \subsection{Login e autenticazione}
-L'autenticazione all'interno della piattaforma adotta il protocollo \gls{siwe} sostituendo il modello tradizionale basato sull’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}, coerentemente con il paradigma Web3. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet}. 
-
+L'autenticazione all'interno della piattaforma adotta il protocollo \gls{siwe} sostituendo il modello tradizionale basato sull’utilizzo di credenziali tradizionali quali \textit{username} e \textit{password}, coerentemente con il paradigma Web3. L’identità dell’utente è infatti associata in modo univoco al possesso di un \textit{wallet}. \\
 Il flusso di \textit{login} ha inizio con la connessione del \textit{wallet} dell’utente, a partire dal quale il \textit{front-end} ottiene l’indirizzo pubblico associato. Tale indirizzo viene inviato al \textit{back-end}, che a sua volta, genera un \textit{nonce}, ovvero un valore casuale e univoco utilizzato per prevenire attacchi di tipo \textit{replay}. 
-Il \textit{nonce} viene associato temporaneamente all’utente, tramite sessione o persistenza nel database, e restituito al \textit{front-end}.
-
-Successivamente, il \textit{front-end} costruisce un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio \textit{wallet}. Il messaggio firmato e la relativa firma vengono quindi inviati al \textit{back-end}, che procede alla verifica dell’autenticazione. In particolare, il \textit{server} controlla sia che l’indirizzo estratto crittograficamente dalla firma coincida con quello dichiarato sia che il \textit{nonce} contenuto nel messaggio corrisponda a quello attualmente valido, impedendo il riutilizzo di firme precedenti.
-
-Solo se entrambi i controlli vanno a buon fine, l’autenticazione viene considerata valida e viene avviata una sessione applicativa. In fase di primo accesso, l’utente viene registrato automaticamente nel sistema, mentre per accessi successivi vengono aggiornate le informazioni di sessione. Al termine del processo, il \textit{nonce} viene rigenerato e quello precedente invalidato, garantendo la sicurezza delle autenticazioni future.
-
+Il \textit{nonce} viene associato temporaneamente all’utente, tramite sessione o persistenza nel database, e restituito al \textit{front-end}.\\
+Successivamente, il \textit{front-end} costruisce un messaggio conforme allo standard \gls{siwe}, includendo il \textit{nonce} ricevuto, e richiede all’utente di firmarlo tramite il proprio \textit{wallet}. Il messaggio firmato e la relativa firma vengono quindi inviati al \textit{back-end}, che procede alla verifica dell’autenticazione. In particolare, il \textit{server} controlla sia che l’indirizzo estratto crittograficamente dalla firma coincida con quello dichiarato sia che il \textit{nonce} contenuto nel messaggio corrisponda a quello attualmente valido, impedendo il riutilizzo di firme precedenti.\\
+Solo se entrambi i controlli vanno a buon fine, l’autenticazione viene considerata valida e viene avviata una sessione applicativa. In fase di primo accesso, l’utente viene registrato automaticamente nel sistema, mentre per accessi successivi vengono aggiornate le informazioni di sessione. Al termine del processo, il \textit{nonce} viene rigenerato e quello precedente invalidato, garantendo la sicurezza delle autenticazioni future.\\
 Infine, il \textit{front-end} utilizza il \textit{cookie} di sessione per recuperare le informazioni dell’utente autenticato e completare il processo di accesso all’applicazione.
 
 
@@ -68,10 +64,10 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 
 \begin{itemize}
 	
-	\item (a):  l'Ente è tenuto a specificare le informazioni fondamentali del progetto, quali il nome, la categoria di appartenenza, l’obiettivo economico e il termine temporale della raccolta fondi. \\ 
+	\item (a):  durante il primo \textit{step}, l'Ente è tenuto a specificare le informazioni fondamentali del progetto, quali il nome, la categoria di appartenenza, l’obiettivo economico e il termine temporale della raccolta fondi. \\ 
 	Gli ultimi due parametri permettono di automatizzare la gestione delle risorse in modalità \textit{trustless}, in quanto vengono utilizzati dallo \textit{Smart Contract} per determinare l’esito della raccolta fondi;
 	
-	\item (b): prevede l’inserimento di un piano dettagliato delle spese, oltre ad una descrizione approfondita del progetto e un’immagine di copertina. Tale prospetto non assolve solo finalità informative, ma contribuisce ad incrementare la credibilità dell'iniziativa e a consolidare il rapporto di fiducia con i donatori. 
+	\item (b): lo \textit{step} 2 prevede l’inserimento di un piano dettagliato delle spese, oltre ad una descrizione approfondita del progetto e un’immagine di copertina. Tale prospetto non assolve solo finalità informative, ma contribuisce ad incrementare la credibilità dell'iniziativa e a consolidare il rapporto di fiducia con i donatori. 
 	
 \end{itemize}
 
@@ -98,10 +94,11 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 
 
 \subsection{Inserimento e valutazione spesa}
-A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. \\
-Per poter accedere a tali risorse, il beneficiario deve presentare una "Richiesta di Spesa" (\ref{fig:nuova_spesa}) specificando il nome della spesa, l'importo richiesto, la finalità dell'esborso e il relativo preventivo. 
+A differenza dei sistemi centralizzati in cui l'Ente ha piena e immediata disponibilità del \textit{budget} donato, l’architettura proposta prevede che i fondi raccolti rimangano vincolati all'interno di uno \textit{Smart Contract}. 
+Per poter accedere a tali risorse, il beneficiario deve presentare una "Richiesta di Spesa" (\ref{fig:nuova_spesa}) specificandone il nome, l'importo richiesto, la finalità dell'esborso e il relativo preventivo. 
 La sottomissione della richiesta è consentita esclusivamente quando il progetto si trova in uno stato attivo, ossia a seguito del raggiungimento del \textit{target} di raccolta oppure al termine della scadenza temporale prevista per la campagna. \\
-A seguito della sottomissione, la richiesta viene poi sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto. Coerentemente con la natura della piattaforma, il sistema di voto è stato implementato in modo da attribuire lo stesso peso a ciascun utente, indipendentemente dall'importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.Al fine di assicurare un utilizzo progressivo e verificabile delle risorse raccolte, inoltre, la presentazione di una nuova richiesta di spesa è subordinata al caricamento della prova di acquisto relativa all’ultima richiesta precedentemente approvata. 
+A seguito della sottomissione, la richiesta viene poi sottoposta a un meccanismo di valutazione decentralizzato, basato sul voto dei donatori che hanno contribuito al finanziamento del progetto. Coerentemente con la natura della piattaforma, il sistema di voto è stato implementato in modo da attribuire lo stesso peso a ciascun utente, indipendentemente dall'importo della donazione effettuata. Questa scelta progettuale è finalizzata a evitare che il potere decisionale risulti influenzato dalla capacità economica dei singoli utenti.
+Al fine di assicurare un utilizzo progressivo e verificabile delle risorse raccolte, inoltre, la presentazione di una nuova richiesta di spesa è subordinata al caricamento della prova di acquisto relativa all’ultima richiesta precedentemente approvata. 
 Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
 
 
