@@ -4,6 +4,7 @@ import {
   redirect,
   useLoaderData,
   useNavigate,
+  useRevalidator,
   type ActionFunctionArgs,
 } from "react-router-dom";
 
@@ -86,6 +87,7 @@ export default function ProgettoSingolo() {
     100
   );
   const [shareUrl, setShareUrl] = useState<string>("");
+  const revalidator = useRevalidator();
 
   const isExpired = new Date(project.endDate) < new Date();
   const isFull = project.currentAmount >= project.targetAmount;
@@ -307,7 +309,14 @@ export default function ProgettoSingolo() {
       {/* 3. Modali Utente (Dona e Grazie) - Renderizzati solo se Utente */}
       {isDonaOpen && (
         <PopoverDona
-          onClose={() => setIsDonaOpen(false)}
+          onClose={(amount) => {
+            if(amount){
+              revalidator.revalidate();
+              setDonatedAmount(amount);
+              setIsGrazieOpen(true);
+            }
+            setIsDonaOpen(false)
+          }}
           currentAmount={project.currentAmount}
           targetAmount={project.targetAmount}
           currency={project.currency}
@@ -320,7 +329,8 @@ export default function ProgettoSingolo() {
         <ModalGrazie
           amount={donatedAmount}
           projectName={project.title}
-          entityName={project.ente.nome}
+          enteName={project.ente.nome}
+          currency={project.currency}
           onClose={() => setIsGrazieOpen(false)}
           onHistory={() => navigate("/donazioni-utente")}
         />
@@ -411,6 +421,7 @@ export default function ProgettoSingolo() {
                     projectDonations.donors.map((d: any) => [d.username, d])
                   ).values()
                 )
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) 
                   .slice(0, 5)
                   .map((d: any) => ({
                     id: "mini-donation" + d.username,
@@ -556,7 +567,7 @@ export default function ProgettoSingolo() {
           </div>
           <div className="flex flex-col gap-1">
             {projectDonations.donors.length > 0 ? (
-              projectDonations.donors.slice(0, 20).map((donatore) => (
+              projectDonations.donors.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 20).map((donatore) => (
                 <div
                   key={donatore.id}
                   className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"
