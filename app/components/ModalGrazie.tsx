@@ -5,12 +5,13 @@ import treeLogo from '~/assets/logo.png';
 interface ModalGrazieProps {
   amount: number;
   projectName: string; 
-  entityName: string;
+  enteName: string;
+  currency: string;
   onClose: () => void;
   onHistory: () => void;
 }
 
-export default function ModalGrazie({ amount, projectName, entityName, onClose, onHistory }: ModalGrazieProps) {
+export default function ModalGrazie({ amount, projectName, enteName, currency, onClose, onHistory }: ModalGrazieProps) {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -21,6 +22,7 @@ export default function ModalGrazie({ amount, projectName, entityName, onClose, 
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-appearance-in">
+      <div className="absolute inset-0" onClick={() => onClose()}></div>
       <div className="bg-white rounded-[32px] w-full max-w-sm p-8 text-center shadow-2xl flex flex-col items-center relative">
         
         <div className="mb-6">
@@ -31,8 +33,8 @@ export default function ModalGrazie({ amount, projectName, entityName, onClose, 
           GRAZIE
         </h2>
         
-        <p className="text-sm text-slate-600 font-medium leading-relaxed mb-6">
-          Hai donato <span className="font-bold text-secondary">{amount} ETH</span> al progetto<br/>
+        <p className="text-md text-slate-600 font-medium leading-relaxed mb-6">
+          Hai donato <span className="font-bold text-secondary">{amount} {currency}</span> al progetto<br/>
           <span className="font-bold text-secondary">{projectName}</span>
         </p>
 
@@ -41,7 +43,7 @@ export default function ModalGrazie({ amount, projectName, entityName, onClose, 
         </p>
         
         <p className="text-xs text-slate-500 leading-relaxed mb-8">
-            È anche grazie a te che <strong>{entityName}</strong> riuscirà a completare il progetto.
+            È anche grazie a te che <strong>{enteName}</strong> riuscirà a completare il progetto.
         </p>
 
         <div className="flex gap-3 w-full">
@@ -51,7 +53,12 @@ export default function ModalGrazie({ amount, projectName, entityName, onClose, 
             >
                 Vai allo storico donazioni
             </button>
-            <button className="w-12 h-12 flex items-center justify-center bg-secondary hover:bg-blue-900 text-white rounded-xl shadow-lg">
+            <button onClick={() => {
+              navigator.share({title: `Chain4Good - Progetto ${projectName}`,
+              text: `Dai un'occhiata al progetto "${projectName}" che ho supportato su Chain4Good!`,
+              url: window.location.href,
+              })
+            }} className="w-12 h-12 flex items-center justify-center bg-secondary hover:bg-blue-900 text-white rounded-xl shadow-lg">
                 <Icon icon="mdi:share-variant-outline" className="text-xl" />
             </button>
         </div>
