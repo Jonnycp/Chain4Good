@@ -475,3 +475,64 @@ export const createProject = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Errore nella creazione del progetto", details: error });
   }
 };
+
+/**
+ * Endpoint POST /projects/:id/donate
+ * Dona a un progetto, con questi parametri nel body:
+ * amount
+ * hashTransaction
+ * messaggio (opzionale)
+ */
+export const donateToProject = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { amount, hashTransaction, messaggio } = req.body;
+    
+    const project = await ProjectModel.findById(id);
+    if (!project) {
+      return res.status(404).json({ error: "Progetto non trovato", code: 404 });
+    }
+
+    const user = await UserModel.findOne({ address: req.session.address! });
+    if (!user) {
+      return res.status(404).json({ error: "Utente non trovato", code: 404 });
+    }
+    
+    // Validazioni di base
+    if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+      return res.status(400).json({ error: "Importo non valido", code: 400 });
+    }
+    if(amount > project.targetAmount - project.currentAmount) {
+      return res.status(400).json({ error: "Importo eccede il budget rimanente del progetto", code: 400 });
+    }
+    if (!hashTransaction || typeof hashTransaction !== "string" || !/^0x([A-Fa-f0-9]{64})$/.test(hashTransaction)) {
+      return res.status(400).json({ error: "Hash transazione non valido", code: 400 });
+    }
+    if (messaggio && (typeof messaggio !== "string" || messaggio.length > 500)) {
+      return res.status(400).json({ error: "Messaggio non valido", code: 400 });
+    }
+    if(user._id.equals(project.ente)) {
+      return res.status(400).json({ error: "Non puoi donare a un tuo progetto", code: 400 });
+    }
+    
+    // Crea donazione
+    const newDonation = await DonationModel.create({
+      project: project._id,
+      donor: user._id,
+      amount: Number(amount),
+      hashTransaction: hashTransaction,
+      symbol: project.currency,
+      messaggio: messaggio ? messaggio.trim() : "",
+    });
+    
+    // Aggiorna importo attuale del progetto
+    await ProjectModel.findByIdAndUpdate(id, { 
+      $inc: { currentAmount: Number(amount) } 
+    });
+    
+    res.status(201).json({ success: true, donation: newDonation });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Errore nella donazione al progetto", code: 500 });
+  }
+};

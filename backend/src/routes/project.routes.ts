@@ -28,6 +28,8 @@ router.get('/:id/donations', isAuth, ProjectController.getProjectDonations);
 
 router.post('/new', isAuth, isEnte, upload.single("coverImage"), ProjectController.createProject);
 
+router.post("/:id/donate", isAuth, ProjectController.donateToProject);
+
 // router.get("/donated", isAuth, ProjectController.getMyDonations);
 
 export default router;
