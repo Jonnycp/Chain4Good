@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { DonationModel } from "models/Donation";
-import { ProjectModel } from "models/Project";
-import { UserModel } from "models/User";
+import type { Request, Response } from "express";
 import { Types } from "mongoose";
+import { DonationModel } from "../models/Donation.ts";
+import { ProjectModel } from "../models/Project.ts";
+import { UserModel } from "../models/User.ts";
 
 /**
  * Endpoint POST /projects/:id/donate

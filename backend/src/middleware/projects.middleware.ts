@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import { DonationModel } from "models/Donation";
-import { ProjectModel } from "models/Project";
-import { UserModel } from "models/User";
+import type { Request, Response, NextFunction } from "express";
+import { DonationModel } from "../models/Donation.ts";
+import { ProjectModel } from "../models/Project.ts";
+import { UserModel } from "../models/User.ts";
 import { Types } from "mongoose";
 
 export const isProjectCreator = async (

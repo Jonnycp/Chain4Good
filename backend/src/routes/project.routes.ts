@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import * as ProjectController from '../controllers/projects.controller.ts'; 
 import * as DonationController from '../controllers/donations.controller.ts';
+//import * as SpeseController from '../controllers/spese.controller.ts';
 import { isAuth, isEnte } from '../middleware/auth.middleware.ts';
-import { isDonator } from 'middleware/projects.middleware.ts';
+import { isDonator, isProjectCreator } from '../middleware/projects.middleware.ts';
 import multer from "multer";
 import path from "path";
 
@@ -29,6 +30,8 @@ router.get('/:id', isAuth, isDonator, ProjectController.getProjectById);
 router.get('/:id/donations', isAuth, isDonator, DonationController.getProjectDonations);
 
 router.post("/:id/donate", isAuth, isDonator,DonationController.donateToProject);
+
+//router.get('/:id/expenses', isAuth, SpeseController.getProjectExpenses);
 
 router.post('/new', isAuth, isEnte, upload.single("coverImage"), ProjectController.createProject);
 
