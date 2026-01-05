@@ -3,6 +3,7 @@ import * as ProjectController from '../controllers/projects.controller.ts';
 import { isAuth, isEnte } from '../middleware/auth.middleware.ts';
 import multer from "multer";
 import path from "path";
+import { isDonator } from 'middleware/projects.middleware.ts';
 
 const router = Router();
 const storage = multer.diskStorage({
@@ -22,13 +23,13 @@ router.get('/categories', ProjectController.getCategories);
 
 router.get("/me", isAuth, isEnte, ProjectController.getMyProjects);
 
-router.get('/:id', isAuth, ProjectController.getProjectById);
+router.get('/:id', isAuth, isDonator, ProjectController.getProjectById);
 
-router.get('/:id/donations', isAuth, ProjectController.getProjectDonations);
+router.get('/:id/donations', isAuth, isDonator, ProjectController.getProjectDonations);
 
 router.post('/new', isAuth, isEnte, upload.single("coverImage"), ProjectController.createProject);
 
-router.post("/:id/donate", isAuth, ProjectController.donateToProject);
+router.post("/:id/donate", isAuth, isDonator,ProjectController.donateToProject);
 
 // router.get("/donated", isAuth, ProjectController.getMyDonations);
 
