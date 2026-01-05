@@ -15,7 +15,6 @@ import { waitForTransactionReceipt, switchChain } from "@wagmi/core";
 import factoryAbi from "@abi/ProjectFactory.sol/ProjectFactory.json";
 import { hardhat } from "viem/chains";
 
-
 export const CURRENCYS = ["EURC"];
 
 //TODO: No action perchè nel frontend manca <form method="multipart" ...
@@ -214,7 +213,7 @@ export default function NuovoProgetto() {
       try {
         setButton("Cambio rete...");
         await switchChain(config, { chainId: hardhat.id });
-        
+
         setButton("Contatto blockchain...");
         //? --- FASE 1: BLOCKCHAIN (Creazione Vault) ---
         // Parametri per lo Smart Contract
@@ -675,6 +674,12 @@ export default function NuovoProgetto() {
                     disabled={button !== "Pubblica Progetto"}
                     className="flex-1 py-3 rounded-xl text-white font-bold text-lg shadow-md hover:opacity-90 transition bg-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
+                    {button !== "Pubblica Progetto" && (
+                      <Icon
+                        icon="mdi:loading"
+                        className="animate-spin text-2xl"
+                      />
+                    )}
                     {button}
                   </button>
                 </div>
