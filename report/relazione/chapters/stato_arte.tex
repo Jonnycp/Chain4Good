@@ -95,23 +95,39 @@ In questo studio, infatti, il rilascio dei fondi è sempre incrementale ma è de
 In particolare, affinché il beneficiario possa utilizzare una quota parte dei fondi raccolti deve presentare una richiesta di spesa, specificando la causale dell'esborso, l’importo richiesto e l’indirizzo pubblico del fornitore destinatario del pagamento. \\
 Solo se la proposta viene approvata da almeno il 50\% dei sostenitori del progetto, lo \textit{Smart Contract} esegue la transazione direttamente verso il fornitore. Il valore aggiunto di questo approccio si esplica dunque nella capacità di aumentare la partecipazione dei donatori lungo l'intero ciclo di vita della donazione. Tuttavia, il modello non prevede meccanismi che certifichino l'autenticità del fornitore poiché lo \textit{Smart Contract} si limita a eseguire transazioni verso l'indirizzo fornito senza poterne verificare l'identità reale. \\
 Per mitigare tale criticità, il modello proposto in \cite{alia2024ihsan} attribuisce ai donatori il compito di verificare l’indirizzo del portafoglio del destinatario attraverso database esterni prima di esprimere il proprio voto. Inoltre, come ulteriore forma di tutela, viene introdotto un meccanismo di segnalazione delle richieste ritenute sospette, che consente ai donatori di indicare potenziali comportamenti fraudolenti e di bloccare l’erogazione dei fondi qualora venga raggiunta una soglia di consenso prestabilita. \\
-È evidente dunque che sebbene l’adozione di un modello completamente decentralizzato abbia il potenziale di incrementare il numero dei donatori grazie all'aumento dei livelli di trasparenza e verificabilità dell'intero ciclo di donazione, al contempo questo comporta un aumento del livello di complessità sia in fase di sviluppo che di utilizzo della piattaforma. 
+È evidente dunque che sebbene l’adozione di un modello completamente decentralizzato abbia il potenziale di incrementare il numero dei donatori grazie all'aumento dei livelli di trasparenza e verificabilità dell'intero ciclo di donazione, al contempo questo comporta un aumento del livello di complessità sia in fase di sviluppo che di utilizzo della piattaforma. \\
+In questo senso, \textit{Chain4Good} si inserisce come un prototipo applicativo che mutua alcuni dei meccanismi consolidati in letteratura e li adatta a uno scenario operativo specifico. Inoltre, piuttosto che puntare a una decentralizzazione completa, il sistema mantiene la figura di un \textit{Admin} per la validazione e la registrazione degli Enti del Terzo Settore tramite \textit{Soulbound Token}, ma introduce al contempo vincoli ulteriori, volti a garantire un utilizzo delle risorse realmente progressivo, trasparente e verificabile dai donatori.
 
 
 
-\subsection{L'obiettivo di Chain4Good}
 
-Chain4Good nasce per superare le criticità intrinseche dei sistemi di raccolta fondi tradizionali. 
-Il suo obiettivo principale è restituire al donatore un ruolo attivo lungo l’intero ciclo di vita della donazione, mitigando il problema della limitata tracciabilità nell’utilizzo dei fondi tipico dei sistemi centralizzati. \\
-A differenza dei modelli tradizionali, nei quali le risorse vengono trasferite integralmente all’Ente beneficiario al termine della raccolta, in Chain4Good l’erogazione dei fondi avviene in maniera incrementale ed è subordinata a un processo di approvazione decentralizzato. In tale contesto, lo sblocco delle risorse è vincolato all’espressione del consenso dei donatori sulle singole richieste di spesa.\\
-E'\ importante sottolineare che tale meccanismo non è esente da potenziali comportamenti fraudolenti. La tecnologia \textit{blockchain}, difatti, non è in grado di garantire la veridicità dei dati forniti \textit{off-chain}, quali i preventivi allegati alle richieste di spesa. 
-Tuttavia, essa consente di rendere l’intero processo di richiesta, approvazione ed erogazione delle risorse immutabile, trasparente e pubblicamente verificabile, grazie alla registrazione \textit{on-chain} di ogni operazione e di ogni trasferimento di fondi. In questo modo, al donatore è permesso di certificare la congruità tra gli obiettivi dichiarati e quelli effettivamente perseguiti.\\
-Chain4Good, dunque, si differenzia dallo stato dell'arte proponendosi come una piattaforma capace di ridefinire il concetto stesso di donazione, il quale non si configura più come un mero atto di fiducia, bensì come un processo intrinsecamente sicuro e verificabile in ogni sua fase.
+
+%In questo senso, Chain4Good si inserisce come un prototipo applicativo che riprende alcuni dei meccanismi consolidati in letteratura, come la presenza di un utente \textit{Admin}, e li adatta a uno scenario operativo specifico, introducendo però vincoli ulteriori volti a garantire un utilizzo progressivo e verificabile delle risorse raccolte.
+
+
+
+
+
+
+\begin{comment}
+	L'obiettivo di Chain4Good è restituire al donatore un ruolo attivo lungo l’intero ciclo di vita della donazione, mitigando il problema della limitata tracciabilità nell’utilizzo dei fondi tipico dei sistemi centralizzati. \\
+	A differenza dei modelli tradizionali, nei quali le risorse vengono trasferite integralmente all’Ente beneficiario al termine della raccolta, in Chain4Good l’erogazione dei fondi avviene in maniera incrementale ed è subordinata a un processo di approvazione decentralizzato. In tale contesto, lo sblocco delle risorse è vincolato all’espressione del consenso dei donatori sulle singole richieste di spesa.\\
+	E'\ importante sottolineare che tale meccanismo non è esente da potenziali comportamenti fraudolenti. La tecnologia \textit{blockchain}, difatti, non è in grado di garantire la veridicità dei dati forniti \textit{off-chain}, quali i preventivi allegati alle richieste di spesa. 
+	Tuttavia, essa consente di rendere l’intero processo di richiesta, approvazione ed erogazione delle risorse immutabile, trasparente e pubblicamente verificabile, grazie alla registrazione \textit{on-chain} di ogni operazione e di ogni trasferimento di fondi. In questo modo, al donatore è permesso di certificare la congruità tra gli obiettivi dichiarati e quelli effettivamente perseguiti.\\
+	Chain4Good, dunque, si differenzia dallo stato dell'arte proponendosi come una piattaforma capace di ridefinire il concetto stesso di donazione, il quale non si configura più come un mero atto di fiducia, bensì come un processo intrinsecamente sicuro e verificabile in ogni sua fase.
+\end{comment}
+
+
 
 
 
 % Ogni operazione di donazione, infatti, viene registrata in modo permanente sulla \textit{blockchain} e può essere verificata pubblicamente, assicurando l'integrità delle informazioni e aumentando il livello di trasparenza. \\
 % In tal senso, Chain4Good si distingue dallo stato dell’arte proponendosi come piattaforma orientata non solo alla raccolta fondi per fini prettamente filantropici, ma anche alla partecipazione e fiducia verificabile.
+
+
+
+
+
 
 
 %%---------
