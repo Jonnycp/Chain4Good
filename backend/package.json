@@ -30,6 +30,7 @@
     "express-session": "^1.18.2",
     "mongoose": "^9.0.1",
     "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
     "siwe": "^3.0.0"
   },
   "devDependencies": {
