@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import indexRouter from "./routes/index.ts";
 import cors from "cors";
 import { connectDB } from './database.ts';
+import { startProjectWorker } from "./services/projectWorker.service.ts";
 
 dotenv.config();
 const app = express();
@@ -53,5 +54,6 @@ app.listen(port, async () => {
     process.exit(1);
   }
   await connectDB();
+  startProjectWorker();
   console.log(`🟢 Backend server avviato su http://localhost:${port}`);
 });
