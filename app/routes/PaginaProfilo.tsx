@@ -122,7 +122,7 @@ export default function Profilo() {
             </div>
             <div className="w-1/2 space-y-2">
               <label className="text-secondary font-extrabold text-sm">Wallet</label>
-              <div className="flex items-center bg-[#F3F4F6] rounded-xl px-3 h-12">
+              <div className="flex items-center bg-[#F3F4F6] rounded-xl px-3 h-12 cursor-pointer" onClick={() => navigator.clipboard.writeText(user?.address || "")}>
                 <Icon icon="mdi:link-variant" className="text-slate-900 text-lg mr-2" />
                 <span className="text-slate-600 font-medium truncate text-sm">
                     {user?.address}
