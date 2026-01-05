@@ -400,45 +400,83 @@ export const createProject = async (req: Request, res: Response) => {
       descrizione,
       usoFondi,
       location,
-      vaultAddress
+      vaultAddress,
     } = req.body;
     const coverImage = req.file ? req.file.path : null;
-    
+
     const errors: Record<string, string> = {};
 
     if (!title || typeof title !== "string" || title.length < 3)
       errors.title = "Nome progetto non valido";
-    if (!category || typeof category !== "string" || !CATEGORY_ENUM.includes(category as any))
+    if (
+      !category ||
+      typeof category !== "string" ||
+      !CATEGORY_ENUM.includes(category as any)
+    )
       errors.category = "Categoria non valida";
-    if (!targetAmount || isNaN(Number(targetAmount)) || Number(targetAmount) <= 100 || Number(targetAmount) >= 1000000)
+    if (
+      !targetAmount ||
+      isNaN(Number(targetAmount)) ||
+      Number(targetAmount) <= 100 ||
+      Number(targetAmount) >= 1000000
+    )
       errors.targetAmount = "Budget non valido";
-    if (!currency || typeof currency !== "string" || !["EURC", "USDC"].includes(currency))
+    if (
+      !currency ||
+      typeof currency !== "string" ||
+      !["EURC", "USDC"].includes(currency)
+    )
       errors.currency = "Valuta non valida";
-    if (!endDate || isNaN(Date.parse(endDate)) || new Date(endDate) <= new Date() || new Date(endDate) > new Date(Date.now() + 365*24*60*60*1000))
+    if (
+      !endDate ||
+      isNaN(Date.parse(endDate)) ||
+      new Date(endDate) <= new Date() ||
+      new Date(endDate) > new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+    )
       errors.endDate = "Data scadenza non valida";
-    if (!descrizione || typeof descrizione !== "string" || descrizione.length < 10)
+    if (
+      !descrizione ||
+      typeof descrizione !== "string" ||
+      descrizione.length < 10
+    )
       errors.descrizione = "Descrizione troppo corta";
-    if (!Array.isArray(usoFondi) || usoFondi.length === 0 || usoFondi.some(f => typeof f !== "string" || !f.trim()))
+    if (
+      !Array.isArray(usoFondi) ||
+      usoFondi.length === 0 ||
+      usoFondi.some((f) => typeof f !== "string" || !f.trim())
+    )
       errors.usoFondi = "Specifica almeno un uso dei fondi";
     if (!location || typeof location !== "string" || location.length < 2)
       errors.location = "Luogo non valido";
-    if (!vaultAddress || typeof vaultAddress !== "string" || !/^0x[a-fA-F0-9]{40}$/.test(vaultAddress))
+    if (
+      !vaultAddress ||
+      typeof vaultAddress !== "string" ||
+      !/^0x[a-fA-F0-9]{40}$/.test(vaultAddress)
+    )
       errors.vaultAddress = "Indirizzo vault non valido";
     if (!coverImage) {
       errors.coverImage = "Immagine non valida";
     } else {
       // Controllo estensione
       const allowedExtensions = [".png", ".jpg", ".jpeg", ".webp"];
-      const ext = coverImage.substring(coverImage.lastIndexOf(".")).toLowerCase();
+      const ext = coverImage
+        .substring(coverImage.lastIndexOf("."))
+        .toLowerCase();
       if (!allowedExtensions.includes(ext)) {
-      errors.coverImage = "Formato immagine non supportato (solo PNG, JPG, JPEG, WEBP)";
+        errors.coverImage =
+          "Formato immagine non supportato (solo PNG, JPG, JPEG, WEBP)";
       }
       // Controllo dimensione file (max 10MB)
       if (req.file && req.file.size > 10 * 1024 * 1024) {
-      errors.coverImage = "L'immagine non deve superare i 10MB";
+        errors.coverImage = "L'immagine non deve superare i 10MB";
       }
       // Controllo mimetype
-      const allowedMimeTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+      const allowedMimeTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/webp",
+      ];
       if (req.file && !allowedMimeTypes.includes(req.file.mimetype)) {
         errors.coverImage = "Tipo di file immagine non valido";
       }
@@ -461,18 +499,21 @@ export const createProject = async (req: Request, res: Response) => {
       vaultAddress: vaultAddress.trim(),
     } as Progetto;
 
-    const enteId = req.session.address ? (await UserModel.findOne({ address: req.session.address }))?._id : null;
+    const enteId = req.session.address
+      ? (await UserModel.findOne({ address: req.session.address }))?._id
+      : null;
     if (!enteId) {
       return res.status(401).json({ error: "Utente non autenticato" });
     }
     sanitizedProject["ente"] = new Types.ObjectId(enteId);
 
-    
     const newProject = await ProjectModel.create(sanitizedProject);
 
     res.status(201).json({ success: true, project: newProject });
   } catch (error) {
-    res.status(500).json({ error: "Errore nella creazione del progetto", details: error });
+    res
+      .status(500)
+      .json({ error: "Errore nella creazione del progetto", details: error });
   }
 };
 
@@ -487,7 +528,7 @@ export const donateToProject = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { amount, hashTransaction, messaggio } = req.body;
-    
+
     const project = await ProjectModel.findById(id);
     if (!project) {
       return res.status(404).json({ error: "Progetto non trovato", code: 404 });
@@ -497,24 +538,43 @@ export const donateToProject = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ error: "Utente non trovato", code: 404 });
     }
-    
+
     // Validazioni di base
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
       return res.status(400).json({ error: "Importo non valido", code: 400 });
     }
-    if(amount > project.targetAmount - project.currentAmount) {
-      return res.status(400).json({ error: "Importo eccede il budget rimanente del progetto", code: 400 });
+    if (Number(amount) + project.currentAmount > project.targetAmount) {
+      return res.status(400).json({
+        error: "Importo eccede il budget rimanente del progetto",
+        code: 400,
+      });
     }
-    if (!hashTransaction || typeof hashTransaction !== "string" || !/^0x([A-Fa-f0-9]{64})$/.test(hashTransaction)) {
-      return res.status(400).json({ error: "Hash transazione non valido", code: 400 });
+    if (
+      !hashTransaction ||
+      typeof hashTransaction !== "string" ||
+      !/^0x([A-Fa-f0-9]{64})$/.test(hashTransaction)
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Hash transazione non valido", code: 400 });
     }
-    if (messaggio && (typeof messaggio !== "string" || messaggio.length > 500)) {
+    if (
+      messaggio &&
+      (typeof messaggio !== "string" || messaggio.length > 500)
+    ) {
       return res.status(400).json({ error: "Messaggio non valido", code: 400 });
     }
-    if(user._id.equals(project.ente)) {
-      return res.status(400).json({ error: "Non puoi donare a un tuo progetto", code: 400 });
+    if (user._id.equals(project.ente)) {
+      return res
+        .status(400)
+        .json({ error: "Non puoi donare a un tuo progetto", code: 400 });
     }
-    
+    if (new Date() > new Date(project.endDate) || project.status !== "raccolta") {
+      return res
+        .status(400)
+        .json({ error: "Raccolta fondi terminata", code: 400 });
+    }
+
     // Crea donazione
     const newDonation = await DonationModel.create({
       project: project._id,
@@ -524,15 +584,29 @@ export const donateToProject = async (req: Request, res: Response) => {
       symbol: project.currency,
       messaggio: messaggio ? messaggio.trim() : "",
     });
-    
-    // Aggiorna importo attuale del progetto
-    await ProjectModel.findByIdAndUpdate(id, { 
-      $inc: { currentAmount: Number(amount) } 
-    });
-    
+
+    const updatedProject = await ProjectModel.findByIdAndUpdate(
+      //Per concorrenza
+      id,
+      { $inc: { currentAmount: Number(amount) } },
+      { new: true }
+    );
+
+    if (
+      updatedProject &&
+      (updatedProject.currentAmount >= updatedProject.targetAmount ||
+        new Date() > new Date(updatedProject.endDate)) &&
+      updatedProject.status === "raccolta"
+    ) {
+      updatedProject.status = "attivo";
+      await updatedProject.save();
+    }
+
     res.status(201).json({ success: true, donation: newDonation });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Errore nella donazione al progetto", code: 500 });
+    res
+      .status(500)
+      .json({ error: "Errore nella donazione al progetto", code: 500 });
   }
 };
