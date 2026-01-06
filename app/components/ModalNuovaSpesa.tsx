@@ -6,6 +6,7 @@ import { parseUnits, parseEventLogs } from "viem";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { useSubmit } from "react-router-dom";
 import vaultAbi from "@abi/ProjectVault.sol/ProjectVault.json";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ModalNuovaSpesa({
   projectId,
@@ -29,6 +30,7 @@ export default function ModalNuovaSpesa({
   const [isPending, setIsPending] = useState(false);
   const [statusText, setStatusText] = useState("");
   const submit = useSubmit();
+  const queryClient = useQueryClient();
   const config = useConfig();
   const writeContract = useWriteContract();
 
@@ -51,6 +53,7 @@ export default function ModalNuovaSpesa({
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
+    validate(false);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,53 +65,64 @@ export default function ModalNuovaSpesa({
       }
       setFormData((prev) => ({ ...prev, file: file }));
       setErrors((prev) => ({ ...prev, file: "" }));
+      validate(false);
     }
   };
 
-  const validate = () => {
+  const validate = (full = false) => {
     const newErrors: Record<string, string> = {};
 
-    // Validazione Nome: Maiuscola iniziale + min 3 caratteri
-    if (!formData.nome) {
-      newErrors.nome = "Il nome è obbligatorio.";
-    } else if (formData.nome.length < 3) {
-      newErrors.nome = "Minimo 3 caratteri.";
-    } else if (!/^[A-Z]/.test(formData.nome)) {
-      newErrors.nome = "Deve iniziare con una maiuscola.";
-    }
-
-    // Validazione Importo: > 0
-    try {
-      const importoNum = parseFloat(formData.importo);
-      if (!formData.importo || isNaN(importoNum) || importoNum <= 0) {
-        newErrors.importo = "Inserisci un importo valido > 0.";
-      } else if (
-        formData.importo &&
-        !/^\d+(\.\d{1,2})?$/.test(formData.importo)
-      ) {
-        newErrors.importo = "Massimo due decimali.";
-      } else if (importoNum > currentAmount - totSpeso) {
-        newErrors.importo = "L'importo supera i fondi disponibili.";
+    // Nome
+    if (full || formData.nome) {
+      if (!formData.nome) {
+        newErrors.nome = "Il nome è obbligatorio.";
+      } else if (formData.nome.length < 3) {
+        newErrors.nome = "Minimo 3 caratteri.";
+      } else if (!/^[A-Z]/.test(formData.nome)) {
+        newErrors.nome = "Deve iniziare con una maiuscola.";
       }
-    } catch {
-      newErrors.importo = "Inserisci un importo valido > 0.";
     }
 
-    // Validazione Categoria
-    if (!formData.category) {
-      newErrors.category = "Seleziona una categoria.";
-    }
-    if (usoFondi.indexOf(formData.category) === -1) {
-      newErrors.category = "Categoria non valida.";
-    }
-    // Validazione Descrizione
-    if (!formData.descrizione.trim()) {
-      newErrors.descrizione = "La descrizione è obbligatoria.";
+    // Importo
+    if (full || formData.importo) {
+      try {
+        const importoNum = parseFloat(formData.importo);
+        if (!formData.importo || isNaN(importoNum) || importoNum <= 0) {
+          newErrors.importo = "Inserisci un importo valido > 0.";
+        } else if (
+          formData.importo &&
+          !/^\d+(\.\d{1,2})?$/.test(formData.importo)
+        ) {
+          newErrors.importo = "Massimo due decimali.";
+        } else if (importoNum > currentAmount - totSpeso) {
+          newErrors.importo = "L'importo supera i fondi disponibili.";
+        }
+      } catch {
+        newErrors.importo = "Inserisci un importo valido > 0.";
+      }
     }
 
-    // Validazione File
-    if (!formData.file) {
-      newErrors.file = "Allegare un preventivo PDF è obbligatorio.";
+    // Categoria
+    if (full || formData.category) {
+      if (!formData.category) {
+        newErrors.category = "Seleziona una categoria.";
+      } else if (usoFondi.indexOf(formData.category) === -1) {
+        newErrors.category = "Categoria non valida.";
+      }
+    }
+
+    // Descrizione
+    if (full || formData.descrizione) {
+      if (!formData.descrizione.trim()) {
+        newErrors.descrizione = "La descrizione è obbligatoria.";
+      }
+    }
+
+    // File
+    if (full || formData.file) {
+      if (!formData.file) {
+        newErrors.file = "Allegare un preventivo PDF è obbligatorio.";
+      }
     }
 
     setErrors(newErrors);
@@ -116,7 +130,7 @@ export default function ModalNuovaSpesa({
   };
 
   const handleSubmit = async () => {
-    if (validate()) {
+    if (validate(true)) {
       setIsPending(true);
       try {
         setStatusText("Eseguendo transazione...");
@@ -148,43 +162,45 @@ export default function ModalNuovaSpesa({
             "Impossibile ottenere l'ID della richiesta dalla transazione"
           );
         }
-        //TODO: FuturoJ: Capisci perchè non funziona isDisabled, capisci se funziona transazione, invalida cache, carica nel db, guarda popoverdona, logicabusiness per richiesta verifica s pesa
-        // 3. INVIO AL BACKEND tramite Action di React Router
+        //TODO: FuturoJ: logicabusiness per richiesta verifica spesa
+        //? 3. INVIO AL BACKEND
         setStatusText("Salvataggio...");
         const submissionData = new FormData();
         submissionData.append("title", formData.nome);
-        submissionData.append("category", "spesa"); // o da formData
+        submissionData.append("category", formData.category); // o da formData
         submissionData.append("amount", formData.importo);
         submissionData.append("description", formData.descrizione);
         submissionData.append("hashCreation", hash);
         submissionData.append("requestId", requestIdOnChain);
         if (formData.file) submissionData.append("preventivo", formData.file);
 
-        // Submit attiva l'action definita in ProgettoSingolo
-        submit(submissionData, {
-          method: "post",
-          encType: "multipart/form-data",
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/projects/${projectId}/spese/new`,
+          {
+            method: "POST",
+            body: submissionData,
+            credentials: "include",
+          }
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          console.error("Errore nel salvataggio della spesa.");
+          setStatusText("Errore nel salvataggio della spesa.");
+          return;
+        }
+
+        queryClient.invalidateQueries({
+          queryKey: ["project-spese", projectId],
         });
+        setIsPending(false);
+        setStatusText("Donazione completata!");
+        onSuccess(data.spesa);
+        onClose();
       } catch (err) {
         console.error(err);
         setErrors({ file: "Errore durante la creazione della spesa." });
         setIsPending(false);
       }
-      // const nuovaSpesa = {
-      //   id: Date.now(),
-      //   titolo: formData.nome,
-      //   importo: parseFloat(formData.importo),
-      //   valuta: "USDC",
-      //   giorni: 30, // Default scadenza
-      //   stato: "attesa",
-      //   descrizione: formData.descrizione,
-      //   fileName: formData.file ? formData.file.name : "Preventivo.pdf",
-      //   dataPubblicazione: new Date().toLocaleDateString('it-IT'),
-      //   votiPositivi: 0,
-      //   votiNegativi: 0
-      // };
-
-      onSuccess(nuovaSpesa);
     }
   };
 
@@ -348,6 +364,14 @@ export default function ModalNuovaSpesa({
                     {statusText}
                   </span>
                 </>
+              ) : parseFloat(formData.importo) > currentAmount - totSpeso ? (
+                <>
+                  <Icon
+                    icon="material-symbols:wallet"
+                    className="text-slate-400"
+                  />
+                  Fondi insufficienti
+                </>
               ) : (
                 <>
                   Invia richiesta{" "}
@@ -355,12 +379,14 @@ export default function ModalNuovaSpesa({
                 </>
               )}
             </button>
-            <button
-              onClick={onClose}
-              className="text-sm font-bold text-slate-400 hover:text-slate-600"
-            >
-              Annulla
-            </button>
+            {!isPending && (
+              <button
+                onClick={onClose}
+                className="text-sm font-bold text-slate-400 hover:text-slate-600"
+              >
+                Annulla
+              </button>
+            )}
           </div>
         </div>
       </div>
