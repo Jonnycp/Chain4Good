@@ -13,15 +13,18 @@ export function DonorsAvatars({
 }) {
   return (
     <div className="flex -space-x-2 items-center">
-      {donors.length > 0 && donors.map((donor) => (
-        <img
-          key={donor.id}
-          className="w-6 h-6 rounded-full border border-white"
-          src={donor.profilePicture}
-          alt={"Donatore " + donor.id}
-        />
-      ))}
-      <span className={"text-[10px] text-gray-500 " + textClass}>{total > 0 ? "+" + total : "Dona ora"}</span>
+      {donors.length > 0 &&
+        donors.map((donor) => (
+          <img
+            key={donor.id}
+            className="w-6 h-6 rounded-full border border-white"
+            src={donor.profilePicture}
+            alt={"Donatore " + donor.id}
+          />
+        ))}
+      <span className={"text-[10px] text-gray-500 " + textClass}>
+        {total > 0 ? "+" + total : "Dona ora"}
+      </span>
     </div>
   );
 }
@@ -63,23 +66,22 @@ export function CardHomeSkeleton() {
   );
 }
 
-export const getTimeLeftLabel = (endDate: string  ) => {
-    const now = new Date();
-    const end = new Date(endDate);
-    const diffTime = end.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+export const getTimeLeftLabel = (endDate: string) => {
+  const now = new Date();
+  const end = new Date(endDate);
+  const diffTime = end.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays <= 0) return "Fine raccolta fondi";
-    if (diffDays === 1) return "1 giorno mancante";
-    if (diffDays < 15) return `${diffDays} giorni mancanti`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} settimane mancanti`;
-    if (diffDays > 30) {
-      const months = Math.floor(diffDays / 30);
-      return months === 1 ? "1 mese mancante" : `${months} mesi mancanti`;
-    }
-    return `${Math.floor(diffDays / 365)} anni mancanti`;
-  };
-
+  if (diffDays <= 0) return "Fine raccolta fondi";
+  if (diffDays === 1) return "1 giorno mancante";
+  if (diffDays < 15) return `${diffDays} giorni mancanti`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} settimane mancanti`;
+  if (diffDays > 30) {
+    const months = Math.floor(diffDays / 30);
+    return months === 1 ? "1 mese mancante" : `${months} mesi mancanti`;
+  }
+  return `${Math.floor(diffDays / 365)} anni mancanti`;
+};
 
 const CardHome = ({
   _id,
@@ -94,6 +96,8 @@ const CardHome = ({
   currency,
   numeroDonatori,
   lastDonors,
+  numeroSpese,
+  totaleSpeso,
   isMyProject = false,
 }: Project & { isMyProject?: boolean }) => {
   // LOGICA BADGE STATO
@@ -128,7 +132,11 @@ const CardHome = ({
       <div className="relative h-48 w-full">
         <Link to={"/progetto/" + _id}>
           <img
-            src={cover.startsWith("https://") ? cover : `${import.meta.env.VITE_BACKEND_URL}/${cover}`}
+            src={
+              cover.startsWith("https://")
+                ? cover
+                : `${import.meta.env.VITE_BACKEND_URL}/${cover}`
+            }
             alt={titolo}
             className="w-full h-full object-cover"
           />
@@ -173,91 +181,94 @@ const CardHome = ({
       {/* BODY */}
       <div className="px-6 pt-10 pb-6">
         <Link to={"/progetto/" + _id}>
-        {/* Titolo */}
-        <h3 className="text-lg font-extrabold text-[#1E293B] leading-tight mb-4 group-hover:text-blue-600 transition-colors line-clamp-2">
-          {titolo}
-        </h3>
+          {/* Titolo */}
+          <h3 className="text-lg font-extrabold text-[#1E293B] leading-tight mb-4 group-hover:text-blue-600 transition-colors line-clamp-2">
+            {titolo}
+          </h3>
 
-        {/* CONTENUTO CONDIZIONALE */}
-        {stato === "raccolta" ? (
-          /* VISTA RACCOLTA FONDI */
-          <>
-            {/* Barra di Progresso */}
-            <div className="flex items-center gap-3 mb-1">
-              <div className="w-full bg-gray-200 rounded-full h-3 relative overflow-hidden">
-                <div
-                  className="bg-[#56A836] h-full rounded-full"
-                  style={{ width: `${progressPercentage}%` }}
-                ></div>
-              </div>
-              <span className="text-xs font-bold text-gray-500">
-                {Math.round(progressPercentage)}%
-              </span>
-            </div>
-
-            {/* Cifra */}
-            <div className="text-xl font-bold text-gray-800 mb-4">
-              {formattedAmount}{" "}
-              <span className="text-sm text-gray-500 font-normal">
-                {currency}
-              </span>
-            </div>
-
-            {/* Footer Raccolta */}
-            <div className="flex justify-between items-center mt-2">
-              <div className="flex items-center gap-2 text-gray-600">
-                <Icon
-                  icon="solar:clock-circle-bold"
-                  className="w-5 h-5 opacity-80"
-                />
-                <span className="text-xs font-medium">
-                  {getTimeLeftLabel(endDate)}
-                </span>
-              </div>
-              <DonorsAvatars donors={lastDonors} total={numeroDonatori} />
-            </div>
-          </>
-        ) : (
-          /* VISTA PROGETTO ATTIVO / TERMINATO */
-          <>
-            {/* Statistiche Spesa */}
-            <div className="space-y-1 mb-4">
-              <p className="text-[#1E293B] font-medium text-sm">
-                Raccolto
-                <span className="font-bold text-lg">
-                  {formattedAmount}
-                </span>{" "}
-                <span className="text-xs text-gray-500">{currency}</span>
-              </p>
-              <p className="text-[#1E293B] font-medium text-sm">
-                Speso il <span className="font-bold">{"spentPercentage"}%</span>{" "}
-                del budget
-              </p>
-            </div>
-
-            {/* Footer Attivo */}
-            <div className="flex justify-between items-center mt-6">
-              {/* Spese effettuate */}
-              <div className="flex items-center gap-2 text-gray-500">
-                <Icon
-                  icon="mdi:cart-outline"
-                  className="w-5 h-5 text-[#1E293B]"
-                />
-                <span className="text-xs font-medium">
-                  {"expensesCount"} spese effettuate
+          {/* CONTENUTO CONDIZIONALE */}
+          {stato === "raccolta" ? (
+            /* VISTA RACCOLTA FONDI */
+            <>
+              {/* Barra di Progresso */}
+              <div className="flex items-center gap-3 mb-1">
+                <div className="w-full bg-gray-200 rounded-full h-3 relative overflow-hidden">
+                  <div
+                    className="bg-[#56A836] h-full rounded-full"
+                    style={{ width: `${progressPercentage}%` }}
+                  ></div>
+                </div>
+                <span className="text-xs font-bold text-gray-500">
+                  {Math.round(progressPercentage)}%
                 </span>
               </div>
 
-              {/* Donatori */}
-              <DonorsAvatars
-                donors={lastDonors}
-                total={numeroDonatori}
-                textClass="ml-1"
-              />
-            </div>
-          </>
-        )}
-      </Link> 
+              {/* Cifra */}
+              <div className="text-xl font-bold text-gray-800 mb-4">
+                {formattedAmount}{" "}
+                <span className="text-sm text-gray-500 font-normal">
+                  {currency}
+                </span>
+              </div>
+
+              {/* Footer Raccolta */}
+              <div className="flex justify-between items-center mt-2">
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Icon
+                    icon="solar:clock-circle-bold"
+                    className="w-5 h-5 opacity-80"
+                  />
+                  <span className="text-xs font-medium">
+                    {getTimeLeftLabel(endDate)}
+                  </span>
+                </div>
+                <DonorsAvatars donors={lastDonors} total={numeroDonatori} />
+              </div>
+            </>
+          ) : (
+            /* VISTA PROGETTO ATTIVO / TERMINATO */
+            <>
+              {/* Statistiche Spesa */}
+              <div className="space-y-1 mb-4">
+                <p className="text-[#1E293B] font-medium text-sm">
+                  Raccolto{" "}
+                  <span className="font-bold text-lg">
+                    {formattedAmount}
+                  </span>{" "}
+                  <span className="text-xs text-gray-500">{currency}</span>
+                </p>
+                <p className="text-[#1E293B] font-medium text-sm">
+                  Speso il{" "}
+                  <span className="font-bold">
+                    {Math.min((totaleSpeso / currentAmount) * 100, 100)}%
+                  </span>{" "}
+                  del budget
+                </p>
+              </div>
+
+              {/* Footer Attivo */}
+              <div className="flex justify-between items-center mt-6">
+                {/* Spese effettuate */}
+                <div className="flex items-center gap-2 text-gray-500">
+                  <Icon
+                    icon="mdi:cart-outline"
+                    className="w-5 h-5 text-[#1E293B]"
+                  />
+                  <span className="text-xs font-medium">
+                    {numeroSpese} spese effettuate
+                  </span>
+                </div>
+
+                {/* Donatori */}
+                <DonorsAvatars
+                  donors={lastDonors}
+                  total={numeroDonatori}
+                  textClass="ml-1"
+                />
+              </div>
+            </>
+          )}
+        </Link>
       </div>
     </div>
   );
