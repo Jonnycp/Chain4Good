@@ -152,7 +152,7 @@ export default function PopoverDona({
         <div className="flex flex-wrap gap-2 justify-center mb-6">
           {presets.map((val) => (
             <button
-              key={val}
+              key={"preset"+val}
               onClick={() => setAmountStr(val.toString())}
               className={`px-4 py-2 rounded-full text-sm font-bold border transition-all ${
                 amountStr === val.toString()
@@ -234,23 +234,28 @@ export default function PopoverDona({
               : "bg-slate-200 text-slate-400 cursor-not-allowed"
           }`}
         >
-          {isPending ? (
+            {isPending ? (
             <>
               <Icon icon="mdi:loading" className="animate-spin text-2xl" />
               <span className="text-sm uppercase tracking-wider">
-                {statusText}
+              {statusText}
               </span>
             </>
-          ) : hasEnoughEurc ? (
+            ) : parseFloat(amountStr) > missing ? (
+            <>
+              <Icon icon="mdi:alert-circle-outline" className="text-yellow-500" />
+              Oltre il target massimo
+            </>
+            ) : hasEnoughEurc ? (
             <>
               Invia donazione <Icon icon="mdi:heart" className="text-red-500" />
             </>
-          ) : (
+            ) : (
             <>
-              Fondi insufficienti{" "}
-              <Icon icon="mdi:wallet-off-outline" className="text-slate-400" />
+              <Icon icon="material-symbols:wallet" className="text-slate-400" />
+              Fondi insufficienti
             </>
-          )}
+            )}
         </button>
 
         {!isPending && (

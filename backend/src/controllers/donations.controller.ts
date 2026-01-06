@@ -72,6 +72,7 @@ export const donateToProject = async (req: Request, res: Response) => {
       messaggio: messaggio ? messaggio.trim() : "",
     });
 
+    //TODO: dovrebbe prendere i valori on-chain per sicurezza
     const updatedProject = await ProjectModel.findByIdAndUpdate(
       //Per concorrenza
       id,
