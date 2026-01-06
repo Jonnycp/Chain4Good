@@ -81,9 +81,13 @@ export default function ProgettoSingolo() {
   const navigate = useNavigate();
 
   const project = useLoaderData() as PROJECT_BIG;
-  const { projectDonations, setCurrentProjectId, contracts, user } = useApp();
+  const { projectDonations, projectSpese, setCurrentProjectId, contracts, user } = useApp();
   const progressPercent = Math.min(
     (project.currentAmount / project.targetAmount) * 100,
+    100
+  );
+  const spesePercent = Math.min(
+    (projectSpese.sommaSpese / project.currentAmount) * 100,
     100
   );
   const [shareUrl, setShareUrl] = useState<string>("");
@@ -133,8 +137,8 @@ export default function ProgettoSingolo() {
   }, []);
 
   const [activeTab, setActiveTab] = useState<
-    "attesa" | "approvata" | "rifiutata"
-  >("attesa");
+    "votare" | "attesa" | "approvata" | "rifiutata"
+  >("votare");
 
   // Stati Modali
   const [isNewSpesaOpen, setIsNewSpesaOpen] = useState(false);
@@ -298,6 +302,10 @@ export default function ProgettoSingolo() {
       {/* 2. Modali Ente (Nuova Spesa e Successo) - Renderizzati solo se Ente */}
       {project.isMy && isNewSpesaOpen && (
         <ModalNuovaSpesa
+          projectId={project._id}
+          currency={project.currency}
+          currentAmount={project.currentAmount}
+          usoFondi={project.usoFondi}
           onClose={() => setIsNewSpesaOpen(false)}
           onSuccess={handleNewSpesaSuccess}
         />
@@ -363,7 +371,7 @@ export default function ProgettoSingolo() {
               <div className="text-2xl font-extrabold text-secondary">
                 {project.status === "raccolta"
                   ? project.currentAmount.toFixed(2)
-                  : "???"}
+                  : projectSpese.sommaSpese.toFixed(2)}
                 <span className="text-xs font-bold text-slate-400">
                   {" "}
                   {project.currency}
@@ -390,11 +398,11 @@ export default function ProgettoSingolo() {
             <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
               <div
                 className="bg-primary h-full rounded-full transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
+                style={{ width: `${project.status === "raccolta" ? progressPercent : spesePercent}%` }}
               ></div>
             </div>
             <span className="text-xs font-bold text-slate-400">
-              {Math.round(progressPercent)}%
+              {Math.round(project.status === "raccolta" ? progressPercent : spesePercent)}%
             </span>
           </div>
 
@@ -411,7 +419,7 @@ export default function ProgettoSingolo() {
               <span className="text-xs font-bold">
                 {project.status === "raccolta"
                   ? getTimeLeftLabel(project.endDate)
-                  : `${listaSpese.length} spese effettuate`}
+                  : `${projectSpese.spese.length} spese effettuate`}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -488,6 +496,13 @@ export default function ProgettoSingolo() {
             {/* TABS */}
             <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
               <button
+                onClick={() => setActiveTab("votare")}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === "attesa" ? "bg-primary text-white shadow-md" : "bg-[#F1F5F9] text-slate-500 hover:bg-slate-200"}`}
+              >
+                {" "}
+                <Icon icon="mdi:help-circle-outline" className="text-base" /> Da votare
+              </button>
+              <button
                 onClick={() => setActiveTab("attesa")}
                 className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === "attesa" ? "bg-primary text-white shadow-md" : "bg-[#F1F5F9] text-slate-500 hover:bg-slate-200"}`}
               >
@@ -522,11 +537,17 @@ export default function ProgettoSingolo() {
                   />
                 ))
               ) : (
-                <div className="text-center py-8 border-2 border-dashed border-slate-200 rounded-2xl">
-                  <p className="text-slate-400 text-sm font-medium">
-                    Nessuna spesa in questa categoria
-                  </p>
+                <div className="px-6 py-12 text-center md:bg-white rounded-3xl border-secondary/20 border-2">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Icon
+                    icon="solar:box-minimalistic-linear"
+                    className="text-3xl text-slate-400"
+                  />
                 </div>
+                <p className="text-slate-500 text-sm font-medium">
+                  Nessuna spesa in questa categoria.
+                </p>
+              </div>
               )}
             </div>
           </div>
@@ -567,9 +588,9 @@ export default function ProgettoSingolo() {
           </div>
           <div className="flex flex-col gap-1">
             {projectDonations.donors.length > 0 ? (
-              projectDonations.donors.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 20).map((donatore) => (
+              projectDonations.donors.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 20).map((donatore, i) => (
                 <div
-                  key={donatore.id}
+                  key={donatore.id+"-"+i}
                   className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"
                 >
                   <div className="flex items-start gap-3">
