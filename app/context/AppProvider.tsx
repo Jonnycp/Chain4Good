@@ -26,6 +26,9 @@ export type Project = {
     id: string;
     profilePicture: string;
   }>;
+  createdAt: Date;
+  numeroSpese: number;
+  totaleSpeso: number;
 };
 
 interface AppContextType {
@@ -67,6 +70,18 @@ interface AppContextType {
       createdAt: Date;
     }>;
   };
+  projectSpese: {
+    spese: Array<{
+      _id: string;
+      title: string;
+      amount: number;
+      status: "votazione" | "approvata" | "rifiutata";
+      executed: boolean;
+      createdAt: Date;
+    }>;
+    sommaSpese: number;
+    spesaNonVerificata?: string;
+  };
   setCurrentProjectId: (id: string | null) => void;
   loading: {
     user: boolean;
@@ -74,6 +89,7 @@ interface AppContextType {
     projectsByCategory: boolean;
     myProjects: boolean;
     projectDonations: boolean;
+    projectSpese: boolean;
   };
   refetchAll: () => void;
   setCategory: (cat: string) => void;
@@ -205,6 +221,26 @@ export default function AppProvider({
     staleTime: 1000 * 30, // 30 secondi
   });
 
+  const {
+    data: projectSpeseData,
+    isLoading: projectSpeseLoading,
+    refetch: refetchProjectSpese,
+  } = useQuery({
+    queryKey: ["project-spese", currentProjectId],
+    queryFn: async () => {
+      if (!currentProjectId) return { donors: [], totDonors: 0 };
+      const res = await fetch(
+        `${API_BASE_URL}/projects/${currentProjectId}/spese`,
+        {
+          credentials: "include",
+        }
+      );
+      return res.json();
+    },
+    enabled: user !== null && !userLoading && !!currentProjectId,
+    staleTime: 1000 * 30, // 30 secondi
+  });
+
   // Indirizzi contratti blockchain
   const { data: contractConfig } = useQuery({
     queryKey: ["contractAddresses"],
@@ -223,6 +259,7 @@ export default function AppProvider({
       projectsByCategory: isLoadingCategory,
       myProjects: isLoadingMyProjects,
       projectDonations: projectDonationsLoading,
+      projectSpese: projectSpeseLoading,
     },
     projects: {
       explore: projectsExplore || [],
@@ -231,6 +268,7 @@ export default function AppProvider({
       myProjects: myProjects || [],
     },
     projectDonations: projectDonationsData || { donors: [], totDonors: 0 },
+    projectSpese: projectSpeseData || { spese: [], sommaSpese: 0 },
     setCurrentProjectId,
     setCategory: (cat: string) => {
       setSelectedCategory(cat);
@@ -241,6 +279,7 @@ export default function AppProvider({
       refetchProjectsByCategory();
       refetchMyProjects();
       refetchProjectDonations();
+      refetchProjectSpese();
     },
     contracts: contractConfig,
   };
