@@ -31,6 +31,30 @@ export type Project = {
   totaleSpeso: number;
 };
 
+export type Spesa = {
+      _id: string;
+      title: string;
+      description: string;
+      category: string;
+      amount: number;
+      preventivo: string;
+      requestId: number;
+      hashCreation: string;
+      status: "votazione" | "approvata" | "rifiutata";
+      executed: boolean;
+      hashExecution?: string;
+      createdAt: Date;
+      votes: {
+        votesFor: number;
+        votesAgainst: number;
+      }
+      myVote: {
+        vote: "for" | "against";
+        timestamp: Date;
+        motivation?: string;
+        hashVote: string;
+      } | null;
+    }
 interface AppContextType {
   user: {
     address: string;
@@ -71,14 +95,7 @@ interface AppContextType {
     }>;
   };
   projectSpese: {
-    spese: Array<{
-      _id: string;
-      title: string;
-      amount: number;
-      status: "votazione" | "approvata" | "rifiutata";
-      executed: boolean;
-      createdAt: Date;
-    }>;
+    spese: Array<Spesa>;
     sommaSpese: number;
     spesaNonVerificata?: string;
   };
