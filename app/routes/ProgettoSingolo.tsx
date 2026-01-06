@@ -305,7 +305,9 @@ export default function ProgettoSingolo() {
           projectId={project._id}
           currency={project.currency}
           currentAmount={project.currentAmount}
+          totSpeso={projectSpese.sommaSpese}
           usoFondi={project.usoFondi}
+          vaultAddress={project.vaultAddress}
           onClose={() => setIsNewSpesaOpen(false)}
           onSuccess={handleNewSpesaSuccess}
         />
