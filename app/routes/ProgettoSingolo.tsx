@@ -5,20 +5,18 @@ import {
   useLoaderData,
   useNavigate,
   useRevalidator,
-  type ActionFunctionArgs,
 } from "react-router-dom";
 
 // Componenti Condivisi
 import HeaderCover from "~/components/HeaderCover";
 import CardSpesa from "~/components/CardSpesa";
-import ModalDettagliSpesa from "~/components/ModalDettagliSpesa";
+import ModalGestioneSpesa from "~/components/ModalGestioneSpesa";
 
 // Modali specifici per Ente
 import ModalNuovaSpesa from "~/components/ModalNuovaSpesa";
 import ModalSuccessoSpesa from "~/components/ModalSuccessoSpesa";
 
 // Modali specifici per Utente
-import ModalGestioneSpesa from "~/components/ModalGestioneSpesa";
 import PopoverDona from "~/components/PopoverDona";
 import ModalGrazie from "~/components/ModalGrazie";
 import { API_BASE_URL, useApp } from "~/context/AppProvider";
@@ -139,8 +137,8 @@ export default function ProgettoSingolo() {
   }, []);
 
   const [activeTab, setActiveTab] = useState<
-    "votare" | "attesa" | "approvata" | "rifiutata"
-  >("votare");
+    "votazione" | "approvata" | "rifiutata"
+  >("votazione");
 
   // Stati Modali
   const [isNewSpesaOpen, setIsNewSpesaOpen] = useState(false);
@@ -149,49 +147,6 @@ export default function ProgettoSingolo() {
   const [isDonaOpen, setIsDonaOpen] = useState(false);
   const [isGrazieOpen, setIsGrazieOpen] = useState(false);
   const [donatedAmount, setDonatedAmount] = useState(0);
-
-  //MOCK TEMPORANEI
-  const [listaSpese, setListaSpese] = useState([
-    {
-      id: 1,
-      titolo: "Acquisto furgoncino fantastico (usato)",
-      importo: 1570,
-      valuta: "USDC",
-      giorni: 3,
-      stato: "attesa",
-      descrizione: "Furgone necessario per il trasporto degli animali.",
-      fileName: "Preventivo-1.pdf",
-      dataPubblicazione: "12/12/2025",
-      votiPositivi: 23,
-      votiNegativi: 10,
-    },
-    {
-      id: 2,
-      titolo: "Pagare social media manager",
-      importo: 70,
-      valuta: "USDC",
-      giorni: 13,
-      stato: "approvata",
-      descrizione: "Gestione campagne social.",
-      fileName: "fattura_smm.pdf",
-      dataPubblicazione: "01/12/2025",
-      votiPositivi: 45,
-      votiNegativi: 2,
-    },
-    {
-      id: 3,
-      titolo: "Pranzo di capodanno",
-      importo: 100,
-      valuta: "USDC",
-      votes: 120,
-      stato: "rifiutata",
-      descrizione: "Festeggiamenti interni staff.",
-      fileName: "scontrino.pdf",
-      dataPubblicazione: "31/12/2025",
-      votiPositivi: 2,
-      votiNegativi: 120,
-    },
-  ]);
 
   // Approva uso currency
   const handleApprove = async () => {
@@ -220,78 +175,71 @@ export default function ProgettoSingolo() {
   const handleNewSpesaSuccess = () => {
     setIsNewSpesaOpen(false);
     setIsSuccessOpen(true);
-    setActiveTab("attesa");
+    setActiveTab("votazione");
   };
 
-  // Voto spesa
-  // LOGICA UTENTE: Voto spesa
-  const handleUpdateStatus = (
-    id: number,
-    decision: "attesa" | "approvata" | "rifiutata"
-  ) => {
-    setListaSpese((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          const updatedVotiPositivi =
-            decision === "approvata"
-              ? (item.votiPositivi || 0) + 1
-              : item.votiPositivi;
+  // // Voto spesa
+  // // LOGICA UTENTE: Voto spesa
+  // const handleUpdateStatus = (
+  //   id: number,
+  //   decision: "attesa" | "approvata" | "rifiutata"
+  // ) => {
+  //   setListaSpese((prev) =>
+  //     prev.map((item) => {
+  //       if (item.id === id) {
+  //         const updatedVotiPositivi =
+  //           decision === "approvata"
+  //             ? (item.votiPositivi || 0) + 1
+  //             : item.votiPositivi;
 
-          const updatedVotiNegativi =
-            decision === "rifiutata"
-              ? (item.votiNegativi || 0) + 1
-              : item.votiNegativi;
+  //         const updatedVotiNegativi =
+  //           decision === "rifiutata"
+  //             ? (item.votiNegativi || 0) + 1
+  //             : item.votiNegativi;
 
-          return {
-            ...item,
-            stato: item.stato,
-            votiPositivi: updatedVotiPositivi,
-            votiNegativi: updatedVotiNegativi,
-          };
-        }
-        return item;
-      })
-    );
+  //         return {
+  //           ...item,
+  //           stato: item.stato,
+  //           votiPositivi: updatedVotiPositivi,
+  //           votiNegativi: updatedVotiNegativi,
+  //         };
+  //       }
+  //       return item;
+  //     })
+  //   );
 
-    // Chiudiamo il modale
-    setSelectedSpesa(null);
-  };
+  //   // Chiudiamo il modale
+  //   setSelectedSpesa(null);
+  // };
 
-  const handleCardClick = (spesa: any) => {
-    setSelectedSpesa(spesa);
-  };
+
   // Render dei modali
   const renderSelectedSpesaModal = () => {
     if (!selectedSpesa) return null;
-    if (true) {
+    if (project.isMy || selectedSpesa.status !== "votazione" || selectedSpesa.myVote) {
       return (
-        <ModalDettagliSpesa
+        <ModalGestioneSpesa
+          mode="view"
           spesa={selectedSpesa}
+          currency={project.currency}
           onClose={() => setSelectedSpesa(null)}
         />
       );
     }
     // Gestione spesa per Utente
-    if (selectedSpesa.stato === "attesa") {
+    if (selectedSpesa.status === "votazione") {
       return (
         <ModalGestioneSpesa
+          mode="manage"
           spesa={selectedSpesa}
+          currency={project.currency}
           onClose={() => setSelectedSpesa(null)}
-          onUpdateStatus={handleUpdateStatus}
         />
       );
     }
-
-    // Altrimenti (Utente e spesa già decisa), vedo solo dettagli
-    return (
-      <ModalDettagliSpesa
-        spesa={selectedSpesa}
-        onClose={() => setSelectedSpesa(null)}
-      />
-    );
   };
 
-  const filteredSpese = listaSpese.filter((spesa) => spesa.stato === activeTab);
+  const filteredSpese = projectSpese.spese.filter((spesa) => spesa.status === activeTab);
 
   return (
     <div className="min-h-screen bg-white font-sans pb-10 relative">
@@ -301,7 +249,7 @@ export default function ProgettoSingolo() {
       {renderSelectedSpesaModal()}
 
       {/* 2. Modali Ente (Nuova Spesa e Successo) - Renderizzati solo se Ente */}
-      {project.isMy && isNewSpesaOpen && (
+      {project.isMy && isNewSpesaOpen && (projectSpese.spesaNonVerificata ? false : true) && (
         <ModalNuovaSpesa
           projectId={project._id}
           currency={project.currency}
@@ -309,7 +257,10 @@ export default function ProgettoSingolo() {
           totSpeso={projectSpese.sommaSpese}
           usoFondi={project.usoFondi}
           vaultAddress={project.vaultAddress}
-          onClose={() => setIsNewSpesaOpen(false)}
+          onClose={() => {
+            revalidator.revalidate();
+            setIsNewSpesaOpen(false);
+          }}
           onSuccess={handleNewSpesaSuccess}
         />
       )}
@@ -477,9 +428,10 @@ export default function ProgettoSingolo() {
               {project.isMy && (
                 <button
                   onClick={() => setIsNewSpesaOpen(true)}
-                  className="bg-primary hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors"
+                  disabled={projectSpese.spesaNonVerificata ? true : false}
+                  className="bg-primary hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors disabled:bg-purple-300 disabled:cursor-not-allowed"
                 >
-                  <Icon icon="mdi:plus" className="text-base" /> Nuova spesa
+                  <Icon icon={projectSpese.spesaNonVerificata ? "material-symbols:lock" : "mdi:plus"} className="text-base" /> {projectSpese.spesaNonVerificata ? "Devi verificare la spesa" : "Nuova Spesa"}
                 </button>
               )}
             </div>
@@ -499,15 +451,8 @@ export default function ProgettoSingolo() {
             {/* TABS */}
             <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
               <button
-                onClick={() => setActiveTab("votare")}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === "attesa" ? "bg-primary text-white shadow-md" : "bg-[#F1F5F9] text-slate-500 hover:bg-slate-200"}`}
-              >
-                {" "}
-                <Icon icon="mdi:help-circle-outline" className="text-base" /> Da votare
-              </button>
-              <button
-                onClick={() => setActiveTab("attesa")}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === "attesa" ? "bg-primary text-white shadow-md" : "bg-[#F1F5F9] text-slate-500 hover:bg-slate-200"}`}
+                onClick={() => setActiveTab("votazione")}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === "votazione" ? "bg-primary text-white shadow-md" : "bg-[#F1F5F9] text-slate-500 hover:bg-slate-200"}`}
               >
                 {" "}
                 <Icon icon="mdi:help-circle-outline" className="text-base" /> In
@@ -534,9 +479,11 @@ export default function ProgettoSingolo() {
               {filteredSpese.length > 0 ? (
                 filteredSpese.map((spesa) => (
                   <CardSpesa
-                    key={spesa.id}
+                    key={spesa._id}
                     {...spesa}
-                    onClick={() => handleCardClick(spesa)}
+                    currency={project.currency}
+                    isMy={project.isMy}
+                    onClick={() => setSelectedSpesa(spesa)}
                   />
                 ))
               ) : (
