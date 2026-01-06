@@ -27,7 +27,7 @@ export default function ModalSuccessoSpesa({ onClose }: ModalSuccessoSpesaProps)
             className="w-full h-12 bg-[#0F172A] text-white font-bold text-base rounded-xl shadow-lg"
             onPress={onClose}
         >
-            Torna indietro
+            Perfetto
         </Button>
 
       </div>
