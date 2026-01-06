@@ -85,7 +85,6 @@ export default function PopoverDona({
       setStatusText("Donazione completata!");
       setShowSuccessBox(true);
       onClose(parseFloat(amountStr));
-      console.log("Donazione completata", statusText, showSuccessBox);
     } catch (err) {
       console.error(err);
       setStatusText("Errore transazione");
@@ -142,7 +141,7 @@ export default function PopoverDona({
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-appearance-in">
       {/* Overlay click to close */}
-      <div className="absolute inset-0" onClick={() => onClose()}></div>
+      {!isPending && <div className="absolute inset-0" onClick={() => onClose()}></div>}
 
       <div className="bg-white rounded-[32px] w-full max-w-sm p-6 relative shadow-2xl flex flex-col animate-slide-up sm:animate-none z-10">
         <h2 className="text-lg font-extrabold text-secondary text-center mb-6 mt-2">
