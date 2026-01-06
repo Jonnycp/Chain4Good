@@ -162,7 +162,6 @@ export default function ModalNuovaSpesa({
             "Impossibile ottenere l'ID della richiesta dalla transazione"
           );
         }
-        //TODO: FuturoJ: logicabusiness per richiesta verifica spesa
         //? 3. INVIO AL BACKEND
         setStatusText("Salvataggio...");
         const submissionData = new FormData();
