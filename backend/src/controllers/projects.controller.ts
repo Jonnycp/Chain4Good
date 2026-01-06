@@ -83,6 +83,16 @@ export const getProjects = async (req: Request, res: Response) => {
         },
       },
       {
+        $lookup: {
+          from: "spesas",
+          let: { projectId: "$_id" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$projectId", "$$projectId"] } } },
+          ],
+          as: "spese",
+        },
+      },
+      {
         // Join con utenti donatori
         $lookup: {
           from: "users",
@@ -123,6 +133,14 @@ export const getProjects = async (req: Request, res: Response) => {
             id: "$ente._id",
             nome: "$ente.enteDetails.nome",
             profilePicture: "$ente.profilePicture",
+          },
+          numeroSpese: { $size: "$spese" },
+          totaleSpeso: {
+            $cond: [
+              { $gt: [{ $size: "$spese" }, 0] },
+              { $sum: "$spese.amount" },
+              0,
+            ],
           },
         },
       },
@@ -190,6 +208,16 @@ export const getMyProjects = async (req: Request, res: Response) => {
       },
       {
         $lookup: {
+          from: "spesas",
+          let: { projectId: "$_id" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$projectId", "$$projectId"] } } },
+          ],
+          as: "spese",
+        },
+      },
+      {
+        $lookup: {
           from: "users",
           let: { donorIds: { $slice: ["$donazioni.donor", 5] } },
           pipeline: [
@@ -220,6 +248,14 @@ export const getMyProjects = async (req: Request, res: Response) => {
                 profilePicture: "$$d.profilePicture",
               },
             },
+          },
+          numeroSpese: { $size: "$spese" },
+          totaleSpeso: {
+            $cond: [
+              { $gt: [{ $size: "$spese" }, 0] },
+              { $sum: "$spese.amount" },
+              0,
+            ],
           },
           ente: {
             id: "$ente._id",
