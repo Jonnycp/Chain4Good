@@ -81,6 +81,8 @@ export default function ProgettoSingolo() {
   const navigate = useNavigate();
 
   const project = useLoaderData() as PROJECT_BIG;
+  if (!project) return null;
+
   const { projectDonations, projectSpese, setCurrentProjectId, contracts, user } = useApp();
   const progressPercent = Math.min(
     (project.currentAmount / project.targetAmount) * 100,
@@ -107,7 +109,7 @@ export default function ProgettoSingolo() {
             project.vaultAddress as `0x${string}`,
           ]
         : undefined,
-    query: { enabled: !!user!.address && !!project.vaultAddress },
+    query: { enabled: !!user!.address && !!project.vaultAddress&& !!contracts?.eurc },
   });
 
   // Verifica se serve l'approvazione
@@ -215,8 +217,7 @@ export default function ProgettoSingolo() {
   };
 
   //Creazione nuova spesa
-  const handleNewSpesaSuccess = (nuovaSpesa: any) => {
-    setListaSpese((prev) => [nuovaSpesa, ...prev]);
+  const handleNewSpesaSuccess = () => {
     setIsNewSpesaOpen(false);
     setIsSuccessOpen(true);
     setActiveTab("attesa");
