@@ -17,14 +17,8 @@ import { Types } from "mongoose";
 export const createSpesa = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const {
-      title,
-      category,
-      amount,
-      description,
-      hashCreation,
-      requestId
-    } = req.body;
+    const { title, category, amount, description, hashCreation, requestId } =
+      req.body;
     const preventivo = req.file ? req.file.path : "";
 
     const errors: Record<string, string> = {};
@@ -36,9 +30,17 @@ export const createSpesa = async (req: Request, res: Response) => {
       errors.category = "Categoria non valida";
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0)
       errors.amount = "Importo non valido";
-    if (!description || typeof description !== "string" || description.length < 10)
+    if (
+      !description ||
+      typeof description !== "string" ||
+      description.length < 10
+    )
       errors.description = "Descrizione troppo corta";
-    if (!hashCreation || typeof hashCreation !== "string" || hashCreation.length < 10)
+    if (
+      !hashCreation ||
+      typeof hashCreation !== "string" ||
+      hashCreation.length < 10
+    )
       errors.hashCreation = "Hash creazione non valido";
     if (!requestId || isNaN(Number(requestId)))
       errors.requestId = "Request ID non valido";
@@ -47,9 +49,12 @@ export const createSpesa = async (req: Request, res: Response) => {
     } else {
       // Controllo estensione
       const allowedExtensions = [".pdf", ".png", ".jpg", ".jpeg", ".webp"];
-      const ext = preventivo.substring(preventivo.lastIndexOf(".")).toLowerCase();
+      const ext = preventivo
+        .substring(preventivo.lastIndexOf("."))
+        .toLowerCase();
       if (!allowedExtensions.includes(ext)) {
-        errors.preventivo = "Formato file non supportato (PDF, PNG, JPG, JPEG, WEBP)";
+        errors.preventivo =
+          "Formato file non supportato (PDF, PNG, JPG, JPEG, WEBP)";
       }
       // Controllo dimensione file (max 10MB)
       if (req.file && req.file.size > 10 * 1024 * 1024) {
@@ -78,19 +83,36 @@ export const createSpesa = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Progetto non trovato" });
     }
 
-    if(project.status !== "attivo") {
-      return res.status(400).json({ error: "Impossibile aggiungere spese a un progetto non attivo", code: 400 });
+    if (project.status !== "attivo") {
+      return res.status(400).json({
+        error: "Impossibile aggiungere spese a un progetto non attivo",
+        code: 400,
+      });
     }
-    
-    const speseProgetto = await SpesaModel.find({ projectId: new Types.ObjectId(id) });
-    const sommaSpese = speseProgetto.reduce((acc, spesa) => acc + (spesa.amount || 0), 0);
-    const spesaNonVerificata = speseProgetto.find(spesa => spesa.proof === undefined && spesa.executed === true);
+
+    const speseProgetto = await SpesaModel.find({
+      projectId: new Types.ObjectId(id),
+    });
+    const sommaSpese = speseProgetto.reduce(
+      (acc, spesa) => acc + (spesa.amount || 0),
+      0
+    );
+    const spesaNonVerificata = speseProgetto.find(
+      (spesa) => spesa.proof === undefined && spesa.executed === true
+    );
 
     if (spesaNonVerificata) {
-        return res.status(400).json({ error: "Devi prima verificare la spesa precedente, allegando una prova di spesa", code: 400 });
+      return res.status(400).json({
+        error:
+          "Devi prima verificare la spesa precedente, allegando una prova di spesa",
+        code: 400,
+      });
     }
     if (sommaSpese + Number(amount) > project.currentAmount) {
-        return res.status(400).json({ error: "Il totale delle spese supera il budget del progetto", code: 400 });
+      return res.status(400).json({
+        error: "Il totale delle spese supera il budget del progetto",
+        code: 400,
+      });
     }
 
     // Crea la spesa
@@ -133,7 +155,9 @@ export const getProjectSpese = async (req: Request, res: Response) => {
 
     // Validazione id progetto
     if (!id || typeof id !== "string" || id.length !== 24) {
-      return res.status(400).json({ error: "ID progetto non valido", code: 400 });
+      return res
+        .status(400)
+        .json({ error: "ID progetto non valido", code: 400 });
     }
 
     // Validazione order
@@ -148,7 +172,9 @@ export const getProjectSpese = async (req: Request, res: Response) => {
 
     // Validazione sort
     if (sort && !allowedSorts.includes(sort as string)) {
-      return res.status(400).json({ error: "Campo di ordinamento non valido", code: 400 });
+      return res
+        .status(400)
+        .json({ error: "Campo di ordinamento non valido", code: 400 });
     }
 
     // Validazione status
@@ -173,8 +199,13 @@ export const getProjectSpese = async (req: Request, res: Response) => {
     if (limit) speseQuery = speseQuery.limit(Number(limit));
 
     const spese = await speseQuery.exec();
-    const sommaSpese = spese.reduce((acc, spesa) => acc + (spesa.amount || 0), 0);
-    const spesaNonVerificata = spese.find((spesa) => spesa.proof === undefined && spesa.executed === true);
+    const sommaSpese = spese.reduce(
+      (acc, spesa) => acc + (spesa.amount || 0),
+      0
+    );
+    const spesaNonVerificata = spese.find(
+      (spesa) => spesa.proof === undefined && spesa.executed === true
+    );
 
     const myAddress = req.session.address?.toLowerCase();
 
@@ -183,15 +214,21 @@ export const getProjectSpese = async (req: Request, res: Response) => {
       let myVote = null;
       if (myAddress && spesa.votes && spesa.votes.voters) {
         const voters = spesa.votes.voters as Map<string, any>;
-        const voter = voters.get(myAddress) || voters.get(myAddress.toLowerCase());
+        const voter =
+          voters.get(myAddress) || voters.get(myAddress.toLowerCase());
         if (voter) {
           myVote = voter.vote;
         }
       }
+      const spesaObj = spesa.toObject();
+      const { projectId, ...rest } = spesaObj;
+      const { voters, ...votesData } = rest.votes || { votesFor: 0, votesAgainst: 0 };
+
       return {
-        ...spesa.toObject(),
+        ...rest,
+        votes: votesData,
         myVote,
-      };
+      } as any;
     });
 
     res.json({
@@ -200,6 +237,8 @@ export const getProjectSpese = async (req: Request, res: Response) => {
       spesaNonVerificata: spesaNonVerificata ? spesaNonVerificata._id : null,
     });
   } catch (error) {
-    res.status(500).json({ error: "Errore nel caricamento delle spese", code: 500 });
+    res
+      .status(500)
+      .json({ error: "Errore nel caricamento delle spese", code: 500 });
   }
 };
