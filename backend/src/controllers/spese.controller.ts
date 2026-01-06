@@ -197,8 +197,7 @@ export const getProjectSpese = async (req: Request, res: Response) => {
     res.json({
       spese: speseWithMyVote,
       sommaSpese,
-      hasSpesaNonVerificata: !!spesaNonVerificata,
-      spesaNonVerificataId: spesaNonVerificata ? spesaNonVerificata._id : null,
+      spesaNonVerificata: spesaNonVerificata ? spesaNonVerificata._id : null,
     });
   } catch (error) {
     res.status(500).json({ error: "Errore nel caricamento delle spese", code: 500 });
