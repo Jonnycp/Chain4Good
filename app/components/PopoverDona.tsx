@@ -79,7 +79,8 @@ export default function PopoverDona({
         return;
       }
       queryClient.invalidateQueries({
-        queryKey: ["project-donations", projectId],
+        queryKey: [["project-donations", projectId], ["projects"]],
+        type: "all",
       });
       setIsPending(false);
       setStatusText("Donazione completata!");
