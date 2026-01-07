@@ -94,7 +94,7 @@ export const createSpesa = async (req: Request, res: Response) => {
       projectId: new Types.ObjectId(id),
     });
     const sommaSpese = speseProgetto
-      .filter(spesa => spesa.status !== "votazione")
+      .filter((spesa) => spesa.status !== "votazione")
       .reduce((acc, spesa) => acc + (spesa.amount || 0), 0);
 
     const spesaNonVerificata = speseProgetto.find(
@@ -200,13 +200,11 @@ export const getProjectSpese = async (req: Request, res: Response) => {
 
     const spese = await speseQuery.exec();
     const sommaSpese = spese
-      .filter(spesa => spesa.status !== "votazione")
-      .reduce(
-        (acc, spesa) => acc + (spesa.amount || 0),
-        0
-      );
-    const totalSpese = spese
-      .filter(spesa => spesa.status !== "votazione").length;
+      .filter((spesa) => spesa.status !== "votazione")
+      .reduce((acc, spesa) => acc + (spesa.amount || 0), 0);
+    const totalSpese = spese.filter(
+      (spesa) => spesa.status !== "votazione"
+    ).length;
     const spesaNonVerificata = spese.find(
       (spesa) => spesa.status == "votazione"
     );
@@ -221,12 +219,15 @@ export const getProjectSpese = async (req: Request, res: Response) => {
         const voter =
           voters.get(myAddress) || voters.get(myAddress.toLowerCase());
         if (voter) {
-          myVote = voter.vote;
+          myVote = voter;
         }
       }
       const spesaObj = spesa.toObject();
       const { projectId, ...rest } = spesaObj;
-      const { voters, ...votesData } = rest.votes || { votesFor: 0, votesAgainst: 0 };
+      const { voters, ...votesData } = rest.votes || {
+        votesFor: 0,
+        votesAgainst: 0,
+      };
 
       return {
         ...rest,
@@ -257,37 +258,47 @@ export const getProjectSpese = async (req: Request, res: Response) => {
  */
 export const voteSpesa = async (req: Request, res: Response) => {
   try {
-    const { id, idSpesa } = req.params;
+    const { id, spesaId } = req.params;
+    if (req.body === undefined) {
+      return res.status(400).json({ error: "Body mancante", code: 400 });
+    }
     const { vote, motivation, hashVote } = req.body;
 
     // Validazioni
     if (!vote || (vote !== "for" && vote !== "against")) {
       return res.status(400).json({ error: "Voto non valido", code: 400 });
     }
-    if (
-      !hashVote ||
-      typeof hashVote !== "string" ||
-      hashVote.length < 10
-    ) {
+    if (!hashVote || typeof hashVote !== "string" || hashVote.length < 10) {
       return res.status(400).json({ error: "Hash voto non valido", code: 400 });
     }
-    
+
     // Verifica esistenza spesa
-    const spesa = await SpesaModel.findById(idSpesa);
+    const spesa = await SpesaModel.findOne({
+      _id: new Types.ObjectId(spesaId),
+      projectId: new Types.ObjectId(id),
+    });
     if (!spesa) {
       return res.status(404).json({ error: "Spesa non trovata", code: 404 });
     }
     const scadenza = new Date(spesa.createdAt);
     scadenza.setDate(scadenza.getDate() + 3);
-    if (spesa.status !== "votazione" || spesa.executed || new Date() > scadenza) {
-      return res.status(400).json({ error: "Votazione chiusa per questa spesa", code: 400 });
+    if (
+      spesa.status !== "votazione" ||
+      spesa.executed ||
+      new Date() > scadenza
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Votazione chiusa per questa spesa", code: 400 });
     }
-    
+
     //Verifica se ha già votato
     const myAddress = req.session.address!.toLowerCase();
     const voters = spesa.votes.voters;
     if (voters.has(myAddress) || voters.has(myAddress.toLowerCase())) {
-      return res.status(400).json({ error: "Hai già votato questa spesa", code: 400 });
+      return res
+        .status(400)
+        .json({ error: "Hai già votato questa spesa", code: 400 });
     }
 
     // Aggiungi il voto
@@ -304,11 +315,7 @@ export const voteSpesa = async (req: Request, res: Response) => {
     });
     await spesa.save();
     res.json({ success: true, spesa });
-
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Errore nel voto della spesa", code: 500 });
+    res.status(500).json({ error: "Errore nel voto della spesa", code: 500 });
   }
-}
-  
+};
