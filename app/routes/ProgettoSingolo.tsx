@@ -225,26 +225,30 @@ export default function ProgettoSingolo() {
     if (!selectedSpesa) return null;
     if (
       project.isMy ||
-      selectedSpesa.status !== "votazione" ||
-      selectedSpesa.myVote
+      selectedSpesa.status !== "votazione"
     ) {
       return (
         <ModalGestioneSpesa
           mode="view"
           spesa={selectedSpesa}
           currency={project.currency}
+          vaultAddress={project.vaultAddress as `0x${string}`}
           onClose={() => setSelectedSpesa(null)}
+          projectId={project._id}
         />
       );
     }
     // Gestione spesa per Utente
-    if (selectedSpesa.status === "votazione") {
+    if (selectedSpesa.status === "votazione" ||
+      selectedSpesa.myVote) {
       return (
         <ModalGestioneSpesa
           mode="manage"
           spesa={selectedSpesa}
           currency={project.currency}
+          vaultAddress={project.vaultAddress as `0x${string}`}
           onClose={() => setSelectedSpesa(null)}
+          projectId={project._id}
         />
       );
     }
