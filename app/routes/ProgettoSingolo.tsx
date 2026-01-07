@@ -224,8 +224,7 @@ export default function ProgettoSingolo() {
   const renderSelectedSpesaModal = () => {
     if (!selectedSpesa) return null;
     if (
-      project.isMy ||
-      selectedSpesa.status !== "votazione"
+      project.isMy
     ) {
       return (
         <ModalGestioneSpesa
