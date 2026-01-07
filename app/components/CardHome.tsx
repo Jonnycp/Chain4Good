@@ -241,7 +241,7 @@ const CardHome = ({
                 <p className="text-[#1E293B] font-medium text-sm">
                   Speso il{" "}
                   <span className="font-bold">
-                    {Math.min((totaleSpeso / currentAmount) * 100, 100)}%
+                    {Math.round(Math.min((totaleSpeso / currentAmount) * 100, 100))}%
                   </span>{" "}
                   del budget
                 </p>
