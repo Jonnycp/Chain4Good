@@ -112,7 +112,7 @@ contract ProjectVault is Ownable {
         // ma voti > 0
 
         bool timeEnded = block.timestamp >= request.endTime;
-        bool mathMajority = request.votesFor > totalDonors - (request.votesFor + request.votesAgainst);
+        bool mathMajority = request.votesFor >= totalDonors - (request.votesFor + request.votesAgainst);
         bool simpleMajority = request.votesFor >= request.votesAgainst;
 
         // Se il tempo non è scaduto e non c'è maggioranza matematica, allora è ancora in corso
