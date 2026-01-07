@@ -97,6 +97,7 @@ interface AppContextType {
   projectSpese: {
     spese: Array<Spesa>;
     sommaSpese: number;
+    totSpese: number;
     spesaNonVerificata?: string;
   };
   setCurrentProjectId: (id: string | null) => void;

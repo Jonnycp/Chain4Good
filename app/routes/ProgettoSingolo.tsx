@@ -81,7 +81,13 @@ export default function ProgettoSingolo() {
   const project = useLoaderData() as PROJECT_BIG;
   if (!project) return null;
 
-  const { projectDonations, projectSpese, setCurrentProjectId, contracts, user } = useApp();
+  const {
+    projectDonations,
+    projectSpese,
+    setCurrentProjectId,
+    contracts,
+    user,
+  } = useApp();
   const progressPercent = Math.min(
     (project.currentAmount / project.targetAmount) * 100,
     100
@@ -107,7 +113,9 @@ export default function ProgettoSingolo() {
             project.vaultAddress as `0x${string}`,
           ]
         : undefined,
-    query: { enabled: !!user!.address && !!project.vaultAddress&& !!contracts?.eurc },
+    query: {
+      enabled: !!user!.address && !!project.vaultAddress && !!contracts?.eurc,
+    },
   });
 
   // Verifica se serve l'approvazione
@@ -212,11 +220,14 @@ export default function ProgettoSingolo() {
   //   setSelectedSpesa(null);
   // };
 
-
   // Render dei modali
   const renderSelectedSpesaModal = () => {
     if (!selectedSpesa) return null;
-    if (project.isMy || selectedSpesa.status !== "votazione" || selectedSpesa.myVote) {
+    if (
+      project.isMy ||
+      selectedSpesa.status !== "votazione" ||
+      selectedSpesa.myVote
+    ) {
       return (
         <ModalGestioneSpesa
           mode="view"
@@ -239,7 +250,9 @@ export default function ProgettoSingolo() {
     }
   };
 
-  const filteredSpese = projectSpese.spese.filter((spesa) => spesa.status === activeTab);
+  const filteredSpese = projectSpese.spese.filter(
+    (spesa) => spesa.status === activeTab
+  );
 
   return (
     <div className="min-h-screen bg-white font-sans pb-10 relative">
@@ -249,21 +262,23 @@ export default function ProgettoSingolo() {
       {renderSelectedSpesaModal()}
 
       {/* 2. Modali Ente (Nuova Spesa e Successo) - Renderizzati solo se Ente */}
-      {project.isMy && isNewSpesaOpen && (projectSpese.spesaNonVerificata ? false : true) && (
-        <ModalNuovaSpesa
-          projectId={project._id}
-          currency={project.currency}
-          currentAmount={project.currentAmount}
-          totSpeso={projectSpese.sommaSpese}
-          usoFondi={project.usoFondi}
-          vaultAddress={project.vaultAddress}
-          onClose={() => {
-            revalidator.revalidate();
-            setIsNewSpesaOpen(false);
-          }}
-          onSuccess={handleNewSpesaSuccess}
-        />
-      )}
+      {project.isMy &&
+        isNewSpesaOpen &&
+        (projectSpese.spesaNonVerificata ? false : true) && (
+          <ModalNuovaSpesa
+            projectId={project._id}
+            currency={project.currency}
+            currentAmount={project.currentAmount}
+            totSpeso={projectSpese.sommaSpese}
+            usoFondi={project.usoFondi}
+            vaultAddress={project.vaultAddress}
+            onClose={() => {
+              revalidator.revalidate();
+              setIsNewSpesaOpen(false);
+            }}
+            onSuccess={handleNewSpesaSuccess}
+          />
+        )}
       {project.isMy && isSuccessOpen && (
         <ModalSuccessoSpesa onClose={() => setIsSuccessOpen(false)} />
       )}
@@ -272,12 +287,12 @@ export default function ProgettoSingolo() {
       {isDonaOpen && (
         <PopoverDona
           onClose={(amount) => {
-            if(amount){
+            if (amount) {
               revalidator.revalidate();
               setDonatedAmount(amount);
               setIsGrazieOpen(true);
             }
-            setIsDonaOpen(false)
+            setIsDonaOpen(false);
           }}
           currentAmount={project.currentAmount}
           targetAmount={project.targetAmount}
@@ -307,6 +322,12 @@ export default function ProgettoSingolo() {
             : `${import.meta.env.VITE_BACKEND_URL}/${project.coverImage}`
         }
         location={project.location}
+        onShare={() => navigator.share({
+          title: project.title,
+          text: `Dai un'occhiata a questo progetto su Chain4Good: ${project.title}`,
+          url: shareUrl,
+          
+        })}
       />
 
       {/* MAIN CONTENT */}
@@ -352,11 +373,16 @@ export default function ProgettoSingolo() {
             <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
               <div
                 className="bg-primary h-full rounded-full transition-all duration-500"
-                style={{ width: `${project.status === "raccolta" ? progressPercent : spesePercent}%` }}
+                style={{
+                  width: `${project.status === "raccolta" ? progressPercent : spesePercent}%`,
+                }}
               ></div>
             </div>
             <span className="text-xs font-bold text-slate-400">
-              {Math.round(project.status === "raccolta" ? progressPercent : spesePercent)}%
+              {Math.round(
+                project.status === "raccolta" ? progressPercent : spesePercent
+              )}
+              %
             </span>
           </div>
 
@@ -373,7 +399,7 @@ export default function ProgettoSingolo() {
               <span className="text-xs font-bold">
                 {project.status === "raccolta"
                   ? getTimeLeftLabel(project.endDate)
-                  : `${projectSpese.spese.length} spese effettuate`}
+                  : `${projectSpese.totSpese} ${projectSpese.totSpese == 0 ? "spese" : projectSpese.totSpese == 1 ? "spesa" : "spese"} effettuat${projectSpese.totSpese == 0 ? "e" : projectSpese.totSpese == 1 ? "a" : "e"}`}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -383,7 +409,11 @@ export default function ProgettoSingolo() {
                     projectDonations.donors.map((d: any) => [d.username, d])
                   ).values()
                 )
-                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) 
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                  )
                   .slice(0, 5)
                   .map((d: any) => ({
                     id: "mini-donation" + d.username,
@@ -425,13 +455,27 @@ export default function ProgettoSingolo() {
               <h2 className="text-lg font-extrabold text-secondary">Spese</h2>
 
               {/* Visualizza bottone SOLO se Ente */}
-              {project.isMy && (
+              {project.isMy && projectSpese && (
                 <button
                   onClick={() => setIsNewSpesaOpen(true)}
                   disabled={projectSpese.spesaNonVerificata ? true : false}
                   className="bg-primary hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 shadow-md transition-colors disabled:bg-purple-300 disabled:cursor-not-allowed"
                 >
-                  <Icon icon={projectSpese.spesaNonVerificata ? "material-symbols:lock" : "mdi:plus"} className="text-base" /> {projectSpese.spesaNonVerificata ? "Devi verificare la spesa" : "Nuova Spesa"}
+                  <Icon
+                    icon={
+                      projectSpese.spesaNonVerificata
+                        ? "material-symbols:lock"
+                        : "mdi:plus"
+                    }
+                    className="text-base"
+                  />{" "}
+                  {projectSpese.spesaNonVerificata
+                    ? projectSpese.spese.find(
+                        (spesa) => spesa.status == "votazione"
+                      )
+                      ? "Devi aspettare la votazione"
+                      : "Devi verificare la spesa"
+                    : "Nuova Spesa"}
                 </button>
               )}
             </div>
@@ -488,16 +532,16 @@ export default function ProgettoSingolo() {
                 ))
               ) : (
                 <div className="px-6 py-12 text-center md:bg-white rounded-3xl border-secondary/20 border-2">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Icon
-                    icon="solar:box-minimalistic-linear"
-                    className="text-3xl text-slate-400"
-                  />
+                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Icon
+                      icon="solar:box-minimalistic-linear"
+                      className="text-3xl text-slate-400"
+                    />
+                  </div>
+                  <p className="text-slate-500 text-sm font-medium">
+                    Nessuna spesa in questa categoria.
+                  </p>
                 </div>
-                <p className="text-slate-500 text-sm font-medium">
-                  Nessuna spesa in questa categoria.
-                </p>
-              </div>
               )}
             </div>
           </div>
@@ -538,65 +582,74 @@ export default function ProgettoSingolo() {
           </div>
           <div className="flex flex-col gap-1">
             {projectDonations.donors.length > 0 ? (
-              projectDonations.donors.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 20).map((donatore, i) => (
-                <div
-                  key={donatore.id+"-"+i}
-                  className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"
-                >
-                  <div className="flex items-start gap-3">
-                    <img
-                      src={donatore.profilePicture}
-                      alt={donatore.username}
-                      className="w-10 h-10 rounded-full object-cover border border-slate-100"
-                    />
-                    <div className="flex flex-col">
-                      <p className="text-sm font-bold text-secondary">
-                        {donatore.username}{" "}
-                        <span className="font-normal text-slate-500">
-                          donated
-                        </span>{" "}
-                        {donatore.amount}
-                        <span className="text-xs font-bold text-slate-400">
-                          {" "}
-                          {donatore.symbol}{" "}
-                        </span>
-                      </p>
-                      <p className="text-xs text-slate-400 italic mt-1">
-                        {donatore.messaggio && `"${donatore.messaggio}" - `}
-                        <b
-                          className="font-bold underline italic cursor-pointer"
-                          onClick={(e) => {
-                            navigator.clipboard.writeText(
-                              donatore.hashTransaction
-                            );
-                            alert(`Hash copiato!`);
-                          }}
-                        >
-                          {donatore.hashTransaction.slice(0, 6) +
-                            "..." +
-                            donatore.hashTransaction.slice(-4)}
-                        </b>
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">
-                    <button
-                      onClick={(e) => {
-                        navigator.clipboard.writeText(donatore.hashTransaction);
-                        alert(`Hash copiato!`);
-                      }}
-                      className="text-white text-md hover:text-primary p-1 mr-5 bg-primary rounded-full hover:bg-secondary transition active:scale-90"
-                      title="Copia Hash Transazione"
-                    >
-                      <Icon
-                        icon="mdi:link-variant"
-                        className="text-xl rotate-[-45deg]"
+              projectDonations.donors
+                .sort(
+                  (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                )
+                .slice(0, 20)
+                .map((donatore, i) => (
+                  <div
+                    key={donatore.id + "-" + i}
+                    className="flex items-start justify-between py-3 border-b border-slate-50 last:border-0"
+                  >
+                    <div className="flex items-start gap-3">
+                      <img
+                        src={donatore.profilePicture}
+                        alt={donatore.username}
+                        className="w-10 h-10 rounded-full object-cover border border-slate-100"
                       />
-                    </button>
-                    {new Date(donatore.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-              ))
+                      <div className="flex flex-col">
+                        <p className="text-sm font-bold text-secondary">
+                          {donatore.username}{" "}
+                          <span className="font-normal text-slate-500">
+                            donated
+                          </span>{" "}
+                          {donatore.amount}
+                          <span className="text-xs font-bold text-slate-400">
+                            {" "}
+                            {donatore.symbol}{" "}
+                          </span>
+                        </p>
+                        <p className="text-xs text-slate-400 italic mt-1">
+                          {donatore.messaggio && `"${donatore.messaggio}" - `}
+                          <b
+                            className="font-bold underline italic cursor-pointer"
+                            onClick={(e) => {
+                              navigator.clipboard.writeText(
+                                donatore.hashTransaction
+                              );
+                              alert(`Hash copiato!`);
+                            }}
+                          >
+                            {donatore.hashTransaction.slice(0, 6) +
+                              "..." +
+                              donatore.hashTransaction.slice(-4)}
+                          </b>
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap mt-1">
+                      <button
+                        onClick={(e) => {
+                          navigator.clipboard.writeText(
+                            donatore.hashTransaction
+                          );
+                          alert(`Hash copiato!`);
+                        }}
+                        className="text-white text-md hover:text-primary p-1 mr-5 bg-primary rounded-full hover:bg-secondary transition active:scale-90"
+                        title="Copia Hash Transazione"
+                      >
+                        <Icon
+                          icon="mdi:link-variant"
+                          className="text-xl rotate-[-45deg]"
+                        />
+                      </button>
+                      {new Date(donatore.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                ))
             ) : (
               <div className="px-6 py-12 text-center md:bg-white rounded-3xl border-secondary/20 border-2">
                 <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
