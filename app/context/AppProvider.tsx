@@ -54,6 +54,8 @@ export type Spesa = {
         motivation?: string;
         hashVote: string;
       } | null;
+      executionDate?: Date;
+      hashTransaction?: string;
     }
 interface AppContextType {
   user: {
@@ -173,7 +175,7 @@ export default function AppProvider({
       if (!res.ok) throw new Error("Errore durante il fetch dei progetti");
       return res.json();
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 2,
     enabled: user !== null && !userLoading && !user.isEnte,
   });
 
