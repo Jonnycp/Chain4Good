@@ -2,11 +2,18 @@ import { useState } from "react";
 import { Icon } from "@iconify/react";
 import type { Spesa } from "~/context/AppProvider";
 
+import { useWriteContract, useConfig } from "wagmi";
+import { waitForTransactionReceipt } from "@wagmi/core";
+import vaultAbi from "@abi/ProjectVault.sol/ProjectVault.json";
+import { useQueryClient } from "@tanstack/react-query";
+
 interface ModalSpesaProps {
-  spesa: Spesa | any;
+  spesa: Spesa;
   onClose: () => void;
   currency: string;
   mode: "view" | "manage";
+  vaultAddress: `0x${string}`;
+  projectId: string;
 }
 
 export default function ModalGestioneSpesa({
@@ -14,28 +21,69 @@ export default function ModalGestioneSpesa({
   onClose,
   currency,
   mode,
+  vaultAddress,
+  projectId,
 }: ModalSpesaProps) {
   const [rejectReason, setRejectReason] = useState("");
   const [negata, setNegata] = useState(false);
 
-  const isApproved = spesa.stato === "approvata";
-  const isRejected = spesa.stato === "rifiutata";
-  const hasVoted = spesa.myVote !== null;
+  const config = useConfig();
+  const writeContract = useWriteContract();
+  const [isPending, setIsPending] = useState(false);
+  const [statusText, setStatusText] = useState<string>("");
+  const queryClient = useQueryClient();
 
-  const confirmApproveFinal = () => {
-    // Logica per approvare la spesa
-    alert("Spesa approvata!");
-    onClose();
-  };
+  const vote = async (type: "for" | "against", reason?: string) => {
+    if (isPending) return;
+    if (type === "against" && !reason) return;
+    setIsPending(true);
+    setStatusText("Invio voto...");
+    try {
+      //? 1. BLOCKCHAIN: Chiama la funzione vote sul Vault
+      const hash = await writeContract.mutateAsync({
+        address: vaultAddress as `0x${string}`,
+        abi: vaultAbi.abi,
+        functionName: "vote",
+        args: [BigInt(spesa.requestId), type === "for"],
+      });
 
-  const confirmReject = () => {
-    if (!rejectReason) {
-      alert("Seleziona una motivazione per il rifiuto.");
-      return;
+      await waitForTransactionReceipt(config, { hash });
+
+      //? 2. BACKEND: Invia il voto al backend
+      setStatusText("Salvo voto...");
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/projects/${projectId}/spese/${spesa._id}/vote`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            vote: type,
+            motivation: reason || "",
+            hashVote: hash,
+          }),
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        console.error("Errore nel salvataggio del voto.");
+        setStatusText("Errore nel salvataggio del voto.");
+        return;
+      }
+      setStatusText("Voto confermato!");
+      queryClient.invalidateQueries({
+        queryKey: ["project-spese", projectId],
+      });
+      setTimeout(() => {
+        setIsPending(false);
+        onClose();
+      }, 1500);
+    } catch (err) {
+      setStatusText("Voto fallito");
+      console.error("Voto fallito", err);
     }
-    // Logica per rifiutare la spesa con la motivazione
-    alert(`Spesa rifiutata per: ${rejectReason}`);
-    onClose();
   };
 
   return (
@@ -51,9 +99,9 @@ export default function ModalGestioneSpesa({
         <h2 className="text-xs font-bold tracking-widest uppercase mb-4 text-secondary text-center">
           {mode === "manage"
             ? "Richiesta di Spesa"
-            : isApproved
+            : spesa.status === "approvata"
               ? "SPESA APPROVATA"
-              : isRejected
+              : spesa.status === "rifiutata"
                 ? "SPESA NEGATA"
                 : "SPESA IN ATTESA"}
         </h2>
@@ -80,7 +128,7 @@ export default function ModalGestioneSpesa({
           className="flex items-center gap-2 mb-6 cursor-pointer hover:underline text-sm font-bold text-[#0F172A] underline decoration-slate-300"
         >
           <Icon icon="mdi:paperclip" className="text-lg" />
-          {spesa.preventivo.split("/").pop().split("-").slice(1).join("-")}
+          {spesa.preventivo?.split("/").pop()?.split("-").slice(1).join("-")}
         </a>
 
         {/* Info */}
@@ -89,7 +137,11 @@ export default function ModalGestioneSpesa({
             Informazioni
           </h4>
           <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
-            <Icon icon="mdi:clock-outline" /> Pubblicata il{" "}
+            <Icon icon="material-symbols:category" width="18" /> Categoria:{" "}
+            <b className="italic">{spesa.category}</b>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
+            <Icon icon="mdi:clock-outline" width="18" /> Pubblicata il{" "}
             {new Date(spesa.createdAt).toLocaleDateString()}
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
@@ -118,13 +170,22 @@ export default function ModalGestioneSpesa({
             <div className="flex items-center gap-2 text-xs text-green-700 font-medium">
               <Icon icon="mdi:check-circle" className="text-lg" /> Eseguita il{" "}
               {spesa.executionDate
-                ? new Date(spesa.executionDate).toLocaleDateString()
+                ? new Date(
+                    new Date(spesa.executionDate).getTime() + 60 * 60 * 1000
+                  ).toLocaleString("it-IT", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })
                 : ""}{" "}
               (
               <span
                 className="cursor-pointer italic underline"
                 onClick={() => {
-                  navigator.clipboard.writeText(spesa.hashTransaction);
+                  navigator.clipboard.writeText(spesa.hashTransaction!);
                   alert("Hash transazione copiato! " + spesa.hashTransaction);
                 }}
               >
@@ -134,17 +195,60 @@ export default function ModalGestioneSpesa({
               )
             </div>
           )}
+          {spesa.myVote && (
+            <div className="mb-6 mt-6 space-y-2">
+              <h4 className="text-sm font-bold text-[#0F172A] mb-2">
+                Il mio voto
+              </h4>
+              <div className="flex items-center gap-2 text-xs text-blue-700 font-medium">
+                <Icon icon="mdi:account-check-outline" className="text-lg" />{" "}
+                Hai votato il:{" "}
+                {new Date(
+                  new Date(spesa.myVote.timestamp).getTime() + 60 * 60 * 1000
+                ).toLocaleString("it-IT", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}
+              </div>
+              {spesa.myVote.motivation !== "" && (
+                <div className="flex text-blue-700 items-center gap-2 text-xs font-medium">
+                  <Icon icon="mdi:thumb-down" className="text-lg" /> Motivo:{" "}
+                  {spesa.myVote.motivation}
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-xs text-blue-700 font-medium">
+                <Icon icon="mingcute:link-fill" className="text-lg" />{" "}
+                Transazione di voto{" "}
+                <span
+                  className="cursor-pointer italic underline"
+                  onClick={() => {
+                    navigator.clipboard.writeText(spesa.myVote!.hashVote!);
+                    alert(
+                      "Hash transazione copiato! " + spesa.myVote!.hashVote
+                    );
+                  }}
+                >
+                  {spesa.myVote?.hashVote?.slice(0, 10)}...
+                  {spesa.myVote?.hashVote?.slice(-10)}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sezione gestione solo se mode === 'manage' */}
         {mode === "manage" && (
           <>
             {/* Se hai già votato mostra il risultato */}
-            {hasVoted ? (
+            {spesa.myVote !== null ? (
               <div className="w-full animate-fade-in">
-                {spesa.myVote === "for" ? (
+                {spesa.myVote.vote === "for" ? (
                   <button
-                    className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 mb-3 bg-primary"
+                    className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 mb-3 bg-secondary"
                     disabled
                   >
                     <Icon icon="mdi:thumb-up" className="text-lg" /> Hai
@@ -152,7 +256,7 @@ export default function ModalGestioneSpesa({
                   </button>
                 ) : (
                   <button
-                    className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 mb-3 bg-[#C21C1C]"
+                    className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 mb-3 bg-secondary"
                     disabled
                   >
                     <Icon icon="mdi:thumb-down" className="text-lg" /> Hai
@@ -164,23 +268,36 @@ export default function ModalGestioneSpesa({
               <>
                 {/* Se non hai votato mostra i bottoni direttamente */}
                 {!negata && (
-                    <><p className="text-sm font-bold text-secondary mb-3 justify-center">
+                  <>
+                    <p className="text-sm font-bold text-secondary mb-3 justify-center">
                       Valuta se è una spesa coerente
                     </p>
-                  <div className="flex gap-4 w-full">
-                    <button
-                      onClick={confirmApproveFinal}
-                      className="flex-1 py-3 rounded-xl text-white font-bold text-sm shadow-lg transition-transform active:scale-95 bg-primary hover:opacity-90"
-                    >
-                      Approva
-                    </button>
-                    <button
-                      onClick={() => setNegata(true)}
-                      className="flex-1 py-3 rounded-xl text-white font-bold text-sm shadow-lg transition-transform active:scale-95 bg-[#C21C1C] hover:bg-[#a61717]"
-                    >
-                      Nega
-                    </button>
-                  </div></>
+                    <div className="flex gap-4 w-full">
+                      <button
+                        onClick={() => vote("for")}
+                        disabled={isPending}
+                        className="flex-1 py-4 rounded-xl cursor-pointer flex items-center justify-center text-white font-bold text-sm shadow-lg transition-all active:scale-95 bg-primary hover:opacity-90 disabled:opacity-50"
+                      >
+                        {isPending ? (
+                          <Icon
+                            icon="mdi:loading"
+                            className="text-lg animate-spin pr-4"
+                          />
+                        ) : (
+                          ""
+                        )}
+                        {isPending ? statusText : "Approva"}
+                      </button>
+                      {!isPending && (
+                        <button
+                          onClick={() => setNegata(true)}
+                          className="flex-1 py-3 rounded-xl text-white font-bold text-sm shadow-lg transition-transform active:scale-95 bg-[#C21C1C] hover:bg-[#a61717]"
+                        >
+                          Nega
+                        </button>
+                      )}
+                    </div>
+                  </>
                 )}
                 {/* Se hai cliccato Nega, mostra la select motivazione */}
                 {negata && (
@@ -210,10 +327,24 @@ export default function ModalGestioneSpesa({
                       />
                     </div>
                     <button
-                      onClick={confirmReject}
-                      className="flex-1 py-3 w-full rounded-xl text-white font-bold text-sm shadow-lg transition-transform active:scale-95 bg-[#C21C1C] hover:bg-[#a61717]"
+                      onClick={() => vote("against", rejectReason)}
+                      disabled={rejectReason === "" || isPending}
+                      className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 mb-3 bg-[#C21C1C] hover:bg-[#a61717] transition-opacity disabled:opacity-50 active:scale-95"
                     >
-                      Nega
+                      {isPending ? (
+                        <>
+                          <Icon
+                            icon="mdi:loading"
+                            className="text-lg animate-spin"
+                          />{" "}
+                          {statusText}
+                        </>
+                      ) : (
+                        <>
+                          <Icon icon="mdi:thumb-down" className="text-lg" />{" "}
+                          Nega
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
