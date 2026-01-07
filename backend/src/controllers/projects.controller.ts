@@ -87,7 +87,16 @@ export const getProjects = async (req: Request, res: Response) => {
           from: "spesas",
           let: { projectId: "$_id" },
           pipeline: [
-            { $match: { $expr: { $eq: ["$projectId", "$$projectId"] } } },
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$projectId", "$$projectId"] },
+                    { $eq: ["$status", "approvata"] },
+                  ],
+                },
+              },
+            },
           ],
           as: "spese",
         },
@@ -211,7 +220,16 @@ export const getMyProjects = async (req: Request, res: Response) => {
           from: "spesas",
           let: { projectId: "$_id" },
           pipeline: [
-            { $match: { $expr: { $eq: ["$projectId", "$$projectId"] } } },
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$projectId", "$$projectId"] },
+                    { $eq: ["$status", "approvata"] },
+                  ],
+                },
+              },
+            },
           ],
           as: "spese",
         },
