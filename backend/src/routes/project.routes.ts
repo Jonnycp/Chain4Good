@@ -46,6 +46,8 @@ router.post('/:id/spese/new', isAuth, isProjectCreator, uploadPreventivo.single(
 
 router.get('/:id/spese', isAuth, isDonator, SpeseController.getProjectSpese);
 
+router.post('/:id/spese/:spesaId/vote', isAuth, isDonator, SpeseController.voteSpesa);
+
 router.post('/new', isAuth, isEnte, uploadProject.single("coverImage"), ProjectController.createProject);
 
 // router.get("/donated", isAuth, ProjectController.getMyDonations);

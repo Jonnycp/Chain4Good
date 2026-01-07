@@ -93,12 +93,12 @@ export const createSpesa = async (req: Request, res: Response) => {
     const speseProgetto = await SpesaModel.find({
       projectId: new Types.ObjectId(id),
     });
-    const sommaSpese = speseProgetto.reduce(
-      (acc, spesa) => acc + (spesa.amount || 0),
-      0
-    );
+    const sommaSpese = speseProgetto
+      .filter(spesa => spesa.status !== "votazione")
+      .reduce((acc, spesa) => acc + (spesa.amount || 0), 0);
+
     const spesaNonVerificata = speseProgetto.find(
-      (spesa) => spesa.proof === undefined && spesa.executed === true
+      (spesa) => spesa.status == "votazione" //spesa.proof === undefined && spesa.executed === true
     );
 
     if (spesaNonVerificata) {
@@ -199,12 +199,16 @@ export const getProjectSpese = async (req: Request, res: Response) => {
     if (limit) speseQuery = speseQuery.limit(Number(limit));
 
     const spese = await speseQuery.exec();
-    const sommaSpese = spese.reduce(
-      (acc, spesa) => acc + (spesa.amount || 0),
-      0
-    );
+    const sommaSpese = spese
+      .filter(spesa => spesa.status !== "votazione")
+      .reduce(
+        (acc, spesa) => acc + (spesa.amount || 0),
+        0
+      );
+    const totalSpese = spese
+      .filter(spesa => spesa.status !== "votazione").length;
     const spesaNonVerificata = spese.find(
-      (spesa) => spesa.proof === undefined && spesa.executed === true
+      (spesa) => spesa.status == "votazione"
     );
 
     const myAddress = req.session.address?.toLowerCase();
@@ -234,6 +238,7 @@ export const getProjectSpese = async (req: Request, res: Response) => {
     res.json({
       spese: speseWithMyVote,
       sommaSpese,
+      totSpese: totalSpese,
       spesaNonVerificata: spesaNonVerificata ? spesaNonVerificata._id : null,
     });
   } catch (error) {
@@ -242,3 +247,68 @@ export const getProjectSpese = async (req: Request, res: Response) => {
       .json({ error: "Errore nel caricamento delle spese", code: 500 });
   }
 };
+
+/**
+ * Endpoint POST /projects/:id/spese/:id/vote
+ * Vota a spesa con questi parametri, oltre l'id progetto e spesa:
+ * vote: for | against
+ * motivation: string (opzionale)
+ * hashVote: string
+ */
+export const voteSpesa = async (req: Request, res: Response) => {
+  try {
+    const { id, idSpesa } = req.params;
+    const { vote, motivation, hashVote } = req.body;
+
+    // Validazioni
+    if (!vote || (vote !== "for" && vote !== "against")) {
+      return res.status(400).json({ error: "Voto non valido", code: 400 });
+    }
+    if (
+      !hashVote ||
+      typeof hashVote !== "string" ||
+      hashVote.length < 10
+    ) {
+      return res.status(400).json({ error: "Hash voto non valido", code: 400 });
+    }
+    
+    // Verifica esistenza spesa
+    const spesa = await SpesaModel.findById(idSpesa);
+    if (!spesa) {
+      return res.status(404).json({ error: "Spesa non trovata", code: 404 });
+    }
+    const scadenza = new Date(spesa.createdAt);
+    scadenza.setDate(scadenza.getDate() + 3);
+    if (spesa.status !== "votazione" || spesa.executed || new Date() > scadenza) {
+      return res.status(400).json({ error: "Votazione chiusa per questa spesa", code: 400 });
+    }
+    
+    //Verifica se ha già votato
+    const myAddress = req.session.address!.toLowerCase();
+    const voters = spesa.votes.voters;
+    if (voters.has(myAddress) || voters.has(myAddress.toLowerCase())) {
+      return res.status(400).json({ error: "Hai già votato questa spesa", code: 400 });
+    }
+
+    // Aggiungi il voto
+    if (vote === "for") {
+      spesa.votes.votesFor += 1;
+    } else {
+      spesa.votes.votesAgainst += 1;
+    }
+    spesa.votes.voters.set(myAddress, {
+      vote,
+      motivation: motivation ? motivation.trim() : "",
+      hashVote: hashVote.trim(),
+      timestamp: new Date(),
+    });
+    await spesa.save();
+    res.json({ success: true, spesa });
+
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Errore nel voto della spesa", code: 500 });
+  }
+}
+  
