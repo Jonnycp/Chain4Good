@@ -23,6 +23,7 @@ export interface Progetto extends Document {
   currentAmount: number;
   vaultAddress: string;
   currency: string;
+  uniqueDonorsCount: number;
   status: "raccolta" | "attivo" | "completato" | "annullato";
   createdAt: Date;
   updatedAt: Date
@@ -45,6 +46,7 @@ const ProjectSchema = new Schema<Progetto>({
   currentAmount: { type: Number, default: 0, required: true },
   vaultAddress: { type: String, required: true, unique: true, index: true },
   currency: {type: String, required: true, default: "EURC"},
+  uniqueDonorsCount: { type: Number, default: 0 },
   status: {
     type: String,
     required: true,

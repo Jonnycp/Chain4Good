@@ -72,11 +72,13 @@ export const donateToProject = async (req: Request, res: Response) => {
       messaggio: messaggio ? messaggio.trim() : "",
     });
 
+    const isNewDonor = !(await DonationModel.exists({ project: project._id, donor: user._id }));
+
     //TODO: dovrebbe prendere i valori on-chain per sicurezza
     const updatedProject = await ProjectModel.findByIdAndUpdate(
       //Per concorrenza
       id,
-      { $inc: { currentAmount: Number(amount) } },
+      { $inc: { currentAmount: Number(amount), uniqueDonorsCount: isNewDonor ? 1 : 0 } },
       { new: true }
     );
 
