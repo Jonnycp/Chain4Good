@@ -248,7 +248,7 @@ export default function EnteVisibile() {
                   key={prog._id}
                   className="min-w-[85%] sm:min-w-[300px] snap-center first:pl-0 last:pr-6 md:min-w-0 md:last:pr-0"
                 >
-                  <CardHome {...prog} />
+                  <CardHome {...prog} viewBadge={true} />
                 </div>
               ))}
             </div>

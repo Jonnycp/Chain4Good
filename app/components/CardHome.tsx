@@ -99,7 +99,8 @@ const CardHome = ({
   numeroSpese,
   totaleSpeso,
   isMyProject = false,
-}: Project & { isMyProject?: boolean }) => {
+  viewBadge = false,
+}: Project & { isMyProject?: boolean, viewBadge?: boolean }) => {
   // LOGICA BADGE STATO
   const getBadgeConfig = () => {
     switch (stato) {
@@ -143,7 +144,7 @@ const CardHome = ({
         </Link>
 
         {/* BADGE STATO DINAMICO */}
-        {isMyProject && (
+        {(isMyProject || viewBadge) && (
           <div
             className={`absolute top-0 right-0 px-6 py-2 rounded-bl-[24px] font-bold text-sm shadow-sm z-10 ${getBadgeConfig().className}`}
           >
@@ -255,7 +256,7 @@ const CardHome = ({
                     className="w-5 h-5 text-[#1E293B]"
                   />
                   <span className="text-xs font-medium">
-                    {numeroSpese} spese effettuate
+                    {`${numeroSpese} ${numeroSpese == 0 ? "spese" : numeroSpese == 1 ? "spesa":"spese"} effettuat${numeroSpese == 0 ? "e" : numeroSpese == 1 ? "a":"e"}`}
                   </span>
                 </div>
 
