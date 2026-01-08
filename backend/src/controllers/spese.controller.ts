@@ -360,7 +360,7 @@ export const executeSpesa = async (req: Request, res: Response) => {
     const votesAgainst = spesa.votes.votesAgainst || 0;
     const currentVoters = votesFor + votesAgainst;
 
-    const mathMajority = votesFor > (totalDonors - currentVoters);
+    const mathMajority = votesFor >= (totalDonors - currentVoters) && votesFor > 0;
     const simpleMajority = votesFor >= votesAgainst;
 
     // Se il tempo non è scaduto e non c'è maggioranza matematica, allora è ancora in corso
