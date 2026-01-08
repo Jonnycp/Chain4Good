@@ -1,0 +1,27 @@
+Backend
+- [OK] gestione nft ente
+- [OK] middleware isEnte
+- [OK] crea progetto >> integrazione blockchain
+- [OK] middleware isDonatore o isProjectOwner
+- [OK] donazioni in blockchain
+- [OK] gestione stablecoin
+- [OK] gestione spese
+- [OK] nuova spesa
+- [OK] voto a spesa
+- [OK] pagina donazioni
+- [OK] chiusura spesa automatica
+- [OK] verifica spesa
+- [OK] stato spesa ente: da verificare - in attesa voto - da eseguire
+- [OK] dockerizzare
+
+FUTURO... (forse, sperando, se tutto va bene)
+- spostamento fondi
+- pagina donazione utente, nascosta a ente
+- gestione annullamento progetto
+- sposta utente a pagina se accede da link (/progetto/123 -> login -> /progetto/123) 
+- notifiche...
+
+Pensieri di J:
+È stato veramente un bel progetto, un bel approccio alla scoperta della blockchain.
+Speriamo ora che dopo più di 60 ore di lavoro ne vale la pena, dopo aver lavorato anche a natale e le notti fino alle 4...
+Jonny dic2025 - gen2026
