@@ -98,7 +98,7 @@ export const createSpesa = async (req: Request, res: Response) => {
       .reduce((acc, spesa) => acc + (spesa.amount || 0), 0);
 
     const spesaNonVerificata = speseProgetto.find(
-      (spesa) => spesa.status == "votazione" //spesa.proof === undefined && spesa.executed === true
+      (spesa) => (spesa.proof === undefined && spesa.status == "approvata") || spesa.status == "votazione"
     );
 
     if (spesaNonVerificata) {
@@ -206,7 +206,7 @@ export const getProjectSpese = async (req: Request, res: Response) => {
       (spesa) => spesa.status !== "votazione"
     ).length;
     const spesaNonVerificata = spese.find(
-      (spesa) => spesa.status == "votazione"
+      (spesa) => (spesa.proof === undefined && spesa.status == "approvata") || spesa.status == "votazione"
     );
 
     const myAddress = req.session.address?.toLowerCase();
@@ -317,5 +317,69 @@ export const voteSpesa = async (req: Request, res: Response) => {
     res.json({ success: true, spesa });
   } catch (error) {
     res.status(500).json({ error: "Errore nel voto della spesa", code: 500 });
+  }
+};
+
+/**
+ * Endpoint POST /projects/:id/spese/:id/execute
+ * Esegue la spesa (solo se approvata), con questi parametri:
+ * hashTransaction: string
+ */
+export const executeSpesa = async (req: Request, res: Response) => {
+  try {
+    const { id, spesaId } = req.params;
+    const { hashTransaction } = req.body;
+
+    // Validazioni
+    if (!hashTransaction || typeof hashTransaction !== "string" || hashTransaction.length < 10) {
+      return res.status(400).json({ error: "Hash transazione non valido", code: 400 });
+    }
+
+    // Verifica esistenza spesa
+    const spesa = await SpesaModel.findOne({
+      _id: new Types.ObjectId(spesaId),
+      projectId: new Types.ObjectId(id),
+    });
+    if (!spesa) {
+      return res.status(404).json({ error: "Spesa non trovata", code: 404 });
+    }
+
+    if (spesa.executed) {
+      return res.status(400).json({ error: "Spesa già eseguita", code: 400 });
+    }
+
+    // Recupera info progetto per totalDonors
+    const project = await ProjectModel.findById(id).select("uniqueDonorsCount");
+    const totalDonors = project?.uniqueDonorsCount || 0;
+
+    // Calcola condizioni di esecuzione
+    const treGiorniInMs = 3 * 24 * 60 * 60 * 1000;
+    const endTime = new Date(spesa.createdAt.getTime() + treGiorniInMs);
+    const timeEnded = new Date() >= endTime;
+    const votesFor = spesa.votes.votesFor || 0;
+    const votesAgainst = spesa.votes.votesAgainst || 0;
+    const currentVoters = votesFor + votesAgainst;
+
+    const mathMajority = votesFor > (totalDonors - currentVoters);
+    const simpleMajority = votesFor >= votesAgainst;
+
+    // Se il tempo non è scaduto e non c'è maggioranza matematica, allora è ancora in corso
+    if (!timeEnded && !mathMajority) {
+      return res.status(400).json({ error: "Votazione ancora in corso e maggioranza matematica non raggiunta", code: 400 });
+    }
+
+    // Se il tempo è scaduto ma i NO superano i SI
+    if (timeEnded && !simpleMajority) {
+      return res.status(400).json({ error: "La spesa è stata rifiutata", code: 400 });
+    }
+
+    // Esegui la spesa
+    spesa.executed = true;
+    spesa.executionDate = new Date();
+    spesa.hashTransaction = hashTransaction.trim();
+    await spesa.save();
+    res.json({ success: true, spesa });
+  } catch (error) {
+    res.status(500).json({ error: "Errore nell'esecuzione della spesa", code: 500 });
   }
 };

@@ -21,8 +21,8 @@ const storagePreventivo = multer.diskStorage({
   destination: "uploads/spese/preventivi",
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    // Nome file: timestamp-preventivi-nomeoriginale(slice6).ext
-    const filename = `${Date.now()}-preventivi-${file.originalname.replace(/\s+/g, "_").slice(0, 6)}${ext}`;
+    // Nome file: timestamp-preventivo-nomeoriginale(slice6).ext
+    const filename = `${Date.now()}-preventivo-${file.originalname.replace(/\s+/g, "_").slice(0, 6)}${ext}`;
     cb(null, filename);
   },
 });
@@ -49,6 +49,8 @@ router.post('/:id/spese/new', isAuth, isProjectCreator, uploadPreventivo.single(
 router.get('/:id/spese', isAuth, isDonator, SpeseController.getProjectSpese);
 
 router.post('/:id/spese/:spesaId/vote', isAuth, isDonator, SpeseController.voteSpesa);
+
+router.post('/:id/spese/:spesaId/execute', isAuth, isProjectCreator, SpeseController.executeSpesa);
 
 router.post('/new', isAuth, isEnte, uploadProject.single("coverImage"), ProjectController.createProject);
 
