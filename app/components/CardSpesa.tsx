@@ -11,6 +11,7 @@ const CardSpesa = ({
   myVote,
   isMy,
   executed,
+  proof,
   onClick
 }: Spesa & {
   onClick?: () => void;
@@ -25,7 +26,7 @@ const CardSpesa = ({
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   const giorni = diffDays > 0 ? diffDays : 0;
 
-  const showPing = (status === 'votazione' && !isMy && !myVote) || (status === 'approvata' && isMy && !executed)
+  const showPing = (status === 'votazione' && !isMy && !myVote) || (status === 'approvata' && isMy && !executed) || (status === 'approvata' && isMy && executed && !proof);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -42,6 +43,12 @@ const CardSpesa = ({
       case 'approvata':
         if(isMy && !executed) {
           return { label: 'Accettata, da eseguire', color: 'animate-pulse bg-[#56A836] text-white border-[#56A836]' };
+        }
+        if(isMy && executed && !proof) {
+          return { label: 'In attesa di prova', color: 'animate-pulse bg-[#56A836] text-white border-[#56A836]' };
+        }
+        if(isMy && executed && proof) {
+          return { label: 'Completata', color: 'bg-[#56A836] text-white border-[#56A836]' };
         }
         return { label: 'Accettata', color: 'bg-[#56A836] text-white border-[#56A836]' };
       case 'rifiutata':
