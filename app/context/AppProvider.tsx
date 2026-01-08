@@ -32,32 +32,32 @@ export type Project = {
 };
 
 export type Spesa = {
-      _id: string;
-      title: string;
-      description: string;
-      category: string;
-      amount: number;
-      preventivo: string;
-      requestId: number;
-      hashCreation: string;
-      status: "votazione" | "approvata" | "rifiutata";
-      executed: boolean;
-      hashExecution?: string;
-      createdAt: Date;
-      votes: {
-        votesFor: number;
-        votesAgainst: number;
-      }
-      myVote: {
-        vote: "for" | "against";
-        timestamp: Date;
-        motivation?: string;
-        hashVote: string;
-      } | null;
-      executionDate?: Date;
-      hashTransaction?: string;
-    }
-interface AppContextType {
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
+  amount: number;
+  preventivo: string;
+  requestId: number;
+  hashCreation: string;
+  status: "votazione" | "approvata" | "rifiutata";
+  executed: boolean;
+  hashExecution?: string;
+  createdAt: Date;
+  votes: {
+    votesFor: number;
+    votesAgainst: number;
+  };
+  myVote: {
+    vote: "for" | "against";
+    timestamp: Date;
+    motivation?: string;
+    hashVote: string;
+  } | null;
+  executionDate?: Date;
+  hashTransaction?: string;
+};
+export interface AppContextType {
   user: {
     address: string;
     username: string;
@@ -102,6 +102,27 @@ interface AppContextType {
     totSpese: number;
     spesaNonVerificata?: string;
   };
+  statsDonations: {
+    stats: {
+      progettiSupportati: number;
+      denaroDonato: number;
+    };
+    progettiAttivi: Array<Project & {
+      contribution: number;
+      speseInVoto: number;
+    }>;
+    progettiSupportati: Array<
+      Project & {
+        donations: Array<{
+          id: string;
+          amount: number;
+          currency: string;
+          date: Date;
+          hash: string;
+        }>;
+      }
+    >;
+  };
   setCurrentProjectId: (id: string | null) => void;
   loading: {
     user: boolean;
@@ -110,6 +131,7 @@ interface AppContextType {
     myProjects: boolean;
     projectDonations: boolean;
     projectSpese: boolean;
+    statsDonations: boolean;
   };
   refetchAll: () => void;
   setCategory: (cat: string) => void;
@@ -261,6 +283,28 @@ export default function AppProvider({
     staleTime: 1000 * 30, // 30 secondi
   });
 
+  //Query progetti donazioni
+  const {
+    data: statsDonations,
+    isLoading: isLoadingSupportedProjects,
+    refetch: refetchSupportedProjects,
+  } = useQuery({
+    queryKey: ["projects", "supported"],
+    queryFn: async () => {
+      const res = await fetch(
+        `${API_BASE_URL}/projects/supported`,
+        {
+          credentials: "include",
+        }
+      );
+      if (res.status === 401) return [];
+      if (!res.ok) throw new Error("Errore durante il fetch dei progetti supportati");
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 2,
+    enabled: user !== null && !userLoading && !user.isEnte,
+  });
+
   // Indirizzi contratti blockchain
   const { data: contractConfig } = useQuery({
     queryKey: ["contractAddresses"],
@@ -280,6 +324,7 @@ export default function AppProvider({
       myProjects: isLoadingMyProjects,
       projectDonations: projectDonationsLoading,
       projectSpese: projectSpeseLoading,
+      statsDonations: isLoadingSupportedProjects,
     },
     projects: {
       explore: projectsExplore || [],
@@ -289,6 +334,7 @@ export default function AppProvider({
     },
     projectDonations: projectDonationsData || { donors: [], totDonors: 0 },
     projectSpese: projectSpeseData || { spese: [], sommaSpese: 0 },
+    statsDonations: statsDonations,
     setCurrentProjectId,
     setCategory: (cat: string) => {
       setSelectedCategory(cat);
@@ -300,6 +346,7 @@ export default function AppProvider({
       refetchMyProjects();
       refetchProjectDonations();
       refetchProjectSpese();
+      refetchSupportedProjects();
     },
     contracts: contractConfig,
   };
