@@ -5,14 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import Header from '~/components/Header';
 import Navbar from '~/components/Navbar'; 
 
-import CardProgettoAttivo from '~/components/CardProgettoAttivo';
-import CardProgettoSupportato from '~/components/CardProgettoSupportato';
+import CardProgettoAttivo, { CardProgettoAttivoSkeleton } from '~/components/CardProgettoAttivo';
+import CardProgettoSupportato, { CardProgettoSupportatoSkeleton } from '~/components/CardProgettoSupportato';
+import { useApp } from '~/context/AppProvider';
 
-import logoLibersare from '~/assets/libersare.png';
-import imgUser from '~/assets/img_user.png'; 
 
 export default function Donazioni() {
   const navigate = useNavigate();
+  const {user, loading, statsDonations} = useApp();
+  const loadingState = loading.statsDonations || loading.user;
+
   const [openSections, setOpenSections] = useState({
     attivi: true,
     supportati: true 
@@ -22,82 +24,6 @@ export default function Donazioni() {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
-  const handleCopyHash = (e: React.MouseEvent, hash: string) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(hash);
-    alert(`Hash copiato!`);
-  };
-
-  // Navigazione
-  const goToProject = (id: number) => navigate(`/progetto-singolo`);//navigate(`/progetto-singolo/${id}`);
-  
-  const goToEnte = (e: React.MouseEvent, enteId: number) => {
-    e.stopPropagation();
-    //navigate(`/ente-visibile/${enteId}`);
-    navigate(`/ente-visibile`);
-  };
-
-  const openMap = (e: React.MouseEvent, location: string) => {
-    e.stopPropagation();
-    const encoded = encodeURIComponent(location);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encoded}`, '_blank');
-  };
-
-  // DATI MOCK
-  const stats = { progettiSupportati: 3, denaroDonato: 30 };
-
-  const progettiAttivi = [
-    {
-      id: 1,
-      title: "Rescue Animals’ Second Change Santuario",
-      cover: "https://images.unsplash.com/photo-1548504769-900b70ed122e?auto=format&fit=crop&w=800&q=80",
-      contribution: 157,
-      currency: "USDC",
-      spentPercentage: 15,
-      badgeCount: 3
-    },
-    {
-      id: 2,
-      title: "Foresta Urbana Milano",
-      cover: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80",
-      contribution: 50,
-      currency: "USDC",
-      spentPercentage: 45,
-      badgeCount: 1
-    }
-  ];
-
-  const progettiSupportati = [
-    {
-      id: 1,
-      enteId: 101,
-      title: "Rescue Animals’ Second Change Santuario",
-      location: "Bari",
-      cover: "https://images.unsplash.com/photo-1548504769-900b70ed122e?auto=format&fit=crop&w=800&q=80",
-      logoEnte: logoLibersare,
-      percent: 80,
-      daysLeft: 14,
-      supporters: 10,
-      donations: [
-        { id: 'tx1', amount: 157, currency: 'USDC', date: '10/10/2025 - 12.34', hash: '0x75df0e14e35689...' },
-        { id: 'tx2', amount: 12, currency: 'USDC', date: '10/10/2025 - 12.34', hash: '0x32ac9b12f41231...' },
-      ]
-    },
-    {
-      id: 2,
-      enteId: 101,
-      title: "Tech Lab per le scuole elementari",
-      location: "Roma",
-      cover: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
-      logoEnte: logoLibersare,
-      percent: 45,
-      daysLeft: 30,
-      supporters: 5,
-      donations: [
-        { id: 'tx3', amount: 50, currency: 'USDC', date: '12/10/2025 - 09.00', hash: '0x99df0e14e356...' },
-      ]
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-white font-sans pb-28">
@@ -108,8 +34,8 @@ export default function Donazioni() {
 
       {/* HEADER */}
       <Header 
-        type="utente" 
-        profileImage={imgUser} 
+        type={user?.isEnte ? 'ente' : 'utente'}
+        profileImage={user?.profilePicture || ""} 
         activePage="donazioni"
       />
 
@@ -120,14 +46,16 @@ export default function Donazioni() {
         {/* STATS */}
         <div className="flex gap-4 mb-8">
             <div className="flex-1 border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm bg-slate-50">
-                <span className="text-4xl font-extrabold text-primary">{stats.progettiSupportati}</span>
+                <span className="text-4xl font-extrabold text-primary">{statsDonations?.stats.progettiSupportati || 0}</span>
                 <span className="text-xs font-bold text-secondary text-right leading-tight">Progetti<br/>supportati</span>
             </div>
 
             <div className="flex-1 border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm bg-slate-50">
                 <div className="flex items-baseline">
-                    <span className="text-4xl font-extrabold text-primary">{stats.denaroDonato}</span>
-                    <span className="text-sm font-bold text-primary ml-0.5">ETH</span>
+                    <span className="text-4xl font-extrabold text-primary">{statsDonations?.stats.denaroDonato || 0}</span>
+                    <span className="text-sm font-bold text-primary ml-0.5">EURC</span> {/* 
+                    //TODO: support altre valute
+                    */}
                 </div>
                 <span className="text-xs font-bold text-secondary text-right leading-tight">Denaro<br/>donato</span>
             </div>
@@ -143,15 +71,23 @@ export default function Donazioni() {
                 <Icon icon="mdi:chevron-down" className={`text-2xl text-secondary transition-transform duration-300 ${openSections.attivi ? 'rotate-180' : ''}`} />
             </div>
 
-            {openSections.attivi && (
                 <div className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory no-scrollbar">
-                    {progettiAttivi.map((item) => (
-                        <div key={item.id} className="min-w-[85vw] sm:min-w-[320px] snap-center">
-                            <CardProgettoAttivo {...item} onClick={() => goToProject(item.id)} />
+                    {!loadingState ? statsDonations.progettiAttivi.map((item) => (
+                        <div key={item._id + "-attivo"} className="min-w-[85vw] sm:min-w-[320px] snap-center">
+                            <CardProgettoAttivo {...item} />
                         </div>
-                    ))}
+                    )) : (
+                      <>
+                        <div className="min-w-[85vw] sm:min-w-[320px] snap-center">
+                          <CardProgettoAttivoSkeleton />
+                        </div>
+                        <div className="min-w-[85vw] sm:min-w-[320px] snap-center">
+                          <CardProgettoAttivoSkeleton />
+                        </div>
+                      </>
+                    )}
                 </div>
-            )}
+            
         </div>
 
         {/* PROGETTI SUPPORTATI */}
@@ -164,21 +100,18 @@ export default function Donazioni() {
                 <Icon icon="mdi:chevron-down" className={`text-2xl text-secondary transition-transform duration-300 ${openSections.supportati ? 'rotate-180' : ''}`} />
             </div>
 
-            {openSections.supportati && (
                 <div className="flex flex-col gap-6">
-                    {progettiSupportati.map((project) => (
+                    {!loadingState ? statsDonations.progettiSupportati.map((project) => (
                         <CardProgettoSupportato 
-                            key={project.id}
+                            key={project._id + "-supportato"}
                             {...project}
-                            userAvatar={imgUser}
-                            onProjectClick={() => goToProject(project.id)}
-                            onEnteClick={(e) => goToEnte(e, project.enteId)}
-                            onMapClick={(e) => openMap(e, project.location)}
-                            onCopyHash={handleCopyHash}
                         />
-                    ))}
+                    )) : (
+                      <>
+                        <CardProgettoSupportatoSkeleton />
+                      </>
+                    )}
                 </div>
-            )}
         </div>
 
       </main>
