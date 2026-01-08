@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import type { Spesa } from "~/context/AppProvider";
 
@@ -32,6 +32,53 @@ export default function ModalGestioneSpesa({
   const [isPending, setIsPending] = useState(false);
   const [statusText, setStatusText] = useState<string>("");
   const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileProof, setFileProof] = useState<File | null>(null);
+
+  async function getFileHash(file: File): Promise<string> {
+    const arrayBuffer = await file.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
+    // Converti in hex string (bytes32)
+    return (
+      "0x" +
+      Array.from(new Uint8Array(hashBuffer))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
+    );
+  }
+
+  const allowedTypes = [
+    "application/pdf",
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/webp",
+    "image/gif",
+    "video/mp4",
+    "video/webm",
+    "video/ogg",
+  ];
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setIsPending(false);
+      setStatusText("");
+      const file = e.target.files[0];
+
+      if (!allowedTypes.includes(file.type)) {
+        setIsPending(true);
+        setStatusText("Il file deve essere un PDF, un'immagine o un video.");
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        setIsPending(true);
+        setStatusText("Il file non deve superare i 10MB.");
+        return;
+      }
+      setFileProof(file);
+    }
+  };
 
   const vote = async (type: "for" | "against", reason?: string) => {
     if (isPending) return;
@@ -86,7 +133,7 @@ export default function ModalGestioneSpesa({
     }
   };
 
-  const executeSpesa = async() => {
+  const executeSpesa = async () => {
     if (isPending) return;
     if (spesa.status !== "approvata") return;
     if (spesa.executed) return;
@@ -136,7 +183,73 @@ export default function ModalGestioneSpesa({
       setStatusText("Trasferimento fallito");
       console.error("Trasferimento fallito", err);
     }
-  }
+  };
+
+  const validateSpesa = async () => {
+    if (isPending) return;
+    if (spesa.status !== "approvata") return;
+    if (!spesa.executed) return;
+    if (spesa.proofHash) return;
+    if (!fileProof) return;
+    if (!allowedTypes.includes(fileProof.type)) {
+      setIsPending(true);
+      setStatusText("Il file deve essere un PDF, un'immagine o un video.");
+      return;
+    }
+
+    if (fileProof.size > 10 * 1024 * 1024) {
+      setIsPending(true);
+      setStatusText("Il file non deve superare i 10MB.");
+      return;
+    }
+
+    setIsPending(true);
+    setStatusText("Caricando prova di spesa...");
+    try {
+      //? 1. BLOCKCHAIN: Chiama la funzione finalizeRequest sul Vault
+      const proofHash = await getFileHash(fileProof);
+
+      const hash = await writeContract.mutateAsync({
+        address: vaultAddress as `0x${string}`,
+        abi: vaultAbi.abi,
+        functionName: "finalizeRequest",
+        args: [BigInt(spesa.requestId), proofHash],
+      });
+      await waitForTransactionReceipt(config, { hash });
+
+      //? 2. BACKEND: Invia l'esecuzione al backend
+      setStatusText("Salvo esecuzione...");
+      const formData = new FormData();
+      formData.append("proof", fileProof);
+      formData.append("proofHash", hash);
+
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/projects/${projectId}/spese/${spesa._id}/validate`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        console.error("Errore nel caricamento della prova di spesa.");
+        setStatusText("Errore nel caricamento della prova di spesa.");
+        return;
+      }
+      setStatusText("Prova di spesa caricata con successo!");
+      queryClient.invalidateQueries({
+        queryKey: ["project-spese", projectId],
+      });
+      setTimeout(() => {
+        setIsPending(false);
+        onClose();
+      }, 1500);
+    } catch (err) {
+      setStatusText("Caricamento prova di spesa fallito");
+      console.error("Caricamento prova di spesa fallito", err);
+    }
+  };
 
   return (
     <div
@@ -245,6 +358,38 @@ export default function ModalGestioneSpesa({
                 {spesa.hashTransaction?.slice(-10)}
               </span>
               )
+            </div>
+          )}
+          {spesa.proof && (
+            <div className="mt-6 space-y-2">
+          <h4 className="text-sm font-bold text-[#0F172A] mb-2">
+            Prova di spesa
+          </h4>
+              <div className="flex items-center gap-2 text-xs text-gray-700 font-medium">
+                <Icon icon="mdi:paperclip" className="text-lg" /> Prova di spesa{" "}
+                <a
+                  href={import.meta.env.VITE_BACKEND_URL + "/" + spesa.proof}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer hover:underline text-sm text-[#0F172A] underline decoration-slate-300"
+                >
+                  {spesa.proof?.split("/").pop()?.split("-").slice(1).join("-")}
+                </a>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-gray-700 font-medium">
+                <Icon icon="mingcute:link-fill" className="text-lg" />{" "}
+               Hash prova{" "}
+                <span
+                  className="cursor-pointer italic underline"
+                  onClick={() => {
+                    navigator.clipboard.writeText(spesa.proofHash!);
+                    alert("Hash copiato negli appunti!" + spesa.proofHash);
+                  }}
+                >
+                  {spesa.proofHash!.slice(0, 10)}...
+                  {spesa.proofHash!.slice(-10)}
+                </span>
+              </div>
             </div>
           )}
           {spesa.myVote && (
@@ -404,21 +549,78 @@ export default function ModalGestioneSpesa({
             )}
           </>
         )}
-        {mode === "view" && (spesa.status === "approvata" && !spesa.executed) && (
+        {mode === "view" && spesa.status === "approvata" && !spesa.executed && (
           <div className="w-full animate-fade-in">
-                  <button
-                    className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center disabled:cursor-not-allowed disabled:opacity-50 justify-center gap-2 mb-3 bg-primary"
-                    disabled={isPending}
-                    onClick={executeSpesa}
-                  >
-                    {isPending ? (
-                      <><Icon icon="mdi:loading" className="animate-spin text-2xl" />{" "}{statusText}</>
-                    ) : (
-                      <><Icon icon="bx:transfer" className="text-lg" /> Avvia trasferimento fondi</>
-                    )}
-                  </button>
-              </div>
+            <button
+              className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center disabled:cursor-not-allowed disabled:opacity-50 justify-center gap-2 mb-3 bg-primary"
+              disabled={isPending}
+              onClick={executeSpesa}
+            >
+              {isPending ? (
+                <>
+                  <Icon icon="mdi:loading" className="animate-spin text-2xl" />{" "}
+                  {statusText}
+                </>
+              ) : (
+                <>
+                  <Icon icon="bx:transfer" className="text-lg" /> Avvia
+                  trasferimento fondi
+                </>
+              )}
+            </button>
+          </div>
         )}
+        {mode === "view" &&
+          spesa.status === "approvata" &&
+          spesa.executed &&
+          !spesa.proofHash && (
+            <div className="w-full animate-fade-in">
+              <div>
+                <div className="flex items-center text-[#0F172A] font-bold text-sm mb-1 gap-1">
+                  <Icon icon="mdi:paperclip" /> Allega prova di spesa
+                </div>
+                <input
+                  type="file"
+                  accept={allowedTypes.join(",")}
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`w-full h-12 rounded-xl border bg-white flex items-center px-4 text-sm cursor-pointer hover:bg-gray-50 transition-colors border-slate-300 text-slate-400`}
+                >
+                  {fileProof ? (
+                    <span className="text-[#0F172A] font-medium truncate">
+                      {fileProof.name}
+                    </span>
+                  ) : (
+                    "Seleziona file..."
+                  )}
+                </div>
+              </div>
+              <button
+                className="w-full py-3 mt-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center disabled:cursor-not-allowed disabled:opacity-50 justify-center gap-2 mb-3 bg-primary"
+                disabled={isPending || fileProof === null}
+                onClick={validateSpesa}
+              >
+                {isPending ? (
+                  <>
+                    <Icon
+                      icon="mdi:loading"
+                      className="animate-spin text-2xl"
+                    />{" "}
+                    {statusText}
+                  </>
+                ) : (
+                  <>
+                    <Icon icon="material-symbols:upload" className="text-lg" />{" "}
+                    Carica prova di spesa
+                  </>
+                )}
+              </button>
+            </div>
+          )}
       </div>
       <div className="absolute inset-0 -z-10" onClick={onClose}></div>
     </div>
