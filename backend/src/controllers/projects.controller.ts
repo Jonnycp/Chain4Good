@@ -4,6 +4,8 @@ import type { Progetto } from "../models/Project.ts";
 import { UserModel } from "../models/User.ts";
 import { CATEGORY_ENUM } from "../models/Project.ts";
 import { Types } from "mongoose";
+import { DonationModel } from "../models/Donation.ts";
+import { SpesaModel } from "../models/Spesa.ts";
 
 /**
  * Endpoint GET /projects
@@ -478,5 +480,197 @@ export const createProject = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ error: "Errore nella creazione del progetto", details: error });
+  }
+};
+
+/**
+ * Endpoint GET /projects/donated
+ * Restituisce i dettagli dei progetti supportati dall'utente
+ */
+export const getProjectSupported = async (req: Request, res: Response) => {
+  try {
+    const user = await UserModel.findOne({ address: req.session.address! });
+    if (!user) {
+      return res.status(404).json({ error: "Utente non trovato", code: 404 });
+    }
+
+    // 1. Aggregazione Principale: Recupera Progetti legati alle donazioni dell'utente
+    const userActivity = await DonationModel.aggregate([
+      { $match: { donor: new Types.ObjectId(user._id) } },
+      { $sort: { createdAt: -1 } },
+      {
+        $group: {
+          _id: "$project",
+          totalContribution: { $sum: "$amount" },
+          userDonations: {
+            $push: {
+              id: "$_id",
+              amount: "$amount",
+              currency: "$symbol",
+              date: "$createdAt",
+              hash: "$hashTransaction"
+            }
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "projects",
+          localField: "_id",
+          foreignField: "_id",
+          as: "details"
+        }
+      },
+      { $unwind: "$details" },
+      {
+        $lookup: {
+          from: "users",
+          localField: "details.ente",
+          foreignField: "_id",
+          as: "enteInfo"
+        }
+      },
+      { $unwind: "$enteInfo" },
+      // Lookup per spese (sia per conteggio votazione che per totale speso)
+      {
+        $lookup: {
+          from: "spesas",
+          localField: "_id",
+          foreignField: "projectId",
+          as: "projectSpese"
+        }
+      },
+      // Lookup per i donatori del progetto (per estrarre gli ultimi avatar)
+      {
+        $lookup: {
+          from: "donations",
+          let: { pid: "$_id" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$project", "$$pid"] } } },
+            { $sort: { createdAt: -1 } },
+            { $group: { _id: "$donor", lastDonation: { $first: "$$ROOT" } } },
+            { $limit: 5 },
+            {
+              $lookup: {
+                from: "users",
+                localField: "_id",
+                foreignField: "_id",
+                as: "u"
+              }
+            },
+            { $unwind: "$u" }
+          ],
+          as: "lastDonorsData"
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          totalContribution: 1,
+          userDonations: 1,
+          details: 1,
+          ente: {
+            id: "$enteInfo._id",
+            nome: "$enteInfo.enteDetails.nome",
+            profilePicture: "$enteInfo.profilePicture"
+          },
+          lastDonors: {
+            $map: {
+              input: "$lastDonorsData",
+              as: "ld",
+              in: { id: "$$ld.u._id", profilePicture: "$$ld.u.profilePicture" }
+            }
+          },
+          speseInVoto: {
+            $size: {
+              $filter: {
+                input: "$projectSpese",
+                as: "s",
+                cond: { $eq: ["$$s.status", "votazione"] }
+              }
+            }
+          },
+          totaleSpeso: {
+            $sum: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: "$projectSpese",
+                    as: "s",
+                    cond: { $eq: ["$$s.status", "approvata"] }
+                  }
+                },
+                as: "approved",
+                in: "$$approved.amount"
+              }
+            }
+          },
+          numeroSpese: {
+             $size: {
+              $filter: {
+                input: "$projectSpese",
+                as: "s",
+                cond: { $eq: ["$$s.status", "approvata"] }
+              }
+            }
+          }
+        }
+      }
+    ]);
+
+    // 2. Formattazione Risposta
+    const stats = {
+      progettiSupportati: userActivity.length,
+      denaroDonato: userActivity.reduce((acc, curr) => acc + curr.totalContribution, 0)
+    };
+
+    const progettiAttivi = userActivity
+      .filter(item => item.details.status === "attivo")
+      .map(item => ({
+        _id: item._id,
+        titolo: item.details.title,
+        cover: item.details.coverImage,
+        stato: item.details.status,
+        luogo: item.details.location,
+        endDate: item.details.endDate,
+        targetAmount: item.details.targetAmount,
+        currentAmount: item.details.currentAmount,
+        currency: item.details.currency,
+        numeroDonatori: item.details.uniqueDonorsCount,
+        createdAt: item.details.createdAt,
+        ente: item.ente,
+        lastDonors: item.lastDonors,
+        contribution: item.totalContribution,
+        speseInVoto: item.speseInVoto,
+        totaleSpeso: item.totaleSpeso,
+        numeroSpese: item.numeroSpese
+      }));
+
+    const progettiSupportati = userActivity
+      .filter(item => item.details.status === "raccolta")
+      .map(item => ({
+        _id: item._id,
+        titolo: item.details.title,
+        cover: item.details.coverImage,
+        stato: item.details.status,
+        luogo: item.details.location,
+        endDate: item.details.endDate,
+        targetAmount: item.details.targetAmount,
+        currentAmount: item.details.currentAmount,
+        currency: item.details.currency,
+        numeroDonatori: item.details.uniqueDonorsCount,
+        createdAt: item.details.createdAt,
+        ente: item.ente,
+        lastDonors: item.lastDonors,
+        totaleSpeso: item.totaleSpeso,
+        numeroSpese: item.numeroSpese,
+        donations: item.userDonations
+      }));
+
+    res.json({ stats, progettiAttivi, progettiSupportati });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Errore interno del server", code: 500 });
   }
 };

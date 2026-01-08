@@ -34,6 +34,8 @@ router.get('/', isAuth, ProjectController.getProjects);
 
 router.get('/categories', ProjectController.getCategories);
 
+router.get("/supported", isAuth, ProjectController.getProjectSupported);
+
 router.get("/me", isAuth, isEnte, ProjectController.getMyProjects);
 
 router.get('/:id', isAuth, isDonator, ProjectController.getProjectById);
@@ -50,6 +52,5 @@ router.post('/:id/spese/:spesaId/vote', isAuth, isDonator, SpeseController.voteS
 
 router.post('/new', isAuth, isEnte, uploadProject.single("coverImage"), ProjectController.createProject);
 
-// router.get("/donated", isAuth, ProjectController.getMyDonations);
 
 export default router;
