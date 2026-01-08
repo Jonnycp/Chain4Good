@@ -72,7 +72,7 @@ export default function Donazioni() {
             </div>
 
                 <div className="flex overflow-x-auto gap-4 pb-4 -mx-6 px-6 snap-x snap-mandatory no-scrollbar">
-                    {!loadingState ? statsDonations.progettiAttivi.map((item) => (
+                    {!loadingState && statsDonations ? statsDonations.progettiAttivi.map((item) => (
                         <div key={item._id + "-attivo"} className="min-w-[85vw] sm:min-w-[320px] snap-center">
                             <CardProgettoAttivo {...item} />
                         </div>
@@ -101,7 +101,7 @@ export default function Donazioni() {
             </div>
 
                 <div className="flex flex-col gap-6">
-                    {!loadingState ? statsDonations.progettiSupportati.map((project) => (
+                    {!loadingState && statsDonations ? statsDonations.progettiSupportati.map((project) => (
                         <CardProgettoSupportato 
                             key={project._id + "-supportato"}
                             {...project}
