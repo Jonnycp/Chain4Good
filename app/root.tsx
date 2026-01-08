@@ -58,7 +58,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           content="black-translucent"
         />
         <meta name="theme-color" content="#6AAB29" />
-
+        <link rel="manifest" href="/manifest.webmanifest" />
+        
         <Meta />
         <Links />
       </head>
