@@ -223,9 +223,7 @@ export default function ProgettoSingolo() {
   // Render dei modali
   const renderSelectedSpesaModal = () => {
     if (!selectedSpesa) return null;
-    if (
-      project.isMy
-    ) {
+    if (project.isMy) {
       return (
         <ModalGestioneSpesa
           mode="view"
@@ -238,8 +236,7 @@ export default function ProgettoSingolo() {
       );
     }
     // Gestione spesa per Utente
-    if (selectedSpesa.status === "votazione" ||
-      selectedSpesa.myVote) {
+    if (selectedSpesa.status === "votazione" || selectedSpesa.myVote) {
       return (
         <ModalGestioneSpesa
           mode="manage"
@@ -325,12 +322,13 @@ export default function ProgettoSingolo() {
             : `${import.meta.env.VITE_BACKEND_URL}/${project.coverImage}`
         }
         location={project.location}
-        onShare={() => navigator.share({
-          title: project.title,
-          text: `Dai un'occhiata a questo progetto su Chain4Good: ${project.title}`,
-          url: shareUrl,
-          
-        })}
+        onShare={() =>
+          navigator.share({
+            title: project.title,
+            text: `Dai un'occhiata a questo progetto su Chain4Good: ${project.title}`,
+            url: shareUrl,
+          })
+        }
       />
 
       {/* MAIN CONTENT */}
@@ -507,9 +505,14 @@ export default function ProgettoSingolo() {
               </button>
               <button
                 onClick={() => setActiveTab("approvata")}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === "approvata" ? "bg-secondary text-white shadow-md" : "bg-[#F1F5F9] text-slate-500 hover:bg-slate-200"}`}
+                className={`relative px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-2 transition-all ${activeTab === "approvata" ? "bg-secondary text-white shadow-md" : "bg-[#F1F5F9] text-slate-500 hover:bg-slate-200"}`}
               >
-                {" "}
+                {projectSpese.spese.filter(spesa => spesa.status === "approvata" && !spesa.executed).length > 0 &&
+                   <span className="absolute top-0 right-0 flex h-3 w-3 z-100">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+          </span>
+                }
                 <Icon icon="mdi:check" className="text-base" /> Approvate
               </button>
               <button
