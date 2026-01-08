@@ -383,3 +383,72 @@ export const executeSpesa = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Errore nell'esecuzione della spesa", code: 500 });
   }
 };
+
+/**
+ * Endpoint POST /projects/:id/spese/:spesaId/proof
+ * Carica la prova di spesa (file) se la spesa è stata eseguita prima, con questi parametri:
+ * proof (file)
+ * proofHash: string
+ */
+export const uploadProof = async (req: Request, res: Response) => {
+  try {
+    const { id, spesaId } = req.params;
+    const proof = req.file ? req.file.path : "";
+    const { proofHash } = req.body;
+    
+    // Validazioni
+    if (!proof) {
+      return res.status(400).json({ error: "File di prova mancante", code: 400 });
+    }
+    //il file non deve superare i 10mb e solo video, foto, pdf
+    const allowedExtensions = [".pdf", ".png", ".jpg", ".jpeg", ".webp", ".mp4", ".mov", ".avi"];
+    const ext = proof
+      .substring(proof.lastIndexOf("."))
+      .toLowerCase();
+    if (!allowedExtensions.includes(ext)) {
+      return res.status(400).json({ error: "Formato file non supportato (PDF, PNG, JPG, JPEG, WEBP, MP4, MOV, AVI)", code: 400 });
+    }
+    if (req.file && req.file.size > 10 * 1024 * 1024) {
+      return res.status(400).json({ error: "Il file non deve superare i 10MB", code: 400 });
+    }
+    const allowedMimeTypes = [
+      "application/pdf",
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "image/webp",
+      "video/mp4",
+      "video/quicktime",
+      "video/x-msvideo"
+    ];
+    if (req.file && !allowedMimeTypes.includes(req.file.mimetype)) {
+      return res.status(400).json({ error: "Tipo di file non valido", code: 400 });
+    }
+    if (!proofHash || typeof proofHash !== "string" || proofHash.length < 10) {
+      return res.status(400).json({ error: "Hash prova non valido", code: 400 });
+    }
+    // Verifica esistenza spesa
+    const spesa = await SpesaModel.findOne({
+      _id: new Types.ObjectId(spesaId),
+      projectId: new Types.ObjectId(id),
+    });
+    if (!spesa) {
+      return res.status(404).json({ error: "Spesa non trovata", code: 404 });
+    }
+
+    if (!spesa.executed) {
+      return res.status(400).json({ error: "La spesa deve essere eseguita prima di caricare la prova", code: 400 });
+    }
+    if( spesa.proof ) {
+      return res.status(400).json({ error: "La prova di spesa è già stata caricata", code: 400 });
+    }
+
+    // Carica la prova
+    spesa.proof = proof;
+    spesa.proofHash = proofHash.trim();
+    await spesa.save();
+    res.json({ success: true, spesa });
+  } catch (error) {
+    res.status(500).json({ error: "Errore nel caricamento della prova", code: 500 });
+  }
+}
