@@ -1,0 +1,59 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: chain4good_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  blockchain:
+    build: ./blockchain
+    image: chain4good-blockchain:latest
+    container_name: chain4good_blockchain
+    ports:
+      - "8545:8545"
+    volumes:
+      - shared_abi:/app/artifacts # gli ABI generati dopo il deploy
+      - shared_abi:/app/ignition/deployments # gli indirizzi dei contratti generati dopo il deploy
+    restart: always
+
+  backend:
+    build: ./backend
+    image: chain4good-backend:latest
+    container_name: chain4good_backend
+    ports:
+      - "3000:3000"
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGO_URI=mongodb://mongodb:27017/chain4good
+      - RPC_URL=http://blockchain:8545
+      - FRONTEND_URL=http://localhost:5173
+      - DEPLOYMENT_ADDRESSES_PATH=/shared/chain-31337/deployed_addresses.json
+    depends_on:
+      - mongodb
+      - blockchain
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - shared_abi:/shared
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Argomenti durante la compilazione frontend di vite
+        - VITE_BACKEND_URL=http://localhost:3000
+        - VITE_HARDHAT_RPC_URL=http://localhost:8545
+    image: chain4good-frontend:latest
+    container_name: chain4good_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
+  shared_abi:
