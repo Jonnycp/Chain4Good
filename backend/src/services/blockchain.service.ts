@@ -11,7 +11,7 @@ const RPC_URL = process.env.RPC_URL || "http://127.0.0.1:8545";
  */
 export const getContractAddress = (): { enteNft: string; eurc: string; factory: string } | null => {
   try {
-    const deploymentPath = path.resolve(
+    const deploymentPath = process.env.DEPLOYMENT_ADDRESSES_PATH || path.resolve(
       process.cwd(),
       "../blockchain/ignition/deployments/chain-31337/deployed_addresses.json"
     );
