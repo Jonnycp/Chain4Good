@@ -62,7 +62,7 @@ router.post('/:id/spese/:spesaId/vote', isAuth, isDonator, SpeseController.voteS
 
 router.post('/:id/spese/:spesaId/execute', isAuth, isProjectCreator, SpeseController.executeSpesa);
 
-router.post('/:id/spese/:spesaId/proof', isAuth, isProjectCreator, uploadProof.single("proof"), SpeseController.uploadProof);
+router.post('/:id/spese/:spesaId/validate', isAuth, isProjectCreator, uploadProof.single("proof"), SpeseController.uploadProof);
 
 router.post('/new', isAuth, isEnte, uploadProject.single("coverImage"), ProjectController.createProject);
 

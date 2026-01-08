@@ -385,7 +385,7 @@ export const executeSpesa = async (req: Request, res: Response) => {
 };
 
 /**
- * Endpoint POST /projects/:id/spese/:spesaId/proof
+ * Endpoint POST /projects/:id/spese/:spesaId/validate
  * Carica la prova di spesa (file) se la spesa è stata eseguita prima, con questi parametri:
  * proof (file)
  * proofHash: string
