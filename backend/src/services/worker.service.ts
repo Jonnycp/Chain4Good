@@ -50,7 +50,7 @@ const spesaGovernanceWorker = async () => {
         const dataScadenza = new Date(spesa.createdAt.getTime() + treGiorniInMs);
         
         const timeEnded = oraAttuale >= dataScadenza;
-        const mathMajority = spesa.votes.votesFor >= (totalDonors - currentVoters);
+        const mathMajority = spesa.votes.votesFor >= (totalDonors - currentVoters) && spesa.votes.votesFor > 0;
         const simpleMajority = spesa.votes.votesFor >= spesa.votes.votesAgainst;
 
         if (mathMajority || (timeEnded && simpleMajority)) {
