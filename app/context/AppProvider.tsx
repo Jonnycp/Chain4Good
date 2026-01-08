@@ -44,6 +44,8 @@ export type Spesa = {
   executed: boolean;
   hashExecution?: string;
   createdAt: Date;
+  proof?: string;
+  proofHash?: string;
   votes: {
     votesFor: number;
     votesAgainst: number;
