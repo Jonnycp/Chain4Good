@@ -86,6 +86,58 @@ export default function ModalGestioneSpesa({
     }
   };
 
+  const executeSpesa = async() => {
+    if (isPending) return;
+    if (spesa.status !== "approvata") return;
+    if (spesa.executed) return;
+    setIsPending(true);
+    setStatusText("Avviando trasferimento...");
+    try {
+      //? 1. BLOCKCHAIN: Chiama la funzione executeRequest sul Vault
+      const hash = await writeContract.mutateAsync({
+        address: vaultAddress as `0x${string}`,
+        abi: vaultAbi.abi,
+        functionName: "executeRequest",
+        args: [BigInt(spesa.requestId)],
+      });
+
+      await waitForTransactionReceipt(config, { hash });
+
+      //? 2. BACKEND: Invia l'esecuzione al backend
+      setStatusText("Salvo esecuzione...");
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/projects/${projectId}/spese/${spesa._id}/execute`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            hashTransaction: hash,
+          }),
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        console.error("Errore nel salvataggio dell'esecuzione.");
+        setStatusText("Errore nel salvataggio dell'esecuzione.");
+        return;
+      }
+      setStatusText("Trasferimento confermato!");
+      queryClient.invalidateQueries({
+        queryKey: ["project-spese", projectId],
+      });
+      setTimeout(() => {
+        setIsPending(false);
+        onClose();
+      }, 1500);
+    } catch (err) {
+      setStatusText("Trasferimento fallito");
+      console.error("Trasferimento fallito", err);
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-appearance-in font-sans"
@@ -351,6 +403,21 @@ export default function ModalGestioneSpesa({
               </>
             )}
           </>
+        )}
+        {mode === "view" && (spesa.status === "approvata" && !spesa.executed) && (
+          <div className="w-full animate-fade-in">
+                  <button
+                    className="w-full py-3 rounded-xl text-white font-bold text-sm shadow-lg flex items-center disabled:cursor-not-allowed disabled:opacity-50 justify-center gap-2 mb-3 bg-primary"
+                    disabled={isPending}
+                    onClick={executeSpesa}
+                  >
+                    {isPending ? (
+                      <><Icon icon="mdi:loading" className="animate-spin text-2xl" />{" "}{statusText}</>
+                    ) : (
+                      <><Icon icon="bx:transfer" className="text-lg" /> Avvia trasferimento fondi</>
+                    )}
+                  </button>
+              </div>
         )}
       </div>
       <div className="absolute inset-0 -z-10" onClick={onClose}></div>
