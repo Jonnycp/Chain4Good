@@ -2,18 +2,14 @@
   "name": "blockchain_chain4good",
   "version": "1.0.0",
   "description": "Blockchain della DAPP Chain4Good",
-  "main": "./src/index.js",
   "scripts": {
-    "start": "ts-node --esm src/server.ts",
-    "dev": "nodemon --watch src --ext ts,json --exec \"ts-node --esm src/server.ts\"",
-    "build": "tsc"
+    "start": "npx hardhat node --hostname 0.0.0.0"
   },
   "keywords": [
-    "Backend",
+    "Blockchain",
     "Chain4Good",
     "DAPP",
     "ethereum",
-    "blockchain",
     "nodejs",
     "hardhat",
     "solidity"
