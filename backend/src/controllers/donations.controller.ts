@@ -62,6 +62,8 @@ export const donateToProject = async (req: Request, res: Response) => {
         .json({ error: "Raccolta fondi terminata", code: 400 });
     }
 
+    const isNewDonor = !(await DonationModel.exists({ project: project._id, donor: user._id }));
+
     // Crea donazione
     const newDonation = await DonationModel.create({
       project: project._id,
@@ -71,8 +73,6 @@ export const donateToProject = async (req: Request, res: Response) => {
       symbol: project.currency,
       messaggio: messaggio ? messaggio.trim() : "",
     });
-
-    const isNewDonor = !(await DonationModel.exists({ project: project._id, donor: user._id }));
 
     //TODO: dovrebbe prendere i valori on-chain per sicurezza
     const updatedProject = await ProjectModel.findByIdAndUpdate(
