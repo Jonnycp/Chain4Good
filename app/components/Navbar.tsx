@@ -1,6 +1,6 @@
-import React from 'react';
 import { Icon } from '@iconify/react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 interface NavbarProps {
   active?: 'home' | 'donazioni' | 'profilo';
@@ -37,6 +37,15 @@ const NavItem = ({
 
 const Navbar = ({ active = 'home' }: NavbarProps) => {
   const navigate = useNavigate();
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <></>;
+  }
 
   return (
     // NOTA: Aggiunto 'md:hidden' per nascondere la bottom bar su desktop

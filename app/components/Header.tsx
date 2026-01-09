@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import logoChain4Good from '~/assets/logo.png'; 
 
 interface HeaderProps {
@@ -18,11 +18,17 @@ export default function Header({
   const isEnte = type === 'ente';
   const profilePath = '/pagina-profilo'; 
 
+  const handleNavigate = (path: string) => {
+    if (typeof window !== "undefined") {
+      navigate(path);
+    }
+  };
+
   const NavLink = ({ label, page, path }: { label: string, page: string, path: string }) => {
     const isActive = activePage === page;
     return (
       <button 
-        onClick={() => navigate(path)}
+        onClick={() => handleNavigate(path)}
         className={`text-sm font-bold transition-colors ${
           isActive 
             ? 'text-secondary'
@@ -40,7 +46,7 @@ export default function Header({
       {/* LOGO */}
       <div 
         className="flex items-center gap-2 cursor-pointer z-10 shrink-0" 
-        onClick={() => navigate('/')}
+        onClick={() => handleNavigate('/')}
       >
         <img 
             src={logoChain4Good} 
@@ -65,7 +71,7 @@ export default function Header({
 
         {/* AVATAR (Rimane sempre) */}
         <div 
-            onClick={() => navigate(profilePath)}
+            onClick={() => handleNavigate(profilePath)}
             className={`
               w-10 h-10 rounded-full cursor-pointer transition-transform hover:scale-105 shrink-0
               ${isEnte 
