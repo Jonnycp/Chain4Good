@@ -79,8 +79,15 @@ export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const isLoginPage = url.pathname === "/login";
 
+  let backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (typeof window === "undefined") {
+    const url = new URL(backendUrl);
+    url.hostname = "backend";
+    backendUrl = url.toString().replace(/\/$/, "");
+  }
+
   try {
-    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
+    const res = await fetch(`${backendUrl}/auth/me`, {
       headers: {
         Cookie: request.headers.get("Cookie") || "",
       },

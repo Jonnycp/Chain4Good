@@ -10,8 +10,15 @@ import { useBalance, useReadContract } from "wagmi";
 import { getAddress, formatEther, formatUnits, erc20Abi } from "viem";
 
 export async function action({ request }: ActionFunctionArgs) {
+  let backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (typeof window === "undefined") {
+    const url = new URL(backendUrl);
+    url.hostname = "backend";
+    backendUrl = url.toString().replace(/\/$/, "");
+  }
+
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {
+    const response = await fetch(`${backendUrl}/auth/logout`, {
       method: "POST",
       headers: {
         "Cookie": request.headers.get("Cookie") || "",

@@ -10,35 +10,36 @@ export async function action({ request }: ActionFunctionArgs) {
 
   let backendUrl = import.meta.env.VITE_BACKEND_URL;
   if (typeof window === "undefined") {
-    backendUrl = backendUrl.replace("localhost", "backend");
+    const url = new URL(backendUrl);
+    url.hostname = "backend";
+    backendUrl = url.toString().replace(/\/$/, "");
   }
 
   try {
-    const response = await fetch(
-      backendUrl + "/auth/verify",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Cookie": request.headers.get("Cookie") || "",
-          "Host": import.meta.env.VITE_BACKEND_URL.replace("http://", "").replace("https://", ""),
-        },
-        body: JSON.stringify({
-          message: JSON.parse(message as string),
-          signature,
-        }),
-        credentials: "include",
-      }
-    );
+    const response = await fetch(backendUrl + "/auth/verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: request.headers.get("Cookie") || "",
+        Host: import.meta.env.VITE_BACKEND_URL.replace("http://", "").replace(
+          "https://",
+          ""
+        ),
+      },
+      body: JSON.stringify({
+        message: JSON.parse(message as string),
+        signature,
+      }),
+      credentials: "include",
+    });
 
     const data = await response.json();
-    console.log(data, response.ok)
+
     if (!response.ok || data.error) {
       console.error("Errore di verifica della firma:", data.error, data.code);
       return { error: data?.error || "Verifica fallita" };
     } else {
       const setCookieHeader = response.headers.get("set-cookie");
-      console.log("Passaggio cookie al browser:", setCookieHeader ? "SÌ" : "NO");
       return redirect("/", {
         headers: setCookieHeader ? { "Set-Cookie": setCookieHeader } : {},
       });

@@ -11,7 +11,14 @@ export async function loader({ params, request }: { params: { id?: string }, req
   if (!id || id.length !== 24 || !/^[a-fA-F0-9]{24}$/.test(id)) {
     return redirect("/");
   }
-  const res = await fetch(`${API_BASE_URL}/ente/${id}`, {
+
+  let backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (typeof window === "undefined") {
+    const url = new URL(backendUrl);
+    url.hostname = "backend";
+    backendUrl = url.toString().replace(/\/$/, "");
+  }
+  const res = await fetch(`${backendUrl}/ente/${id}`, {
     credentials: "include",
     headers: {
       Cookie: request.headers.get("Cookie") || "",
