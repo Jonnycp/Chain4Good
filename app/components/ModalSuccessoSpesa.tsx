@@ -1,5 +1,4 @@
 import { Icon } from '@iconify/react';
-import { Button } from "@heroui/react";
 import logo from '~/assets/logo.png';
 
 interface ModalSuccessoSpesaProps {
@@ -23,12 +22,12 @@ export default function ModalSuccessoSpesa({ onClose }: ModalSuccessoSpesaProps)
           Spesa aggiunta<br/>con successo!
         </p>
 
-        <Button 
+        <button 
             className="w-full h-12 bg-[#0F172A] text-white font-bold text-base rounded-xl shadow-lg"
-            onPress={onClose}
+            onClick={onClose}
         >
             Perfetto
-        </Button>
+        </button>
 
       </div>
     </div>
