@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Icon } from "@iconify/react";
 import type { Project } from "../context/AppProvider";
 
