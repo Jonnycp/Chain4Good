@@ -4,8 +4,6 @@ services:
     container_name: chain4good_db
     ports:
       - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
 
   blockchain:
     build: ./blockchain
@@ -14,8 +12,7 @@ services:
     ports:
       - "8545:8545"
     volumes:
-      - shared_abi:/app/artifacts # gli ABI generati dopo il deploy
-      - shared_abi:/app/ignition/deployments # gli indirizzi dei contratti generati dopo il deploy
+      - shared_abi:/app/
     restart: always
 
   backend:
@@ -31,7 +28,7 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/chain4good
       - RPC_URL=http://blockchain:8545
       - FRONTEND_URL=http://localhost:5173
-      - DEPLOYMENT_ADDRESSES_PATH=/shared/chain-31337/deployed_addresses.json
+      - DEPLOYMENT_ADDRESSES_PATH=/shared/ignition/deployments/chain-31337/deployed_addresses.json
     depends_on:
       - mongodb
       - blockchain
@@ -55,5 +52,4 @@ services:
       - backend
 
 volumes:
-  mongo_data:
   shared_abi:
