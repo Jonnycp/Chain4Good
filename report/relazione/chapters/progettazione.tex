@@ -84,6 +84,19 @@ Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requi
 % sicurezza: i dati devono rimanere all'interno dll'applicazione, protetti, deve essere sicuro replayact
 
 \subsection{Architettura del Sistema}
+
+\begin{figure}
+	\centering
+	{
+		\includegraphics[
+		height = 7cm
+		]{images/architettura.png}
+	}
+	\caption{Architettura di Chain4Good.}
+	\label{fig:architettura}
+\end{figure}
+
+
 L'architettura proposta adotta un modello che integra lo \textit{stack} MERN (MongoDB, Express, React, Node.js) con le tecnologie Web3.\\
 In particolare, il \textit{front-end} è sviluppato in React integrato da Tailwind CSS per la definizione di uno stile grafico resposivo, e da React Router per la gestione della navigazione \textit{client-side.} \\
 React Query, invece, è stato utilizzato per l'implementazione di un meccanismo di \textit{caching} volto ad ottimizzare le prestazioni e l'esperienza utente. \\
@@ -96,6 +109,7 @@ Tra il livello di \textit{routing} delle API e i controller sono inseriti specif
 Infine, per evidenti ragioni di efficienza e costi imposti dalla tecnologia blockchain è stata operata una chiara separazione tra i dati da memorizzare \textit{on-chain} e \textit{off-chain}. 
 In particolare, sulla blockchain sono stati memorizzati i dati essenziali e critici, come l'insieme delle donazioni effettuate o le richieste di spesa avanzate dall'ente. 
 Il database MongoDB invece è stato utilizzato per memorizzare rispettivamente: i metadati dei progetti e delle spese (come la descrizione dettagliata delle richieste di spesa), la logica non critica, i dati dell'utente e i documenti relativi alle prove di acquisto.
+
 
 
 
