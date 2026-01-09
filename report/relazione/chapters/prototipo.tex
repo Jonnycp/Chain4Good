@@ -91,7 +91,6 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 	\caption{Inserimento di un nuovo progetto.}
 	\label{fig:nuovo_progetto}
 \end{figure}
-git
 
 
 \subsection{Inserimento e valutazione spesa}
@@ -125,7 +124,7 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 	\label{fig:nuova_spesa}
 \end{figure}
 
-Per evitare condizioni di stallo decisionale, il sistema è stato progettato in modo da limitare la finestra di votazione a un periodo di tre giorni dalla sottomissione della richiesta. \\
+Per evitare condizioni di stallo decisionale, il sistema è stato progettato in modo da limitare la finestra di votazione a un periodo di tre giorni dalla sottomissione della richiesta di spesa. \\
 La gestione dell'intero processo è invece affidata allo \textit{Smart Contract} il quale opera secondo la logica descritta nell'algoritmo~\ref{alg:logica_voto}. \\
 Al verificarsi di una delle condizioni di approvazione, il contratto esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario, registrando l'operazione \textit{on-chain}. \\
 
