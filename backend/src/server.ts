@@ -11,6 +11,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(express.json());
+app.set('trust proxy', 1);
 
 // Configurazione CORS (per il frontend)
 app.use(cors({
@@ -26,8 +27,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production" || false, // per HTTPS in produzione
+      secure: false, // per HTTPS in produzione
       sameSite: "lax",
+      path: "/",
+      domain: undefined,
       maxAge: 60 * 60 * 1000 * 24 * 7, // 7 days
     },
   })
