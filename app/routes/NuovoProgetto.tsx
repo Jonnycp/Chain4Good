@@ -444,7 +444,7 @@ export default function NuovoProgetto() {
                   {/* Budget */}
                   <div>
                     <label className="block text-sm font-bold text-secondary mb-1">
-                      Budget target (ETH)
+                      Budget target
                     </label>
                     <input
                       type="number"
