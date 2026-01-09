@@ -45,7 +45,7 @@ Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requi
 		\hline
 		RF5 & Visualizzazione progetti & Il donatore deve poter visualizzare l'elenco delle iniziative di \gls{cf} attive e i relativi dettagli. \\ \hline
 		RF6 & Donazione & Il donatore deve poter selezionare un progetto e scegliere arbitrariamente l'importo da donare. \\ \hline
-		RF7 & Votazione richieste & Il donatore deve poter visualizzare il preventivo di spesa allegato dall'Ente ed votare se approvare o meno la richiesta. \\ \hline
+		RF7 & Votazione richieste & Il donatore deve poter visualizzare il preventivo di spesa allegato dall'Ente e votare se approvare o meno la richiesta, motivando la risposta in caso di negazione. \\ \hline
 		RF8 & Saldo portafoglio & Il donatore deve poter visualizzare il saldo disponibile. \\ \hline
 		
 		\multicolumn{3}{l}{\textbf{Sistema}} \\
@@ -172,6 +172,8 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti u
 			ethers.js & Libreria JavaScript utilizzata per l’interazione con la \textit{blockchain} Ethereum, in particolare per il recupero di informazioni \textit{on-chain}. \\
 			\hline
 			Multer & \textit{Middelware} per Node.js  utilizzato per la gestione di flussi \textit{multipart/form-data}, facilitando l'\textit{upload} e il salvataggio dei contenuti multimediali. \\
+			\hline
+			node-cron & \textit{Scheduler} JavaScript impiegato per la realizzazione di un worker dedicato al monitoraggio automatico dello stato di progetti e spese. \\
 			\hline
 		\end{tabular}
 	}

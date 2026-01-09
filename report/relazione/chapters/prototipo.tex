@@ -31,7 +31,7 @@ Infine, il \textit{front-end} utilizza il \textit{cookie} di sessione per recupe
 \subsubsection{Ente}
 L’Ente beneficiario rappresenta l’attore abilitato alla creazione delle iniziative di raccolta fondi sulla piattaforma. \\
 Il suo riconoscimento avviene durante la fase di autenticazione, contestualmente alla verifica della firma crittografica dell’utente. \\
-In particolare, durante la procedura di \textit{login}, il \textit{back-end} accerta l’identità dell’utente e interroga la blockchain per verificare se l’indirizzo del \textit{wallet} risulti associato a un NFT non trasferibile (\textit{Soulbound Token}) denominato \textit{ETS}.
+In particolare, durante la procedura di \textit{login}, il \textit{back-end} accerta l’identità dell’utente e interroga la blockchain per verificare se l’indirizzo del \textit{wallet} risulti associato a un NFT (protocollo ERC721) non trasferibile (\textit{Soulbound Token}) denominato "Ente autorizzato Chain4Good (ETS).
 Tale \textit{token} funge dunque da attestazione crittografica dello stato di ente autorizzato all'interno del sistema e viene rilasciato esclusivamente a seguito di un processo di registrazione e verifica \textit{off-chain}.\\
 Una volta autenticato, il sistema abilita le funzionalità riservate a questa tipologia di utente, il quale può avviare nuove raccolte o contribuire ai progetti di altri enti, mentre gli è preclusa la possibilità di effettuare donazioni verso le proprie iniziative.
 
@@ -51,7 +51,7 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 	{
 		\includegraphics[
 			height = 7.9cm
-		]{images/home_22.png}
+		]{images/DASHBOARD.png}
 	}
 	\caption{Dashboard del donatore}
 	\label{fig:dashboard-donatore}
@@ -64,8 +64,8 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 
 \begin{itemize}
 	
-	\item (a):  durante il primo \textit{step}, l'Ente è tenuto a specificare le informazioni fondamentali del progetto, quali il nome, la categoria di appartenenza, l’obiettivo economico e il termine temporale della raccolta fondi. \\ 
-	Gli ultimi due parametri permettono di automatizzare la gestione delle risorse in modalità \textit{trustless}, in quanto vengono utilizzati dallo \textit{Smart Contract} per determinare l’esito della raccolta fondi;
+	\item (a):  durante il primo \textit{step}, l'Ente è tenuto a specificare le informazioni fondamentali del progetto, quali il nome, la categoria di appartenenza, la valuta, l’obiettivo economico e il termine temporale della raccolta fondi. Gli ultimi due parametri permettono di automatizzare la gestione delle risorse in modalità \textit{trustless}, in quanto vengono utilizzati dallo \textit{Smart Contract} per determinare l’esito della raccolta fondi.
+	Inoltre, la piattaforma è stata progettata per operare specificamente con le \textit{Stablecoin} EURC.
 	
 	\item (b): lo \textit{step} 2 prevede l’inserimento di un piano dettagliato delle spese, oltre ad una descrizione approfondita del progetto e un’immagine di copertina. Tale prospetto non assolve solo finalità informative, ma contribuisce ad incrementare la credibilità dell'iniziativa e a consolidare il rapporto di fiducia con i donatori. 
 	
@@ -79,14 +79,14 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 	{
 		\includegraphics[
 		height = 7.9cm
-		]{images/crea1.png}
+		]{images/CREA1.png}
 	}
 	\hspace{2cm}
 	\subfloat[]
 	{
 		\includegraphics[
 		height = 7.9cm
-		]{images/crea2.png}
+		]{images/CREA2.png}
 	}
 	\caption{Inserimento di un nuovo progetto.}
 	\label{fig:nuovo_progetto}
@@ -111,14 +111,14 @@ Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi
 	{
 		\includegraphics[
 		height = 7.9cm
-		]{images/spesa.png}
+		]{images/SPESA1.png}
 	}
 	\hspace{2cm}
 	\subfloat[]
 	{
 		\includegraphics[
 		height = 7.9cm
-		]{images/spesa2.png}
+		]{images/SPESA2.png}
 	}
 	\caption{Inserimento di una nuova richiesta di spesa.}
 	\label{fig:nuova_spesa}
@@ -141,7 +141,7 @@ Al verificarsi di una delle condizioni di approvazione, il contratto esegue in m
 
 		\item[]
 		\State simpleMaj $\gets$ vFor $\ge$ vAgainst
-		\State mathMaj$\gets$ vFor > nTot - (vFor + vAgainst); 
+		\State mathMaj $\gets$ vFor $\ge$ nTot - (vFor + vAgainst) \textbf{and} vFor $\geq$ 0; 
 		\State  tEnd $\gets$ tNow $\geq$ reqEndTime
 		\item[]
 		
