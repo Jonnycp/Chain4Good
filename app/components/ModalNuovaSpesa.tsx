@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import { useWriteContract, useConfig } from "wagmi";
 import { parseUnits, parseEventLogs } from "viem";
 import { waitForTransactionReceipt } from "@wagmi/core";
-import { useSubmit } from "react-router-dom";
+import { useSubmit } from "react-router";
 import vaultAbi from "@abi/ProjectVault.sol/ProjectVault.json";
 import { useQueryClient } from "@tanstack/react-query";
 

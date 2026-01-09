@@ -2,7 +2,7 @@ import Header from "~/components/Header";
 import Navbar from "~/components/Navbar";
 import ProjectsGrid from "~/components/ProjectGrid";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 //Provider
 import { useApp } from "../context/AppProvider";
