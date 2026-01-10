@@ -1,4 +1,12 @@
 .react-router
 build
-node_modules
 README.md
+.git
+.cache
+node_modules
+backend/node_modules
+backend/.env
+backend/.git
+blockchain/node_modules
+blockchain/.git
+.vscode

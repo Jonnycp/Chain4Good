@@ -1,13 +1,12 @@
-import {
-  isRouteErrorResponse,
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, redirect, useLoaderData } from "react-router";
 
-import type { Route } from "./types/root";
+import { WagmiProvider } from "wagmi";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { config } from "./wagmi.config";
+
+import AppProvider from "./context/AppProvider";
+
+import type { Route } from "./+types/root";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -22,6 +21,8 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap",
   },
 ];
+
+const queryClient = new QueryClient();
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -57,12 +58,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
           content="black-translucent"
         />
         <meta name="theme-color" content="#6AAB29" />
-
+        <link rel="manifest" href="/manifest.webmanifest" />
+        
         <Meta />
         <Links />
       </head>
       <body>
-        {children}
+        <QueryClientProvider client={queryClient}>
+          <WagmiProvider config={config}>{children}</WagmiProvider>
+        </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -70,6 +74,46 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const isLoginPage = url.pathname === "/login";
+
+  let backendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (typeof window === "undefined") {
+    const url = new URL(backendUrl);
+    url.hostname = "backend";
+    backendUrl = url.toString().replace(/\/$/, "");
+  }
+
+  try {
+    const res = await fetch(`${backendUrl}/auth/me`, {
+      headers: {
+        Cookie: request.headers.get("Cookie") || "",
+      },
+    });
+
+    const user = res.ok ? await res.json() : null;
+
+    if (!user && !isLoginPage) {
+      return redirect("/login");
+    }
+    if (user && isLoginPage) {
+      return redirect("/");
+    }
+    return { user };
+  } catch (error) {
+    if (isLoginPage) return { user: null };
+    return redirect("/login");
+  }
+}
+
 export default function App() {
-  return <Outlet />;
+  const { user } = useLoaderData<typeof loader>();
+
+  return (
+    <AppProvider initialUser={user || null}>
+      <Outlet />
+    </AppProvider>
+  );
 }
