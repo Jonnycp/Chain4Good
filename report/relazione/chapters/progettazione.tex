@@ -81,7 +81,6 @@ Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requi
 \end{table}
 
 
-% sicurezza: i dati devono rimanere all'interno dll'applicazione, protetti, deve essere sicuro replayact
 
 \subsection{Architettura del Sistema}
 
@@ -141,15 +140,12 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti u
 			Tailwind CSS & \textit{Framework} CSS utilizzato per la definizione dello stile grafico e la realizzazione di \textit{layout} responsivi e coerenti, integrando una configurazione personalizzata. \\ 
 			\hline
 			Vite & Strumento di \textit{build} utilizzato per la compilazione del codice TypeScript e l’esecuzione dell’applicazione durante la fase di sviluppo. \\
-			% il bundler è un componente specifico del processo di build-la sua funzione è analizzare l'albero delle dipendenze del progetto, quindi tutti gli import ed export, e unire centinaia di piccoli file in pochi file JavaScript
 			\hline
 			Wagmi & Libreria utilizzata per l’interazione con i \textit{wallet} e la \textit{blockchain} (Web3) attraverso \textit{hooks} in React. \\
 			\hline
 			viem & \textit{Client} RPC a basso livello, utilizzato internamente da Wagmi per il recupero dei dati \textit{on-chain}. \\
 			\hline
 			SIWE & Libreria utilizzata per l’implementazione del protocollo \textit{Sign-In with Ethereum}, adottato per verificare l’identità dell’utente tramite firma crittografica del \textit{wallet}. \\
-			% protocollo EIP-4361 di autenticazione adottato per verificare l’identità dell’utente tramite firma crittografica del \textit{wallet}. \\
-			%verifica se protocollo o libreria
 			\hline
 		\end{tabular}
 	}
@@ -225,12 +221,6 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti u
 \end{table}
 
 
-% Mocha e Chai (libreria asse) utilizzate come librerie di test utilizzate per testare le funzioni del contratto prima di fare il deploy 
-% Mocha è un test runner.
-% Si occupa di eseguire i test, gestire le suite (describe, it), il setup/teardown, e mostrare i risultati. Non si occupa delle asserzioni (cioè dei controlli vero/falso).
-%Chai - è  una libreria di asserzioni; fornisce funzioni come expect, assert, should per verificare che i risultati siano quelli attesi. Si integra facilmente con Mocha.
-
-
 
 %--------------------SVILUPPO---------------------
 \begin{table}
@@ -256,10 +246,6 @@ Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti u
 	\caption{Strumenti utilizzati per lo sviluppo.}
 	\label{tab:development_tools}
 \end{table}
-
-
-%docker compose: 1 container per frontend 1 per backend 1 per blockchain 
-
 
 
 

@@ -19,38 +19,3 @@ L'attività di \textit{testing} è stata effettuata progressivamente durante lo 
 Infine, il codice è stato organizzato secondo una struttura modulare e ordinata, con una gestione coerente di file, cartelle, al fine di favorire la manutenibilità e l’evoluzione futura del progetto. Sono state inoltre utilizzate le versioni più recenti e stabili delle librerie adottate.
 L’intero sistema è stato concepito per essere facilmente containerizzato mediante \textit{Docker} e \textit{docker-compose}, anche se alcune funzionalità risultano volutamente incomplete o ulteriormente ottimizzabili, in linea con la natura prototipale del progetto.
 
-
-
-%information hiding (le api restituiscono solo le csoe che vengono reinderizzare), modalirtà,
-
-% Infine, è opportuno evidenziare che il sistema realizzato rappresenti un prototipo funzionale. Alcune funzionalità non risultano complete o potrebbero essere ulteriormente ottimizzate, sia in termini di efficienza sia di copertura dei casi d’uso. Tuttavia, tali limitazioni sono coerenti con gli obiettivi del lavoro, che privilegiano la dimostrazione delle scelte architetturali e progettuali rispetto alla realizzazione di un prodotto pronto per l’uso in un contesto produttivo. In prospettiva, il completamento delle funzionalità mancanti e la containerizzazione completa dell’infrastruttura mediante Docker Compose rappresentano possibili sviluppi futuri del progetto.
-
-
-
-% Durante lo sviluppo dell’applicazione è stata posta particolare attenzione agli aspetti di sicurezza, qualità del codice e robustezza complessiva del sistema. In particolare, sono state adottate misure preventive per ridurre il rischio di attacchi comuni nelle applicazioni web, quali \gls{xss}, \textit{\textit{SQL injection}} e \textit{\textit{replay attack}}, con un’attenzione specifica ai meccanismi di autenticazione e gestione delle sessioni.
-
-% Data la natura prototipale della piattaforma non è stata condotta una fase di \textit{testing} sul funzionamento dell’intera applicazione ma l’attività di validazione è stata effettuata progressivamente durante lo sviluppo, testando le singole funzionalità non appena completate. \\ A tal fine, sono stati utilizzati ad esempio, strumenti di sviluppo come \textit{Postman} al fine di validare il corretto comportamento della gestione delle richieste lato \textit{back-end}.
-
-% Particolare attenzione è stata inoltre dedicata alla gestione della \textit{cache} dei dati, implementando meccanismi di invalidazione temporale per evitare l’utilizzo di informazioni obsolete e garantire una maggiore fluidità nell’esperienza utente.\\ Sebbene la piattaforma sia accessibile esclusivamente ad utenti autenticati e non richieda ottimizzazioni specifiche in termini di \gls{seo}, la struttura dell’applicazione e l’utilizzo dei metadati sono stati progettati in modo conforme alle buone pratiche.
-
-% Dal punto di vista dell’interfaccia, invece, l’applicazione è stata progettata per garantire un \textit{rendering} coerente dei componenti, evitando effetti di \textit{flash} o ricaricamenti indesiderati delle pagine mediante un utilizzo corretto dei \textit{framework} con supporto al \textit{server-side rendering}. 
-% Sono stati inoltre gestiti esplicitamente tutti gli stati dell’applicazione, inclusi caricamenti, errori e assenza di dati, fornendo sempre un riscontro chiaro all’utente al fine di evitare la percezione di blocchi o malfunzionamenti.
-
-% Infine, il codice è stato organizzato secondo una struttura modulare e ordinata, con una gestione coerente di file, cartelle, \textit{export} e \textit{import}, al fine di favorire la manutenibilità e l’evoluzione futura del progetto. Sono state utilizzate le versioni più recenti e stabili delle librerie adottate e sono stati sviluppati test automatizzati per la validazione degli \textit{Smart Contract} prima del loro \textit{deploy} sulla blockchain. \\
-% L’intero sistema è stato concepito per essere facilmente containerizzato mediante \textit{Docker} e \textit{docker-compose}, anche se alcune funzionalità risultano volutamente incomplete o ulteriormente ottimizzabili, in linea con la natura prototipale del progetto.
-
-
-
-
-%La piattaforma di \gls{cf} sviluppata può ritenersi soddisfacente a livello prototipale, in quanto realizza i requisiti definiti in fase di analisi. 
-
-% Gli obiettivi di progetto sono stati raggiunti con successo, l'applicazione web decentralizzata realizzata risulta infatti soddisfare tutti i requisiti definiti in fase di analisi. La sua progettazione e realizzazione hanno richiesto lo studio di diverse tecnologie innovative e un'analisi attenta per capire come integrarle tra loro per riuscire a concretizzare il risultato atteso.
-
-
-
-
-% \subsection{Realizzazione dei requisiti}
-
-% \subsection{Valutazione dell'applicazione}
-
-% impossibilità di aggiornare gli smart contract: dal momento che il codice sorgente degli smart contract è memorizzato all’interno della blockchain, questo diventa immutabile e permanente, rendendo di fatto impossibile aggiornare direttamente il contenuto di uno smart contract già pubblicato. Questo non impedisce in maniera assoluta l’aggiornamento di un’applicazione decentralizzata, ma lo complica notevolmente, costringendo gli sviluppatori a ricorrere a diversi stratagemmi più articolati che comportano la creazione di un nuovo contratto che dovrà interagire in qualche modo con il precedente, divenendo di fatto una specie di strato di secondo livello;

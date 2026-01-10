@@ -21,7 +21,7 @@ Infine, il \textit{front-end} utilizza il \textit{cookie} di sessione per recupe
 
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=1\textwidth]{images/SEQUENZA.png}
+		\includegraphics[width=1\textwidth]{images/login_DEFINITIVO.png}
 		\caption{Diagramma di sequenza del processo di \textit{login}.}
 		\label{fig:login}
 	\end{figure}
@@ -37,6 +37,20 @@ Tale \textit{token} funge dunque da attestazione crittografica dello stato di en
 Una volta autenticato, il sistema abilita le funzionalità riservate a questa tipologia di utente, il quale può avviare nuove raccolte o contribuire ai progetti di altri enti, mentre gli è preclusa la possibilità di effettuare donazioni verso le proprie iniziative.
 
 
+
+\begin{figure}
+	\centering
+	{
+		\includegraphics[
+		width=1\textwidth
+		]{images/CLASSI.png}
+	}
+	\caption{Digramma delle classi.}
+	\label{fig:diagramma_classi}
+\end{figure}
+
+
+
 \subsection{Dashboard donatore}
 
 La \textit{dashboard} del donatore è l'interfaccia attraverso la quale gli utenti possono interagire direttamente con la piattaforma a seguito della procedura di autenticazione. Essa è progettata per fornire una visione sintetica e intuitiva delle iniziative di \gls{cf} attive, permettendo all'utente di monitorarne lo stato di avanzamento attraverso indicatori chiave quali il \textit{budget} raccolto, il numero di donatori coinvolti e la data di scadenza. \\
@@ -46,7 +60,7 @@ Tale scelta progettuale risulta coerente con la categoria di Enti autorizzati al
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\textwidth]{images/diagrammaDashboard.png}
+	\includegraphics[width=1\textwidth]{images/DASHBOARD_DEFINITIVO.png}
 	\caption{Diagramma di sequenza della \textit{dashboard} del donatore.}
 	\label{fig:login}
 \end{figure}
@@ -130,29 +144,14 @@ Al fine di assicurare un utilizzo progressivo e verificabile delle risorse racco
 Tale approccio mira a garantire un utilizzo progressivo e verificabile dei fondi raccolti, e ad assicurare la conformità delle spese per le finalità dichiarate. 
 
 
-
 \begin{figure}
 	\centering
 	{
 		\includegraphics[
-		width=\textwidth
-		]{images/diagrammaSPESA.png}
+		width=0.9\textwidth
+		]{images/SPESA_SEQUENZA.png}
 	}
-	\caption{Digramma di sequenza relativo alla creazione di una richiesta di spesa.}
-	\label{fig:inserimentoSpesa}
-\end{figure}
-
-
-
-
-\begin{figure}
-	\centering
-	{
-		\includegraphics[
-		width=\textwidth
-		]{images/diagrammaVERIFICA.png}
-	}
-	\caption{Digramma di sequenza relativo alla valutazione  di una richiesta di spesa.}
+	\caption{Digramma di sequenza relativo alla creazione e valutazione di una richiesta di spesa.}
 	\label{fig:verificaSPESA}
 \end{figure}
 
