@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <i>*Il tempo tracciato da WakaTime si riferisce esclusivamente alla scrittura attiva del codice e NON include le ore dedicate alla ricerca, alla progettazione e alla risoluzione di bug. <br><b><u>È Riferito solo a Jonathan Caputo</u></b></i>
+  <i>*Il tempo tracciato da WakaTime si riferisce esclusivamente alla scrittura attiva del codice e NON include le ore dedicate alla ricerca, alla progettazione e alla risoluzione di bug. <br><br><b><u><img src="https://wakatime.com/badge/user/c82f4683-34a5-4724-a5f4-5c2a6f37d55c/project/8584fed1-f592-48a0-bc57-e7dae4a23ae1.svg" alt="wakatime"> sono riferite solo a Jonathan Caputo, bisogna sommare le ore degli altri colleghi.</u></b></i>
 </p>
 
 ## Indice
@@ -24,6 +24,8 @@
 * [Architettura del Sistema](#architettura-del-sistema)
 * [Installazione](#installazione)
 * [Comandi Utili](#comandi-utili)
+* [Relazione](/report/relazione/main.pdf)
+* [Licenza](#licenza)
 
 # Chain4Good
 > *Il Crowdfunding trasparente e decentralizzato.*
@@ -50,7 +52,7 @@ Il progetto è stato ideato e sviluppato da:
 L'obiettivo principale è restituire al donatore un ruolo attivo, trasformando la donazione in un processo sicuro e verificabile.
 * **Custodia Decentralizzata**: I fondi raccolti non vengono erogati immediatamente, ma restano vincolati in uno Smart Contract.
 * **Erogazione Incrementale**: L'Ente può accedere ai fondi solo presentando richieste di spesa specifiche corredate da preventivi.
-* **Votazione Democratica**: I donatori votano per approvare o negare il rilascio dei fondi per ogni singola spesa[cite: 48, 171].
+* **Votazione Democratica**: I donatori votano per approvare o negare il rilascio dei fondi per ogni singola spesa.
 * **Utilizzo di Stablecoin**: Per evitare la volatilità, il sistema opera esclusivamente con stablecoin come **EURC** o **USDC**.
 
 ## Architettura del Sistema
@@ -113,3 +115,9 @@ docker cp </percorso/al/.archive> chain4good_db:/backup_chain4good.archive
 
 docker exec -it chain4good_db mongorestore --archive=/backup_chain4good.archive --drop
 ```
+# Licenza
+Nessuna parte di questo lavoro può essere riprodotta, distribuita o utilizzata per qualsiasi altro scopo senza il preventivo consenso scritto dell’autore.
+
+© 2026 Angelica De Feudis, Jonathan Caputo, Luca Gentile. Tutti i diritti riservati.
+
+[Licenza](LICENSE.md)
