@@ -1,0 +1,256 @@
+% !TeX spellcheck = it_IT
+% !TEX TS-program = pdflatex
+% !TEX root = ../main.tex
+
+
+% ********************************************************************
+\section{Progettazione}
+\label{sec:progettazione}
+% ********************************************************************
+
+
+\subsection{Rischi di dominio}
+In questa sezione sono riportate le potenziali criticità legate al dominio applicativo del \gls{cf} e le strategie progettuali impiegate al fine di neutralizzarle.
+
+Un primo ambito di analisi riguarda il costo richiesto per la memorizzazione dei dati \textit{on-chain}. Come evidenziato in letteratura, l'esecuzione di ogni transazione comporta il pagamento di una tariffa, nota come \textit{gas fee}. In considerazione di tale criticità, l’architettura proposta è stata progettata con l’obiettivo di ridurre al minimo il consumo di gas per transazione, intervenendo sia sulla complessità computazionale delle istruzioni eseguite dagli \textit{Smart Contract}, sia sulla quantità di dati scritti all’interno del \textit{ledger}.
+
+Un altro rischio analizzato concerne la trasparenza nell'allocazione delle risorse. E'\ stata difatti valutata l'eventualità che l'Ente promotore non utilizzasse le risorse raccolte per le finalità dichiarate. Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, secondo il quale le risorse non sono trasferite immediatamente all'Ente al termine della raccolta. Il loro rilascio è graduale ed è subordinato a un meccanismo di valutazione che ne consente lo sblocco solo previo raggiungimento di una maggioranza di voti favorevoli dei donatori sulle singole richieste di spesa presentate dall'Ente.
+
+L'introduzione di un meccanismo di votazione ha richiesto necessariamente di valutare il rischio legato alla scarsa partecipazione dei donatori. In particolare, per evitare condizioni di stallo del sistema, si è deciso di adottare una logica di \textit{silenzio-assenso}, progettando la piattaforma in modo tale da approvare automaticamente la richiesta di spesa anche in assenza di voti entro i termini prefissati.
+
+Infine, un ulteriore rischio è rappresentato dall’esposizione dei fondi raccolti alla volatilità intrinseca delle criptovalute. Per ovviare a questo problema, la piattaforma Chain4Good opera esclusivamente tramite \textit{stablecoin} (nello specifico USDC e EURC), ossia criptovalute progettate per mantenere un valore stabile rispetto a una valuta fiat di riferimento. Tale scelta è motivata dal fatto che, a differenza delle criptovalute tradizionali, come Bitcoin o ETH, le \textit{stablecoin} permettono di garantire che il potere d'acquisto delle risorse donate rimanga inalterato dal momento della donazione fino all'effettivo utilizzo da parte del beneficiario.
+
+
+\subsection{Analisi dei requisiti}
+In questa sezione sono riportati i requisiti richiesti per il corretto funzionamento della piattaforma. \\
+In particolare, nella Tabella~\ref{tab:requisiti_funzionali} sono riportati i requisiti funzionali, ossia le funzionalità che la piattaforma deve implementare. \\
+Nella Tabella \ref{tab:requisiti_non_funzionali}, invece, sono descritti i requisiti non funzionali ovvero tutte le caratteristiche che, pur non essendo funzionalità dirette, il sistema deve garantire. 
+
+\begin{table}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{\textwidth}{l p{4cm} X}
+		\hline
+		\textbf{ID} & \textbf{Requisito} & \textbf{Descrizione} \\
+		\hline
+		\multicolumn{3}{l}{\textbf{Ente}} \\
+		\hline
+		RF1 & Creazione progetto & L'Ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, \textit{budget target} e data di scadenza. \\ \hline
+		RF2 & Richiesta di spesa & L'Ente deve poter richiedere il rilascio di una parte dei fondi avanzando una richiesta di spesa e allegando il relativo preventivo. \\ \hline
+		RF3 & Prova di acquisto & L'Ente deve poter caricare la fattura che attesti l'impiego dei fondi precedentemente sbloccati. \\ \hline
+		RF4 & Vincolo di sequenzialità & L'Ente non deve poter sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata. \\ \hline
+		
+		\multicolumn{3}{l}{\textbf{Donatore}} \\
+		\hline
+		RF5 & Visualizzazione progetti & Il donatore deve poter visualizzare l'elenco delle iniziative di \gls{cf} attive e i relativi dettagli. \\ \hline
+		RF6 & Donazione & Il donatore deve poter selezionare un progetto e scegliere arbitrariamente l'importo da donare. \\ \hline
+		RF7 & Votazione richieste & Il donatore deve poter visualizzare il preventivo di spesa allegato dall'Ente e votare se approvare o meno la richiesta, motivando la risposta in caso di negazione. \\ \hline
+		RF8 & Saldo portafoglio & Il donatore deve poter visualizzare il saldo disponibile. \\ \hline
+		
+		\multicolumn{3}{l}{\textbf{Sistema}} \\
+		\hline
+		RF9 & Registrazione donazioni & Il sistema deve registrare \textit{on-chain} ogni donazione effettuata. \\ \hline
+		RF10 & Blocco dei fondi & Il sistema deve impedire il trasferimento dei fondi, previo consenso dei donatori. \\ \hline
+		RF11 & Gestione votazione & Il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa. \\ \hline
+		RF12 & Erogazione automatica & Il sistema deve trasferire automaticamente i fondi al \textit{wallet} dell'Ente, qualora la richiesta di spesa venga approvata dai donatori. \\ \hline
+		RF13 & Registro operazioni & Il sistema deve registrare \textit{on-chain} le richieste di spesa, gli esiti delle votazioni e il trasferimento dei fondi sbloccati. \\ \hline
+	\end{tabularx}
+	\caption{Tabella dei requisiti funzionali.}
+	\label{tab:requisiti_funzionali}
+\end{table}
+
+
+
+\begin{table}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{\textwidth}{l p{3cm} X}
+		\hline
+		\textbf{ID} & \textbf{Requisito} & \textbf{Descrizione} \\
+		\hline
+		RNF1 & Immutabilità & Ogni transazione relativa a donazioni, votazioni e rilascio di fondi deve essere registrata su un registro distribuito in modo permanente e non modificabile. \\ \hline
+		RNF2 & Integrità dei dati & I file pesanti, come preventivi e fatture, devono essere memorizzati \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione. \\ \hline
+		RNF3 & Usabilità & La \textit{Webapp} deve consentire agli utenti di consultare i dati \textit{on-chain}, come lo storico delle donazioni effettuate, attraverso interfacce intuitive. \\ \hline
+		RNF4 & Sicurezza & L'accesso alle funzionalità della piattaforma e alla consultazione dettagliata dei dati deve essere limitato ai soli utenti autenticati. \\ \hline
+		RNF5 & Portabilità & La \textit{Webapp} deve essere fruibile sia da dispositivi \textit{desktop} che \textit{mobile}. \\ \hline
+	\end{tabularx}
+	\caption{Tabella dei requisiti non funzionali.}
+	\label{tab:requisiti_non_funzionali}
+\end{table}
+
+
+
+\subsection{Architettura del Sistema}
+
+\begin{figure}
+	\centering
+	{
+		\includegraphics[
+		height = 7cm
+		]{images/architettura.png}
+	}
+	\caption{Architettura di Chain4Good.}
+	\label{fig:architettura}
+\end{figure}
+
+
+L'architettura proposta adotta un modello che integra lo \textit{stack} MERN (MongoDB, Express, React, Node.js) con le tecnologie Web3.\\
+In particolare, il \textit{front-end} è sviluppato in React integrato da Tailwind CSS per la definizione di uno stile grafico resposivo, e da React Router per la gestione della navigazione \textit{client-side.} \\
+React Query, invece, è stato utilizzato per l'implementazione di un meccanismo di \textit{caching} volto ad ottimizzare le prestazioni e l'esperienza utente. \\
+L'interazione con la blockchain è invece realizzata mediante le librerie Wagmi e Viem, attraverso le quali è stato possibile gestire l'interconnessione con il \textit{wallet} dell'utente (Metamask) e interagire direttamente con gli \textit{smart contract} per permettere l'esecuzione di transazioni e la lettura dei dati \textit{on-chain}.
+Il \textit{back-end} è basato su Express.js ed è sviluppato in TypeScript. L'architettura segue il \textit{pattern} \gls{mvc}, opportunamente adattato a un sistema basato su API REST.
+In particolare, il livello di \textit{Model} comprende i modelli Mongoose e l’accesso al database MongoDB, utilizzato per la persistenza dei dati \textit{off-chain}.
+Il livello di \textit{Controller} è costituito dalle funzioni associate ai singoli \textit{endpoint} REST, responsabili dell’implementazione della logica applicativa. \\
+Infine, il livello di \textit{View} è rappresentato dal sistema di \textit{routing} delle API, che espone le risorse verso il \textit{front-end}. \\
+Tra il livello di \textit{routing} delle API e i controller sono inseriti specifici \textit{middleware}, incaricati di effettuare controlli di autenticazione e autorizzazione prima dell’esecuzione della logica applicativa (ad esempio, il \textit{middleware} \texttt{isEnte} controlla che l’utente autenticato possieda i requisiti necessari per operare come ente promotore).\\
+Infine, per evidenti ragioni di efficienza e costi imposti dalla tecnologia blockchain è stata operata una chiara separazione tra i dati da memorizzare \textit{on-chain} e \textit{off-chain}. 
+In particolare, sulla blockchain sono stati memorizzati i dati essenziali e critici, come l'insieme delle donazioni effettuate o le richieste di spesa avanzate dall'ente. 
+Il database MongoDB invece è stato utilizzato per memorizzare rispettivamente: i metadati dei progetti e delle spese (come la descrizione dettagliata delle richieste di spesa), la logica non critica, i dati dell'utente e i documenti relativi alle prove di acquisto.
+
+
+
+
+\subsection{Stack tecnologico}
+In questa sezione viene fornita una panoramica delle tecnologie impiegate per lo sviluppo della piattaforma. \\
+In particolare, le tabelle \ref{tab:frontend_stack} e \ref{tab:backend_stack} riportano gli strumenti utilizzati rispettivamente per l’implementazione della componente \textit{front-end} e \textit{back-end} del \textit{software}, con una breve descrizione del loro impiego durante le fasi di sviluppo. Le tecnologie relative alla componente \textit{blockchain} sono invece sintetizzate in Tabella~\ref{tab:blockchain_stack}.\\
+Infine, nella Tabella~\ref{tab:development_tools} sono riportati gli strumenti utilizzati per supportare l'organizzazione del lavoro tra i membri del gruppo e per garantire la portabilità del sistema \textit{software}.\\
+
+
+%--------------------FRONTEND---------------------
+\begin{table}
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.3}
+	\setlength{\tabcolsep}{12pt}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{lp{9cm}}
+			\hline
+			\textbf{Tecnologia} & \textbf{Descrizione} \\
+			\hline
+			TypeScript & Linguaggio utilizzato per lo sviluppo del \textit{front-end}. \\
+			\hline
+			React.js & Libreria utilizzata per la realizzazione dell’interfaccia utente secondo un’architettura a componenti. \\
+			\hline
+			React Router & Libreria di \textit{routing} configurata in modalità \textit{framework} per la gestione della navigazione \textit{client-side}. \\
+			\hline
+			@tanstack/react-query & Libreria utilizzata per la gestione delle chiamate asincrone al \textit{back-end}, con supporto a \textit{caching}, sincronizzazione dei dati e gestione automatica degli stati di caricamento ed errore. \\
+			\hline
+			Tailwind CSS & \textit{Framework} CSS utilizzato per la definizione dello stile grafico e la realizzazione di \textit{layout} responsivi e coerenti, integrando una configurazione personalizzata. \\ 
+			\hline
+			Vite & Strumento di \textit{build} utilizzato per la compilazione del codice TypeScript e l’esecuzione dell’applicazione durante la fase di sviluppo. \\
+			\hline
+			Wagmi & Libreria utilizzata per l’interazione con i \textit{wallet} e la \textit{blockchain} (Web3) attraverso \textit{hooks} in React. \\
+			\hline
+			viem & \textit{Client} RPC a basso livello, utilizzato internamente da Wagmi per il recupero dei dati \textit{on-chain}. \\
+			\hline
+			SIWE & Libreria utilizzata per l’implementazione del protocollo \textit{Sign-In with Ethereum}, adottato per verificare l’identità dell’utente tramite firma crittografica del \textit{wallet}. \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Tecnologie utilizzate per lo sviluppo del \textit{front-end}.}
+	\label{tab:frontend_stack}
+\end{table}
+\clearpage
+
+
+
+%--------------------BACKEND---------------------
+\begin{table}
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.3}
+	\setlength{\tabcolsep}{12pt}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{lp{9cm}}
+			\hline
+			\textbf{Tecnologia} & \textbf{Descrizione} \\
+			\hline
+			TypeScript & Linguaggio utilizzato per lo sviluppo del \textit{back-end}, al fine di garantire tipizzazione statica e maggiore robustezza del codice. \\
+			\hline
+			Express.js & \textit{Framework} per Node.js utilizzato per la realizzazione delle API REST e per la gestione delle richieste provenienti dal \textit{front-end}. \\
+			\hline
+			MongoDB & Database NoSQL utilizzato per la memorizzazione dei dati \textit{off-chain}, quali metadati dei progetti, informazioni sugli utenti e dati di sessione. \\
+			\hline
+			Mongoose & \textit{\gls{odm}} utilizzato per la definizione dei modelli di dati e l’interazione con il database MongoDB. \\
+			\hline
+			express-session & \textit{Middleware} utilizzato per la gestione delle sessioni lato \textit{server}, impiegato nel processo di autenticazione. \\
+			\hline
+			SIWE & Libreria utilizzata per l’implementazione del protocollo \textit{Sign-In with Ethereum}, basato sulla verifica di messaggi firmati tramite \textit{wallet}. \\
+			\hline
+			ethers.js & Libreria JavaScript utilizzata per l’interazione con la \textit{blockchain} Ethereum, in particolare per il recupero di informazioni \textit{on-chain}. \\
+			\hline
+			Multer & \textit{Middelware} per Node.js  utilizzato per la gestione di flussi \textit{multipart/form-data}, facilitando l'\textit{upload} e il salvataggio dei contenuti multimediali. \\
+			\hline
+			node-cron & \textit{Scheduler} JavaScript impiegato per la realizzazione di un worker dedicato al monitoraggio automatico dello stato di progetti e spese. \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Tecnologie utilizzate per lo sviluppo del \textit{back-end}.}
+	\label{tab:backend_stack}
+\end{table}
+\clearpage
+
+
+%--------------------BLOCKCHAIN---------------------
+\begin{table}
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.3}
+	\setlength{\tabcolsep}{12pt}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{lp{9cm}}
+			\hline
+			\textbf{Tecnologia} & \textbf{Descrizione} \\
+			\hline
+			Solidity & Linguaggio utilizzato per lo sviluppo degli \textit{Smart Contract}. \\
+			\hline
+			Hardhat & Ambiente di sviluppo utilizzato per la compilazione, il \textit{testing} e il \textit{deployment} degli \textit{Smart Contract}, nonché per la simulazione di una \textit{blockchain} locale. \\
+			\hline
+			@openzeppelin/contracts & Libreria di \textit{Smart Contract} riutilizzabili, utilizzata per integrare componenti standard e meccanismi di sicurezza.\\
+			\hline
+			Mocha & \textit{Framework} di \textit{testing} utilizzato come motore per l'esecuzione dei \textit{test} automatizzati degli \textit{Smart Contract}. \\
+			\hline
+			Chai & Libreria di asserzione utilizzata per verificare che l'\textit{output} degli \textit{Smart Contract} corrisponda ai requisiti attesi.\\
+			\hline
+		\end{tabular}
+	}
+	\caption{Tecnologie utilizzate per la componente \textit{blockchain}.}
+	\label{tab:blockchain_stack}
+\end{table}
+
+
+
+%--------------------SVILUPPO---------------------
+\begin{table}
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.3}
+	\setlength{\tabcolsep}{12pt}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{lp{9cm}}
+			\hline
+			\textbf{Strumento} & \textbf{Descrizione} \\
+			\hline
+			Visual Studio Code & \gls{ide} principale, configurato con estensioni specifiche per lo sviluppo dello \textit{stack} tecnologico. \\
+			\hline
+			Git & \textit{\gls{vcs}} impiegato per la gestione del codice sorgente secondo una strategia di \textit{branching} collaborativa per permettere lo sviluppo parallelo. \\
+			\hline
+			GitHub & Piattaforma di \textit{hosting} del \textit{repository} remoto, utilizzata per supportare la collaborazione tra i membri del gruppo. \\
+			\hline
+			Docker & Piattaforma di containerizzazione utilizzata per la standardizzazione e l’isolamento dell’ambiente di esecuzione. \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Strumenti utilizzati per lo sviluppo.}
+	\label{tab:development_tools}
+\end{table}
+
+
+
+
+
+
+
+

@@ -1,0 +1,103 @@
+% !TeX spellcheck = it_IT
+% !TEX TS-program = pdflatex
+% !TEX root = ../main.tex
+
+
+% ********************************************************************
+\section{Metodologia di progetto}
+\label{sec:metodologia}
+% ********************************************************************
+
+\subsection{Modello di processo}
+Per lo sviluppo di questo sistema è stato adottato un modello di processo \textit{Agile} di tipo \textit{Incrementale}. Questa scelta è motivata dalla necessità di coniugare la flessibilità dei metodi agili, con la capacità del modello incrementale di gestire le fasi di sviluppo in maniera concorrente e sovrapposta. \\
+Il coordinamento del \textit{team}, invece, ha seguito la tecnica \textit{Scrum}. In particolare, le riunioni periodiche hanno permesso una gestione dinamica del \textit{product backlog} (elenco delle attività da svolgere) e un monitoraggio costante dello stato di avanzamento del progetto, garantendo un'integrazione continua dei risultati discussi. L'orientamento Agile si è manifestato sin dalle fasi iniziali. Le sessioni di \textit{brainstorming} effettuate hanno permesso di proporre e analizzare diverse alternative progettuali. La decisione di abbandonare la proposta iniziale in favore di una più rispondente alle indicazioni dei referenti riflette i principi cardine del Manifesto Agile, quali: collaborazione con gli \textit{stakeholder} e risposta al cambiamento. L'adozione del modello incrementale, invece, ha permesso di ottimizzare i tempi di sviluppo. Il progetto, infatti, non è stato condotto secondo una sequenza rigida di fasi, ma ha previsto lo svolgimento in parallelo di più attività. 
+
+
+\subsubsection{Organizzazione del team}
+Lo sviluppo concorrente ha richiesto la suddivisione delle responsabilità di progetto in macro-aree (\textit{front-end}, \textit{back-end} e documentazione tecnica), favorendo l’avanzamento simultaneo dei diversi incrementi del sistema. Tale ripartizione, tuttavia, non ha comportato una compartimentazione stagna dei compiti. Al contrario, ogni membro del gruppo ha mantenuto una visione olistica del progetto, partecipando attivamente alla risoluzione delle criticità anche al di fuori della propria area di competenza primaria. Tale impostazione ha favorito una dinamica di supporto reciproco e interdisciplinare. Il \textit{team} ha, inoltre, operato seguendo il principio della \textit{Collective Ownership}, estendendo a ciascun membro la responsabilità della qualità globale del prodotto. \\
+Complessivamente, l'approccio adottato ha permesso sia di valorizzare i punti di forza di ogni singolo membro che di trasformare le riunioni in opportunità di apprendimento trasversale e di crescita collettiva.\\
+Il successo della metodologia adottata è risultato fortemente legato ai fattori umani, quali competenza tecnica, condivisione degli obiettivi e cooperazione proattiva all'interno del \textit{team}.
+
+
+\subsection{Pianificazione delle attività}
+La pianificazione delle attività di progetto è stata condotta mediante la definizione di un insieme strutturato delle principali attività da svolgere, riportate in Tabella~\ref{table:pianificazione}. \\
+Successivamente, al fine di gestire la sequenzialità e il parallelismo tra i \textit{task} individuati, è stato elaborato un Diagramma di Gantt Tabella~\ref{table:pianificazione}.
+Tale approccio ha consentito di organizzare il lavoro in modo strutturato e di definire un riferimento temporale complessivo per l’esecuzione del progetto.
+
+\begin{figure}
+	\centering
+	{
+		\includegraphics[
+		width=\linewidth
+		]{images/gantt.png}
+	}
+	\caption{Digramma di Gantt.}
+	\label{fig:gantt}
+\end{figure}
+
+
+
+\subsubsection{Stima dei costi}
+La stima dei costi di progetto è stata effettuata sulla base della durata stimata delle attività definite in fase di pianificazione, come riportato nella Tabella~\ref{table:pianificazione}. In particolare, l’impegno richiesto è stato valutato operando una scomposizione delle principali fasi progettuali in \textit{task} elementari, e associando a ciascuno di essi una stima temporale. Operando in questo modo, il costo complessivo stimato risulta pari a \textbf{250 ore}. Tale valore rappresenta l’\textit{effort} espresso in termini di ore/persona, ottenuto come somma delle ore dedicate da ciascun membro del gruppo alle attività previste.\\
+La valutazione ha tenuto conto della natura prototipale del progetto, della dimensione del sistema, delle tecnologie adottate e del livello di esperienza dei membri del gruppo di lavoro.\\
+Tuttavia, trattandosi di un progetto a scopo didattico, la stima dei costi non è stata tradotta in un valore economico monetario, ma è stata utilizzata come strumento di supporto alla pianificazione e alla verifica della fattibilità del progetto entro i vincoli temporali prestabiliti. È infine opportuno precisare che la valutazione effettuata è riferita esclusivamente alla realizzazione del prototipo funzionale: un’eventuale evoluzione verso una piattaforma completa e pronta per l’utilizzo in un contesto reale richiederebbe una nuova analisi dei costi e un impegno temporale significativamente superiore.
+
+
+
+
+\begin{table}
+	\centering
+	\small
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabularx}{\textwidth}{|
+			p{1.2cm}|
+			X|
+			>{\centering\arraybackslash}p{1.8cm}|
+		}
+		\hline
+		\textbf{ID} & \textbf{Descrizione delle attività} & \textbf{Durata (ore)} \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 1 – Ideazione e analisi}} \\
+		\hline
+		T1 & \textit{Brainstorming} e definizione dell’idea progettuale & 15 \\
+		T2 & Analisi del problema e del dominio applicativo &  10 \\
+		T3 & Analisi dei requisiti e studio della fattibilità & 6 \\
+		T4 & Analisi dei rischi e criticità & 6 \\
+		T5 & Studio delle tecnologie e della \textit{blockchain} & 10 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 2 – Progettazione}} \\
+		\hline
+		T6 & Progettazione dell’architettura del sistema & 10\\
+		T7 & \textit{Design} delle interfacce utente & 20 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 3 – Implementazione del sistema}} \\
+		\hline
+		T8 & Sviluppo del \textit{Back-end} & 60 \\
+		T9 & Sviluppo del \textit{Front-end} & 40 \\
+		T10 & Redazione della documentazione tecnica & 50 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 4 – Test e miglioramenti}} \\
+		\hline
+		T11 & Verifica del prodotto e delle funzionalità implementate & 7 \\
+		T12 & Correzione dei \textit{bug} e perfezionamenti & 6 \\
+		\hline
+		\multicolumn{3}{|l|}{\textbf{Fase 5 – Conclusione}} \\
+		\hline
+		T13 & Consegna & 10 \\
+		\hline
+		\multicolumn{2}{|r|}{\textbf{Totale ore}} & \textbf{250} \\
+		\hline
+	\end{tabularx}
+	\caption{Pianificazione delle attività di progetto.}
+	\label{table:pianificazione}
+\end{table}
+
+
+
+\subsection{Analisi dei rischi}
+L’analisi dei rischi è stata condotta al fine di individuare le principali criticità che avrebbero potuto incidere sullo sviluppo e sul corretto funzionamento della piattaforma. \\
+In primo luogo, sono stati presi in considerazione i rischi di progetto, quali la possibile sottostima dei tempi di sviluppo e la variabilità dei requisiti individuati in fase di pianificazione. Per mitigare il rischio legato all’organizzazione temporale delle attività, le principali fasi di progetto (Tabella~\ref{table:pianificazione}) sono state rappresentate mediante un Diagramma di Gantt. Tale strumento ha consentito di monitorare l’avanzamento delle attività, individuare eventuali scostamenti tra la durata pianificata e quella effettiva e supportare una tempestiva riorganizzazione;
+Al fine di ridurre le criticità connesse all’evoluzione dei requisiti, invece, è stato adottato un approccio di sviluppo incrementale. Questo modello ha permesso di suddividere il sistema in incrementi funzionali successivi, consentendo di adattare le soluzioni progettuali sulla base delle evidenze emerse durante le fasi di implementazione. 
+
+
+

@@ -5,3 +5,49 @@
 # React Router
 /.react-router/
 /build/
+
+
+#TeXStudio + LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.idx
+*.ilg
+*.ind
+*.ist
+*.glo
+*.gls
+*.glg
+*.synctex.gz
+*.synctex.gz(busy)
+*.fdb_latexmk
+
+# --- File generati dalla bibliografia ---
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+
+# --- File e cartelle temporanee di TeXstudio ---
+*.tmp
+*.bak
+*.backup
+*.sav
+*.old
+*.tsd       # file di sessione TeXstudio
+*.cache
+*.auxlock
+*.vrb
+
+auto/
+tmp/
+build/
+out/

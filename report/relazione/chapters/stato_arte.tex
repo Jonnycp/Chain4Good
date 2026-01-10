@@ -1,0 +1,109 @@
+% !TeX spellcheck = it_IT
+% !TEX TS-program = pdflatex
+% !TEX root = ../main.tex
+
+
+
+% ********************************************************************
+\section{Stato dell'arte}
+\label{sec:stato arte}
+% ********************************************************************
+
+\subsection{Crowdfunding}
+
+Il \textit{\gls{cf}} è un modello di finanziamento collettivo in cui una pluralità di individui decide di destinare il proprio denaro, prevalentemente tramite piattaforme digitali, a supporto di progetti e iniziative di varia natura \cite{patil2021blockchain}. \\
+In ragione della sua etimologia, dall'inglese \textit{crowd} "folla" e \textit{funding}, finanziamento, il \gls{cf} è stato definito come una pratica di microfinanziamento "dal basso" \cite{thalassinos2023crowdfunding}, la cui peculiarità risiede nella capacità di aggregare numerosi contributi finanziari di modesta entità a partire da un'ampia platea di sostenitori. 
+
+La letteratura attribuisce al Web 2.0 il principale catalizzatore del successo del \gls{cf} \cite{brunetti2016web}. Lo sviluppo di Internet e la capillare diffusione di canali digitali di comunicazione, come i \textit{social-media}, infatti, ha permesso non solo di ampliare la platea di donatori, ma anche di abbattere i limiti geografici, trasformando la "folla" in una comunità attiva e globale. Inoltre, la nascita di infrastrutture digitali dedicate, come \textit{GoFundme}, è stato determinate per garantire la scalabilità del fenomeno. 
+
+In questo scenario, il modello contemporaneo di \gls{cf} si articola in un’architettura tripartita, che vede l'interazione sinergica di tre attori chiave: il promotore dell'iniziativa, i sostenitori e la piattaforma digitale \cite{alia2024ihsan}. Quest’ultima non funge da mera vetrina, ma rappresenta l’infrastruttura tecnologica che media le interazioni tra le parti, facilitando il processo di raccolta fondi, la diffusione delle informazioni e il coordinamento delle attività connesse alla realizzazione del progetto. Sebbene la struttura relazionale del \gls{cf} rimanga invariata, la natura del contributo richiesto e le aspettative di ritorno dei sostenitori, rappresentano gli elementi chiave che ne definiscono la tassonomia. E'\ sulla base di questi criteri, infatti, che gli studi convergono nel classificare le seguenti tipologie di \gls{cf}:
+\begin{itemize}
+	\item \gls{dcf}: i contributi economici sono erogati senza alcuna aspettativa di ritorno materiale o finanziario. La donazione è motivata esclusivamente dal desiderio di sostenere una causa di interesse collettivo o di pubblica utilità; per questa ragione, la \gls{dcf} è stata definita come la forma più "pura" di \textit{crowdfunding} \cite{salido2021mapping};
+	\item \gls{rbc}: i sostenitori finanziano un progetto in cambio di una ricompensa, generalmente di natura non finanziaria (come riconoscimenti simbolici oppure ricompense tangibili, configurandosi spesso come un vero e proprio "pre-ordine" del prodotto) \cite{hohen2025reward};
+	\item \gls{ecf}: il finanziatore, sia esso un individuo o un ente, riceve quote societarie o titoli partecipativi dell'azienda, in cambio del capitale investito \cite{kuti2017equity}
+	\item \gls{lcf}: noto anche come \textit{debt-based crowdfunding}, prevede che il capitale versato dai sostenitori venga rimborsato dal promotore entro una scadenza prestabilita, comprensivo di un tasso di interesse pattuito \cite{hossain2017crowdfunding};
+\end{itemize} 
+
+Nonostante la natura prettamente finanziaria degli ultimi due modelli, l'elemento che li riconduce univocamente al paradigma del \gls{cf} è la modalità di raccolta: il capitale non è più appannaggio di un singolo grande istituto di credito, ma deriva dalla somma di innumerevoli micro-investimenti operati da una moltitudine di individui. E'\ proprio questo a sancire la natura "dal basso" di tali strumenti, trasformando ogni cittadino in un potenziale nodo di una rete di finanziamento globale. 
+
+
+\subsubsection{Limiti delle piattaforme tradizionali di CF}
+La letteratura converge nel considerare le piattaforme di \gls{cf} caratterizzate da una serie di criticità strutturali, riconducibili principalmente al loro modello architetturale centralizzato. Si distinguono:
+
+\begin{itemize}
+	\item limitata trasparenza nell'utilizzo dei fondi: i donatori non dispongono di strumenti efficaci per verificare l'intero ciclo di vita delle donazioni \cite{alia2024ihsan}. La tracciabilità delle quote donate è, infatti, demandata al fruitore della donazione, il quale ha il compito di fornire aggiornamenti sullo stato di avanzamento dell'iniziativa finanziata;
+	
+	\item scarsa fiducia e rischio di frodi: l'assenza di protocolli di verifica automatizzati rende le piattaforme di \gls{cf} tradizionali vulnerabili a comportamenti fraudolenti, come la creazione di campagne ingannevoli o la mancata realizzazione dei progetti finanziati \cite{rejeb2025mapping}. Questo clima di incertezza scoraggia la partecipazione degli utenti, alimentando una diffusa sfiducia nei confronti delle piattaforme.
+	
+	\item centralizzazione: l'architettura centralizzata utilizzata dalla maggior parte delle piattaforme introduce \gls{spof} e attribuisce la gestione dei fondi raccolti interamente alla piattaforma \cite{mukherjee2024crowdfunding};
+	
+	\item mancanza di sicurezza: la gestione centralizzata dei dati espone le piattaforme ad attacchi malevoli, con conseguenze rilevanti in termini di perdita di fondi e fiducia degli utenti \cite{mukherjee2024crowdfunding}. 
+	
+	\item alti costi operativi: le piattaforme tradizionali applicano commissioni elevate per la gestione delle campagne, riducendo il totale dei fondi raccolti per progetto (\cite{alia2024ihsan});
+
+\end{itemize}
+
+Nel complesso, queste criticità evidenziano come le piattaforme tradizionali di \gls{cf} si fondino su un modello fortemente fiduciario, nel quale il corretto funzionamento del sistema dipende dal comportamento onesto degli intermediari e dei promotori delle iniziative. 
+Sebbene questo paradigma abbia dunque democratizzato l'accesso al capitale, l'architettura adottata introduce inefficienze strutturali che limitano il potenziale del modello di \gls{cf}.
+
+
+
+
+\subsection{Crowdfunding e blockchain}
+
+La letteratura converge nel considerare la \textit{blockchain} come una soluzione promettente per il superamento delle criticità strutturali delle piattaforme di \gls{cf} esistenti \cite{shelke2022blockchain}. L'efficacia di tale tecnologia risiede nelle proprietà native di decentralizzazione, trasparenza, immutabilità e sicurezza (Tabella~\ref{tab:blockchain_vantaggi}) che implementa. \\
+La \textit{blockchain}, infatti, si configura come un registro distribuito, condiviso e immutabile, mantenuto da una rete di nodi interconnessi secondo un’architettura \gls{p2p}. Essa consiste in una catena sequenziale di blocchi legati tra loro da meccanismi crittografici. Ciascun blocco contiene un insieme di transazioni (operazioni atomiche come il trasferimento di \textit{asset} digitali), la cui integrità è preservata da protocolli di consenso eseguiti in modo distribuito dalla rete \cite{nakamoto2007bitcoin}. \\
+L'integrazione di tale architettura nel \gls{cf} è motivata dai seguenti vantaggi:
+\begin{itemize}
+	\item la natura distribuita del registro (proprietà di decentralizzazione) permette di eliminare i \gls{spof}, tipici delle architetture centralizzate, e di attribuire ad un insieme di nodi piuttosto che al singolo ente, la gestione dei fondi raccolti;
+	\item la proprietà di immutabilità assicura l’integrità delle informazioni memorizzate \textit{on-chain} \cite{salido2021mapping}, come le transazioni di donazione o i dettagli sulle campagne di raccolta fondi;
+	\item la trasparenza intrinseca del \textit{ledger}, permette ai donatori di monitorare l’intero ciclo di vita delle donazioni, rafforzando in questo modo la fiducia nelle piattaforme.
+\end{itemize}
+
+
+\begin{table}[!b]
+\centering
+\small
+\renewcommand{\arraystretch}{1.3} % spazio verticale tra le righe
+\resizebox{\textwidth}{!}{
+	\begin{tabular}{p{3.5cm} p{10cm}}
+		\hline
+		\textbf{Proprietà} & \textbf{Descrizione} \\
+		\hline
+		Decentralizzazione & La replicazione del registro su più nodi consente al sistema di operare correttamente anche in presenza di guasti, eliminando i \gls{spof} \cite{rodrigues2010peer}. \\
+		\hline
+		Immutabilità & Ogni transazione è irreversibile; una volta registrata nella blockchain, non può essere cancellata o modificata, poiché qualsiasi alterazione comprometterebbe l’intera catena dei blocchi \cite{monrat2019survey}. \\
+		\hline
+		Trasparenza & Tutte le transazioni sono verificabili pubblicamente (nelle \textit{blockchain permissionless}) oppure dai membri autorizzati (nelle \textit{blockchain permissioned}) \cite{crosby2016blockchain}. \\
+		\hline
+		Sicurezza & L’uso combinato della crittografia asimmetrica per l’autenticazione e dei protocolli di consenso distribuito per l’integrità del registro, rende il sistema resistente ad attacchi e frodi. \\
+		\hline
+	\end{tabular}
+}
+\caption{Caratteristiche della tecnologia \textit{blockchain}}
+\label{tab:blockchain_vantaggi}
+\end{table}
+
+
+
+\subsubsection{Soluzioni esistenti}
+Le potenzialità della tecnologia \textit{blockchain} analizzate nel paragrafo precedente hanno dato origine a diverse implementazioni sperimentali in letteratura, volte a prototipare sistemi di \gls{cf} decentralizzati. Tali soluzioni mirano principalmente a superare i limiti dei modelli tradizionali attraverso l’eliminazione degli intermediari fiduciari e l’introduzione di meccanismi di controllo trasparenti e verificabili.\\
+Le principali applicazioni si basano sull'utilizzo degli \textit{Smart Contract}, ossia programmi immutabili, registrati direttamente sulla \textit{blockchain} ed eseguiti automaticamente al verificarsi di condizioni prestabilite \cite{patil2021blockchain}. Questi contratti vengono principalmente utilizzati per gestire il ciclo di vita delle donazioni e per implementare meccanismi di approvazione delle richieste di spesa fondati sul consenso dei donatori. \\
+Nel modello proposto da Patil e colleghi \cite{patil2021blockchain}, ad esempio, gli \textit{Smart Contract} hanno la funzione di impedire l'erogazione immediata e integrale dei fondi donati al beneficiario. Il capitale rimane vincolato nel contratto e viene rilasciato in modo incrementale solo al raggiungimento di obiettivi intermedi (\textit{milestone}) stabiliti in fase di creazione del progetto. Tuttavia, lo sblocco delle risorse e l’approvazione dell’inserimento dei progetti in piattaforma sono affidati a un utente con ruolo di \textit{Admin}, il che riduce il grado di decentralizzazione del sistema. \\
+Diversamente, l'architettura proposta da Yadav e Sarasvathi \cite{yadav2020venturing} elimina ogni figura di supervisione esterna in favore di una struttura puramente decentralizzata.
+In questo studio, infatti, il rilascio dei fondi è sempre incrementale ma è delegato a un sistema di voto integrato nello \textit{Smart Contract}. 
+In particolare, affinché il beneficiario possa utilizzare una quota parte dei fondi raccolti deve presentare una richiesta di spesa, specificando la causale dell'esborso, l’importo richiesto e l’indirizzo pubblico del fornitore destinatario del pagamento. \\
+Solo se la proposta viene approvata da almeno il 50\% dei sostenitori del progetto, lo \textit{Smart Contract} esegue la transazione direttamente verso il fornitore. Il valore aggiunto di questo approccio si esplica dunque nella capacità di aumentare la partecipazione dei donatori lungo l'intero ciclo di vita della donazione. Tuttavia, il modello non prevede meccanismi che certifichino l'autenticità del fornitore poiché lo \textit{Smart Contract} si limita a eseguire transazioni verso l'indirizzo fornito senza poterne verificare l'identità reale. \\
+Per mitigare tale criticità, il modello proposto in \cite{alia2024ihsan} attribuisce ai donatori il compito di verificare l’indirizzo del portafoglio del destinatario attraverso database esterni prima di esprimere il proprio voto. Inoltre, come ulteriore forma di tutela, viene introdotto un meccanismo di segnalazione delle richieste ritenute sospette, che consente ai donatori di indicare potenziali comportamenti fraudolenti e di bloccare l’erogazione dei fondi qualora venga raggiunta una soglia di consenso prestabilita. \\
+È evidente dunque che sebbene l’adozione di un modello completamente decentralizzato abbia il potenziale di incrementare il numero dei donatori grazie all'aumento dei livelli di trasparenza e verificabilità dell'intero ciclo di donazione, al contempo questo comporta un aumento del livello di complessità sia in fase di sviluppo che di utilizzo della piattaforma. \\
+In questo senso, \textit{Chain4Good} si inserisce come un prototipo applicativo che mutua alcuni dei meccanismi consolidati in letteratura e li adatta a uno scenario operativo specifico. Inoltre, piuttosto che puntare a una decentralizzazione completa, il sistema mantiene la figura di un \textit{Admin} per la validazione e la registrazione degli Enti del Terzo Settore, e introduce al contempo vincoli ulteriori, volti a garantire un utilizzo delle risorse realmente progressivo, trasparente e verificabile dai donatori.
+
+
+
+\begin{comment}
+	L'obiettivo di Chain4Good è restituire al donatore un ruolo attivo lungo l’intero ciclo di vita della donazione, mitigando il problema della limitata tracciabilità nell’utilizzo dei fondi tipico dei sistemi centralizzati. \\
+	A differenza dei modelli tradizionali, nei quali le risorse vengono trasferite integralmente all’Ente beneficiario al termine della raccolta, in Chain4Good l’erogazione dei fondi avviene in maniera incrementale ed è subordinata a un processo di approvazione decentralizzato. In tale contesto, lo sblocco delle risorse è vincolato all’espressione del consenso dei donatori sulle singole richieste di spesa.\\
+	E'\ importante sottolineare che tale meccanismo non è esente da potenziali comportamenti fraudolenti. La tecnologia \textit{blockchain}, difatti, non è in grado di garantire la veridicità dei dati forniti \textit{off-chain}, quali i preventivi allegati alle richieste di spesa. 
+	Tuttavia, essa consente di rendere l’intero processo di richiesta, approvazione ed erogazione delle risorse immutabile, trasparente e pubblicamente verificabile, grazie alla registrazione \textit{on-chain} di ogni operazione e di ogni trasferimento di fondi. In questo modo, al donatore è permesso di certificare la congruità tra gli obiettivi dichiarati e quelli effettivamente perseguiti.\\
+	Chain4Good, dunque, si differenzia dallo stato dell'arte proponendosi come una piattaforma capace di ridefinire il concetto stesso di donazione, il quale non si configura più come un mero atto di fiducia, bensì come un processo intrinsecamente sicuro e verificabile in ogni sua fase.
+\end{comment}

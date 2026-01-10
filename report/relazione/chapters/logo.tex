@@ -1,0 +1,123 @@
+% !TeX spellcheck = it_IT
+% !TEX TS-program = pdflatex
+% !TEX root = ../main.tex
+
+
+
+
+\newpage
+\thispagestyle{empty} 
+
+\vspace*{\fill}
+\begin{center}
+	\includegraphics[width=0.85\textwidth]{images/Chain4Goodlogo.png}
+\end{center}
+\vspace*{\fill}
+
+\newpage
+
+
+%----------RISCHI-------------
+
+\begin{comment}
+	Oltre ai rischi di progetto, sono state analizzate le potenziali criticità legate al dominio applicativo del \gls{cf}, riportate di seguito.
+	\begin{itemize}
+		\item \textbf{Asimmetria informativa}: sulla base di quanto emerso dall'analisi in letteratura, è stata considerata la possibilità che l'Ente promotore non utilizzasse i fondi raccolti per le finalità dichiarate. Per mitigare tale rischio si è deciso di implementare un meccanismo di custodia decentralizzata dei fondi, affinché le risorse raccolte fossero sbloccate esclusivamente a seguito dell'approvazione delle richieste di spesa da parte dei donatori. Al fine di rafforzare ulteriormente la trasparenza del processo di donazione, si è deciso di vincolare la presentazione di nuove richieste di spesa al caricamento del preventivo relativo alla richiesta precedente;
+		
+		\item \textbf{Inerzia dei votanti}: poiché l’espressione del voto comporta il sostenimento di un costo di transazione, è stata considerata la possibilità che gli utenti non partecipassero attivamente al processo decisionale. Per evitare condizioni di stallo del sistema, si è deciso di adottare una logica di \textit{silenzio-assenso}, progettando la piattaforma in modo tale da approvare automaticamente la richiesta di spesa anche in assenza di voti entro i termini prefissati;
+		
+		\item \textbf{Volatilità finanziaria}: l'impiego di criptovalute per effettuare donazioni espone i fondi raccolti alle elevate fluttuazioni di mercato. Per neutralizzare tale rischio, la piattaforma è stata progettata per operare esclusivamente tramite \textit{stablecoin} (es. USDC),  criptovalute progettate per mantenere un valore stabile rispetto a una valuta reale di riferimento (ad esempio, 1 USDC = 1 Dollaro USA);
+		
+		\item \textbf{Costo delle transazioni}:
+		
+	\end{itemize}
+\end{comment}
+
+
+
+
+
+%----------REQUISITI-------------
+
+
+\begin{comment}
+	
+	\subsubsection{Requisiti funzionali}
+	I requisiti funzionali definiscono le funzionalità che la piattaforma deve implementare. Essi vengono di seguito categorizzati in base agli attori che interagiscono con il sistema. 
+	\clearpage
+	\begin{enumerate}
+		\item l'Ente Beneficiario:
+		\begin{itemize} % [start=1,label={RF\arabic*:}] ed enumerate
+			\item \textbf{Creazione progetto}: l'Ente deve poter avviare una nuova iniziativa di raccolta fondi definendone nome, \textit{budget target} e data di scadenza.
+			\item \textbf{Inserimento di una richiesta di spesa}: l'Ente deve poter richiedere il rilascio di una parte dei fondi raccolti avanzando una richiesta di spesa e allegando il relativo preventivo;
+			\item \textbf{Caricamento della prova di acquisto}: l'Ente deve poter caricare la fattura che attesti l'impiego dei fondi precedentemente sbloccati;
+			\item \textbf{Vincolo di sequenzialità sulle richieste di spesa}: l'Ente non deve poter sottomettere una nuova richiesta di spesa se non ha preventivamente caricato la prova di acquisto relativa alla richiesta precedentemente approvata;
+		\end{itemize}
+		
+		
+		\item per i Donatori:
+		\begin{itemize} %[start=5,label={RF\arabic*:}]
+			\item \textbf{Visualizzazione dei progetti:} il donatore deve poter visualizzare l'elenco delle iniziative di \gls{cf} attive e i relativi dettagli;
+			\item \textbf{Donazione ad un progetto}: il donatore deve poter selezionare un progetto e scegliere arbitrariamente l'importo da donare;
+			\item \textbf{Votazione delle richieste di spesa}: il donatore deve poter visualizzare il preventivo di spesa allegato dall'Ente ed esprimere una preferenza (se favorevole o contrario);
+			\item \textbf{Visualizzazione del portafoglio}: il donatore deve poter visualizzare il saldo disponibile;
+		\end{itemize}
+		
+		
+		\item per il Sistema (logica implementata tramite \textit{Smart Contract}):
+		\begin{itemize}%[start=10,label={RF\arabic*:}]
+			\item \textbf{Registrazione delle donazioni}: il sistema deve registrare \textit{on-chain} ogni donazione effettuata;
+			\item \textbf{Blocco dei fondi}: il sistema deve impedire il trasferimento dei fondi, previo consenso dei donatori;
+			\item \textbf{Gestione del processo di votazione}: il sistema deve avviare, gestire e concludere il processo di votazione per ogni richiesta di spesa;
+			\item \textbf{Erogazione automatica dei fondi}: il sistema deve trasferire automaticamente i fondi al \textit{wallet} dell'Ente, qualora la richiesta di spesa venga approvata dai donatori;
+			\item \textbf{Registrazione delle operazioni}: il sistema deve registrare \textit{on-chain} le richieste di spesa, gli esiti delle votazioni e il trasferimento dei fondi sbloccati;
+			
+		\end{itemize}
+		
+	\end{enumerate}
+	
+\end{comment}
+
+
+
+\begin{comment}
+	\subsubsection{Requisiti non funzionali}
+	Di seguito si riporta l'elenco dei requisiti non funzionali, ossia tutte le caratteristiche che pur non essendo funzionalità, il sistema deve garantire. 
+	
+	\begin{enumerate}
+		
+		\item \textbf{Immutabilità}: ogni transazione relativa a donazioni, votazioni e rilascio di fondi deve essere registrata su un registro distribuito in modo permanente e non modificabile;
+		
+		\item \textbf{Integrità dei dati}: i file pesanti, come preventivi e prove d'acquisto, devono essere memorizzati \textit{off-chain}. Il sistema deve garantire che tali documenti siano riconducibili in modo univoco alle relative operazioni registrate \textit{on-chain}, impedendone la manipolazione;
+		
+		\item \textbf{Usabilità}: la \textit{Webapp} deve consentire agli utenti di consultare i dati \textit{on-chain}, come lo storico delle donazioni effettuate, attraverso interfacce intuitive;
+		
+		\item \textbf{Sicurezza}: l'accesso alle funzionalità della piattaforma e alla consultazione dettagliata dei dati deve essere limitato ai soli utenti autenticati;
+		
+		\item \textbf{Portabilità}: la \textit{Webapp} deve essere fruibile sia da dispositivi \textit{desktop} che \textit{mobile};
+		
+	\end{enumerate}
+\end{comment}
+
+
+
+
+
+%----------PSEUDOCODICE-----
+\begin{comment}
+	Per evitare lo stallo decisionale, lo \textit{Smart Contract} è stato programmato per gestire le richieste di spesa attraverso un periodo di votazione di durata prefissata pari a tre giorni, al termine del quale l’esito viene determinato secondo le seguenti regole:
+	
+	\begin{itemize}
+		\item la richiesta è approvata se, al termine del periodo di votazione, il numero di voti favorevoli è almeno pari ai voti contrari; - ok 
+		
+		\item il sistema prevede la chiusura anticipata della votazione qualora il numero di pareri favorevoli raggiunga una soglia tale da rendere l'esito finale non più invertibile, anche nell'ipotesi in cui tutti i restanti aventi diritto esprimessero un voto contrario; - ok
+		
+		\item qualora, allo scadere del periodo di votazione, si verifichi una situazione di parità tra voti favorevoli e contrari, la richiesta viene considerata approvata;
+		
+		\item nel caso in cui non venga espresso alcun voto entro la scadenza, il sistema approva automaticamente la richiesta al fine di non ostacolare l’avanzamento del progetto.
+		
+	\end{itemize}
+	
+	Al soddisfacimento di una delle condizioni di approvazione sopra elencate, lo \textit{Smart Contract} esegue in modo autonomo e irreversibile il trasferimento della somma richiesta verso il \textit{wallet} del beneficiario.
+\end{comment}
+
