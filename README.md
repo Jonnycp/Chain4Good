@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <i>*Il tempo tracciato da WakaTime si riferisce esclusivamente alla scrittura attiva del codice e NON include le ore dedicate alla ricerca, alla progettazione e alla risoluzione di bug. <br><br><b><u><img src="https://wakatime.com/badge/user/c82f4683-34a5-4724-a5f4-5c2a6f37d55c/project/8584fed1-f592-48a0-bc57-e7dae4a23ae1.svg" alt="wakatime"> sono riferite solo a Jonathan Caputo, bisogna sommare le ore degli altri colleghi.</u></b></i>
+  <i>*Il tempo tracciato da WakaTime si riferisce esclusivamente alla scrittura attiva del codice e NON include le ore dedicate alla ricerca, alla progettazione e alla risoluzione di bug. <br><br><b><u>
 </p>
 
 ## Indice
