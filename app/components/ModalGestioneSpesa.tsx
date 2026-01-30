@@ -37,7 +37,8 @@ export default function ModalGestioneSpesa({
 
   async function getFileHash(file: File): Promise<string> {
     const arrayBuffer = await file.arrayBuffer();
-    const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
+    try{
+      const hashBuffer = await crypto.subtle.digest("SHA-256", arrayBuffer);
     // Converti in hex string (bytes32)
     return (
       "0x" +
@@ -45,6 +46,10 @@ export default function ModalGestioneSpesa({
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("")
     );
+    }catch(err){
+      return "No-HTTPS-File-HashDemo"
+    }
+    
   }
 
   const allowedTypes = [
